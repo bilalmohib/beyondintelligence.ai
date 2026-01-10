@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "@/app/providers";
 import MainAppLayout from "@/layouts/MainAppLayout";
-
+import { ThemeProvider } from "@/components/theme-provider";
 import "@/app/globals.css";
 
 const inter = Inter({
@@ -15,18 +15,26 @@ export const metadata: Metadata = {
   description: "Beyond Intelligence",
 };
 
-export default function RootLayout({
+function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} antialiased`}>
-      <Providers>
-          <MainAppLayout>{children}</MainAppLayout>
+        <Providers>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <MainAppLayout>{children}</MainAppLayout>
+          </ThemeProvider>
         </Providers>
       </body>
     </html>
   );
 }
+export default RootLayout;

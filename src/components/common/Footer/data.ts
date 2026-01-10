@@ -1,13 +1,5 @@
-import { IFooterItems } from "@/components/common/Footer/types";
 import { BsLinkedin } from "react-icons/bs";
-
-export const socialMediaIcons = [
-  {
-    title: "LinkedIn",
-    image: "/Images/Sections/Home/Footer/linkedin.png",
-    link: " https://www.linkedin.com/company/smartlyq/",
-  },
-];
+import { IFooterItems } from "@/components/common/Footer/types";
 
 export const footerItems: IFooterItems[] = [
   {

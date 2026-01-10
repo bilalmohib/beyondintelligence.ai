@@ -1,9 +1,8 @@
-import Link from "next/link";
-import Image from "next/image";
-import Container from "@/components/common/Container";
 import Logo from "@/components/common/Navbar/Logo";
+import Container from "@/components/common/Container";
+import { Paragraph } from "@/components/common/Typography";
 import FooterItems from "@/components/common/Footer/FooterItems";
-import { socialMediaIcons } from "@/components/common/Footer/data";
+import DarkModeToggle from "@/components/common/DarkModeToggle";
 
 interface FooterProps {
   className?: string;
@@ -30,17 +29,11 @@ const Footer = ({ className }: FooterProps) => {
       </Container>
 
       <Container>
-        <div className="pt-6 sm:pt-7 lg:pt-8 pb-6 sm:pb-7 lg:pb-9">
-          <p className="w-full text-center text-white text-sm sm:text-base leading-4.75 font-inter font-normal">
-            Copyright 2025 © .com Created by{" "}
-            <Link
-              href="https://web-net.com/"
-              className="text-primary hover:underline"
-            >
-              Beyond Intelligence
-            </Link>{" "}
-            all rights reserved
-          </p>
+        <div className="pt-6 sm:pt-7 lg:pt-8 pb-6 sm:pb-7 lg:pb-9 flex flex-row justify-between">
+          <Paragraph className="text-white text-base! font-normal! leading-6!">
+            Beyond Intelligence © 2025
+          </Paragraph>
+          <DarkModeToggle />
         </div>
       </Container>
     </footer>
