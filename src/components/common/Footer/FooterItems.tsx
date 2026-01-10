@@ -26,7 +26,7 @@ const FooterItems = ({ className }: FooterItemsProps) => {
   return (
     <div className={cn("w-full", className)}>
       <TooltipProvider delayDuration={0}>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 sm:gap-8 lg:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-4">
           {footerItems.map((item, index) => {
             // Check if this is the last item and if it would be alone in its row on mobile
             const isLastItem = index === footerItems.length - 1;
@@ -38,7 +38,7 @@ const FooterItems = ({ className }: FooterItemsProps) => {
                 className={cn(
                   "flex flex-col gap-3 sm:gap-4 lg:gap-5",
                   shouldCenterOnMobile &&
-                    "col-span-2 sm:col-span-1 max-w-[50%] sm:max-w-none mx-auto sm:mx-0"
+                    "col-span-2 sm:col-span-1 mx-auto sm:mx-0"
                 )}
                 key={index}
               >
@@ -46,7 +46,14 @@ const FooterItems = ({ className }: FooterItemsProps) => {
                   {item.title}
                 </Heading5>
 
-                <div className="flex flex-col gap-2 sm:gap-2.5 lg:gap-2">
+                <div
+                  className={cn(
+                    "flex flex-col",
+                    item.title === "Contact Us"
+                      ? "gap-4"
+                      : "gap-2 sm:gap-2.5 lg:gap-3"
+                  )}
+                >
                   {item.items.map((item) =>
                     item.isExternal ? (
                       <a
@@ -57,9 +64,13 @@ const FooterItems = ({ className }: FooterItemsProps) => {
                       >
                         {mounted ? (
                           <Tooltip>
-                            <TooltipTrigger className="text-center sm:text-left cursor-pointer w-full">
-                              {item.value && <Heading5>{item.title}</Heading5>}
-                              <Paragraph className="hover:text-primary text-white! text-base! w-full sm:max-w-[140px] lg:max-w-[180px] truncate transition-colors">
+                            <TooltipTrigger className="text-center sm:text-left cursor-pointer flex flex-col gap-1.5 w-full">
+                              {item.value && (
+                                <Heading5 className="text-lg! text-white! leading-7!">
+                                  {item.title}
+                                </Heading5>
+                              )}
+                              <Paragraph className="hover:text-primary! text-white! text-base! truncate transition-colors w-full sm:max-w-[240px] lg:max-w-[340px]">
                                 {item.isIconOnly ? (
                                   item.value &&
                                   (typeof item.value === "function" ||
@@ -80,7 +91,7 @@ const FooterItems = ({ className }: FooterItemsProps) => {
                             </TooltipContent>
                           </Tooltip>
                         ) : (
-                          <Paragraph className="hover:text-primary text-white! text-base! w-full sm:max-w-[140px] lg:max-w-[180px] truncate transition-colors">
+                          <Paragraph className="hover:text-primary! text-white! text-base! w-full sm:max-w-[240px] lg:max-w-[340px] truncate transition-colors">
                             {item.title}
                           </Paragraph>
                         )}
@@ -89,9 +100,24 @@ const FooterItems = ({ className }: FooterItemsProps) => {
                       <Link href={item.link || ""} key={item.title}>
                         {mounted ? (
                           <Tooltip>
-                            <TooltipTrigger className="text-center sm:text-left cursor-pointer w-full">
-                              <Paragraph className="hover:text-primary text-white! text-base! w-full sm:max-w-[140px] lg:max-w-[180px] truncate transition-colors">
-                                {item.title}
+                            <TooltipTrigger className="text-center sm:text-left cursor-pointer w-full flex flex-col gap-1.5">
+                              {item.value && (
+                                <Heading5 className="text-lg! text-white! leading-7!">
+                                  {item.title}
+                                </Heading5>
+                              )}
+                              <Paragraph className="hover:text-primary! text-white! text-base! w-full sm:max-w-[240px] lg:max-w-[340px] truncate transition-colors">
+                                {item.isIconOnly ? (
+                                  item.value &&
+                                  (typeof item.value === "function" ||
+                                    typeof item.value === "object") ? (
+                                    <item.value />
+                                  ) : null
+                                ) : typeof item.value === "string" ? (
+                                  item.value
+                                ) : (
+                                  item.title
+                                )}
                               </Paragraph>
                             </TooltipTrigger>
                             <TooltipContent>
@@ -101,7 +127,7 @@ const FooterItems = ({ className }: FooterItemsProps) => {
                             </TooltipContent>
                           </Tooltip>
                         ) : (
-                          <Paragraph className="hover:text-primary text-white! text-base! w-full sm:max-w-[140px] lg:max-w-[180px] truncate transition-colors">
+                          <Paragraph className="hover:text-primary text-white! text-base! w-full sm:max-w-[240px] lg:max-w-[340px] truncate transition-colors">
                             {item.title}
                           </Paragraph>
                         )}
