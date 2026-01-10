@@ -21,7 +21,7 @@ const Footer = ({ className }: FooterProps) => {
               <Logo />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row lg:justify-between py-8 sm:py-10 lg:py-12 gap-8 lg:gap-0">
+          <div className="flex flex-col lg:flex-row lg:justify-between py-8 sm:py-10 lg:py-16 gap-8 lg:gap-0">
             <div className="w-full">
               <FooterItems />
             </div>

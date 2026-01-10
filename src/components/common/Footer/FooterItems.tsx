@@ -75,7 +75,7 @@ const FooterItems = ({ className }: FooterItemsProps) => {
                                   item.value &&
                                   (typeof item.value === "function" ||
                                     typeof item.value === "object") ? (
-                                    <item.value />
+                                    <item.value size={22} className="mt-1.5" />
                                   ) : null
                                 ) : typeof item.value === "string" ? (
                                   item.value
@@ -111,7 +111,7 @@ const FooterItems = ({ className }: FooterItemsProps) => {
                                   item.value &&
                                   (typeof item.value === "function" ||
                                     typeof item.value === "object") ? (
-                                    <item.value />
+                                    <item.value size={22} className="mt-1.5" />
                                   ) : null
                                 ) : typeof item.value === "string" ? (
                                   item.value
