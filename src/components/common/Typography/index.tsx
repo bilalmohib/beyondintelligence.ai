@@ -15,7 +15,7 @@ export const Heading1 = ({
 }: TypographyProps) => {
   return as === "h1" ? (
     <h1
-      className={`font-inter font-bold text-[28px] md:text-[32px] lg:text-5xl leading-[142%] tracking-[0%] text-heading ${className}`}
+      className={`font-inter font-bold text-[28px] md:text-[32px] lg:text-[52px] leading-[142%] tracking-[0%] text-heading ${className}`}
       dangerouslySetInnerHTML={dangerouslySetInnerHTML}
       style={style}
     >
@@ -23,7 +23,7 @@ export const Heading1 = ({
     </h1>
   ) : (
     <h2
-      className={`font-inter font-bold text-[28px] md:text-[32px] lg:text-5xl leading-[142%] tracking-[0%] text-heading ${className}`}
+      className={`font-inter font-bold text-[28px] md:text-[32px] lg:text-[52px] leading-[142%] tracking-[0%] text-heading ${className}`}
       dangerouslySetInnerHTML={dangerouslySetInnerHTML}
       style={style}
     >
@@ -40,7 +40,7 @@ export const Heading2 = ({
 }: TypographyProps) => {
   return (
     <h2
-      className={`font-inter font-bold text-[28px] sm:text-4xl leading-[142%] text-heading ${className}`}
+      className={`font-inter font-bold text-[28px] sm:text-4xl lg:text-[46px] leading-[142%] text-heading ${className}`}
       dangerouslySetInnerHTML={dangerouslySetInnerHTML}
       style={style}
     >
@@ -57,7 +57,7 @@ export const Heading3 = ({
 }: TypographyProps) => {
   return (
     <h3
-      className={`font-inter font-bold text-3xl leading-[142%] text-heading ${className}`}
+      className={`font-inter font-bold text-3xl lg:text-[32px] leading-[142%] text-heading ${className}`}
       dangerouslySetInnerHTML={dangerouslySetInnerHTML}
       style={style}
     >
@@ -74,7 +74,7 @@ export const Heading4 = ({
 }: TypographyProps) => {
   return (
     <h4
-      className={`font-inter font-bold text-2xl leading-[142%] tracking-[0%] text-heading ${className}`}
+      className={`font-inter font-bold text-2xl lg:text-[28px] leading-[142%] tracking-[0%] text-heading ${className}`}
       dangerouslySetInnerHTML={dangerouslySetInnerHTML}
       style={style}
     >
@@ -91,7 +91,7 @@ export const Heading5 = ({
 }: TypographyProps) => {
   return (
     <h5
-      className={`font-inter font-bold text-xl leading-[142%] tracking-[0%] text-heading ${className}`}
+      className={`font-inter font-bold text-xl lg:text-2xl leading-[142%] tracking-[0%] text-heading ${className}`}
       dangerouslySetInnerHTML={dangerouslySetInnerHTML}
       style={style}
     >
@@ -108,7 +108,7 @@ export const Heading6 = ({
 }: TypographyProps) => {
   return (
     <h6
-      className={`font-inter font-bold text-base leading-[142%] tracking-[0%] text-heading ${className}`}
+      className={`font-inter font-bold text-base lg:text-xl leading-[142%] tracking-[0%] text-heading ${className}`}
       dangerouslySetInnerHTML={dangerouslySetInnerHTML}
       style={style}
     >
@@ -125,7 +125,7 @@ export const Paragraph = ({
 }: TypographyProps) => {
   return (
     <p
-      className={`font-inter font-normal text-[15px] md:text-base lg:text-xl leading-[142%] tracking-[0%] text-heading ${className}`}
+      className={`font-inter font-normal text-[15px] md:text-base lg:text-lg leading-[142%] tracking-[0%] text-heading ${className}`}
       dangerouslySetInnerHTML={dangerouslySetInnerHTML}
       style={style}
     >
