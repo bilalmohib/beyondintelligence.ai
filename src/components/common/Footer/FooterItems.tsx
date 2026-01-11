@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useState, useEffect } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -9,8 +10,8 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 import { footerItems } from "@/components/common/Footer/data";
-import { Heading4, Heading5, Paragraph } from "@/components/common/Typography";
-import { useState, useEffect } from "react";
+import { Heading5, Paragraph } from "@/components/common/Typography";
+import SubscribeToNewsLetter from "@/components/common/Footer/SubscribeToNewsLetter";
 
 interface FooterItemsProps {
   className?: string;
@@ -26,7 +27,7 @@ const FooterItems = ({ className }: FooterItemsProps) => {
   return (
     <div className={cn("w-full", className)}>
       <TooltipProvider delayDuration={0}>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 sm:gap-8 lg:gap-4">
           {footerItems.map((item, index) => {
             // Check if this is the last item and if it would be alone in its row on mobile
             const isLastItem = index === footerItems.length - 1;
@@ -138,6 +139,8 @@ const FooterItems = ({ className }: FooterItemsProps) => {
               </div>
             );
           })}
+
+          <SubscribeToNewsLetter className="col-span-3 mx-auto sm:mx-0" />
         </div>
       </TooltipProvider>
     </div>

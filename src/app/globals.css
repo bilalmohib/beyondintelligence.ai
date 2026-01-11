@@ -45,6 +45,8 @@
   --color-background: #0B0C26;
   --color-buttonHover: #4F46E5;
   --color-buttonDisabled: #A5B4FC;
+  --color-inputUnderline: #E5E7EB;
+  --color-inputPlaceholder: #9CA3AF;
 
   --font-inter: var(--font-inter);
 
