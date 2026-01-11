@@ -1,21 +1,25 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 import {
   NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuContent,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import ListItem from "@/components/common/Navbar/NavItems/ListItem";
 import { menuItems } from "@/components/common/Navbar/NavItems/data";
 
-const NavItems = () => {
+interface NavItemsProps {
+  isNavTransparent?: boolean;
+}
+
+const NavItems = ({ isNavTransparent }: NavItemsProps) => {
   return (
     <NavigationMenu viewport={false}>
       <NavigationMenuList className="gap-2 xl:gap-6 xl:flex-row flex-col">
@@ -23,10 +27,22 @@ const NavItems = () => {
           <NavigationMenuItem key={item.title}>
             {item.hasDropdown ? (
               <>
-                <NavigationMenuTrigger className="font-inter text-base font-normal leading-none tracking-[0.09em] text-white! bg-background hover:bg-background! hover:text-primary! data-[state=open]:bg-background data-[state=open]:text-primary data-[state=open]:hover:bg-background!">
+                <NavigationMenuTrigger
+                  className={cn(
+                    "font-inter text-base font-normal leading-none tracking-[0.09em] text-white!",
+                    isNavTransparent
+                      ? "bg-transparent hover:bg-transparent! hover:text-white! data-[state=open]:bg-transparent data-[state=open]:hover:bg-transparent! data-[state=open]:text-white"
+                      : "bg-background hover:bg-background! hover:text-primary! data-[state=open]:bg-background data-[state=open]:hover:bg-background! data-[state=open]:text-primary"
+                  )}
+                >
                   {item.title}
                 </NavigationMenuTrigger>
-                <NavigationMenuContent className="w-[400px]! bg-background! rounded-lg">
+                <NavigationMenuContent
+                  className={cn(
+                    "w-[400px]! rounded-lg",
+                    isNavTransparent ? "bg-primary!" : "bg-background!"
+                  )}
+                >
                   <ul className="grid gap-2">
                     {item.items?.map((subItem) => (
                       <ListItem
@@ -34,6 +50,7 @@ const NavItems = () => {
                         title={subItem.title}
                         href={subItem.href}
                         Icon={subItem.icon}
+                        isNavTransparent={isNavTransparent}
                       >
                         {subItem.description}
                       </ListItem>
@@ -44,11 +61,21 @@ const NavItems = () => {
             ) : (
               <NavigationMenuLink
                 asChild
-                className={`${navigationMenuTriggerStyle()} bg-background hover:bg-transparent hover:text-primary`}
+                className={cn(
+                  navigationMenuTriggerStyle(),
+                  isNavTransparent
+                    ? "bg-transparent! hover:bg-transparent! hover:text-white!"
+                    : "bg-background hover:bg-transparent hover:text-primary"
+                )}
               >
                 <Link
                   href={item.href}
-                  className="font-inter! text-base! font-normal leading-none tracking-[0.09em] text-white! hover:text-primary! transition-colors! duration-200"
+                  className={cn(
+                    "font-inter! text-base! font-normal leading-none tracking-[0.09em] text-white! transition-colors! duration-200",
+                    isNavTransparent
+                      ? "hover:text-white!"
+                      : "hover:text-primary!"
+                  )}
                 >
                   {item.title}
                 </Link>

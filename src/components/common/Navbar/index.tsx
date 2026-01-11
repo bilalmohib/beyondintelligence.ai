@@ -1,38 +1,25 @@
 "use client";
 
 import { X } from "lucide-react";
-import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { useState } from "react";
 import Logo from "@/components/common/Navbar/Logo";
 import Container from "@/components/common/Container";
 import NavItems from "@/components/common/Navbar/NavItems";
 import MobileNavItems from "@/components/common/Navbar/NavItems/MobileNavItems";
-import AuthButtons from "@/components/common/Navbar/AuthButtons";
 
-function Navbar() {
-  const pathname = usePathname();
-  
+interface NavbarProps {
+  className?: string;
+  isNavTransparent?: boolean;
+}
+
+function Navbar({ className, isNavTransparent }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  const navTransparentRoutes = [
-    "/signup/start"
-  ]
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <nav
       className={`w-full transition-all duration-200 ${
-        isScrolled ? "border-b border-gray-200 shadow-md" : ""
-      } ${navTransparentRoutes.includes(pathname) ? "bg-transparent" : "bg-background"}`}
+        !isNavTransparent ? "border-b-[0.25px] border-gray-100 shadow-md" : ""
+      } ${isNavTransparent ? "bg-transparent" : "bg-background"} ${className}`}
     >
       <Container>
         <div className="flex justify-between items-center py-4">
@@ -41,17 +28,12 @@ function Navbar() {
           </div>
 
           <div className="hidden xl:block">
-            <NavItems />
+            <NavItems isNavTransparent={isNavTransparent} />
           </div>
-
-          {/* <div className="hidden xl:block">
-            <AuthButtons />
-          </div> */}
 
           {/* Mobile menu button */}
           <div className="xl:hidden">
             <div className="flex flex-row gap-6">
-              {/* <AuthButtons /> */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="flex items-center justify-center p-2 rounded-md text-[#414141] hover:text-primary hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary transition-all duration-200"

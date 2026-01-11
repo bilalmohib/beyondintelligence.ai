@@ -9,6 +9,7 @@ interface ListItemProps extends React.ComponentPropsWithoutRef<"li"> {
   descriptionClassName?: string;
   className?: string;
   Icon: React.ElementType;
+  isNavTransparent?: boolean;
 }
 
 function ListItem({
@@ -19,6 +20,7 @@ function ListItem({
   descriptionClassName,
   Icon,
   className,
+  isNavTransparent,
   ...props
 }: ListItemProps) {
   return (
@@ -27,14 +29,17 @@ function ListItem({
         <Link
           href={href}
           className={cn(
-            "block select-none space-y-1 rounded-[8px] p-3 leading-none no-underline outline-none transition-colors hover:bg-primary hover:shadow-sm hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            "block select-none space-y-1 rounded-[8px] p-3 leading-none no-underline outline-none transition-colors hover:bg-primary hover:shadow-sm focus:bg-accent focus:text-accent-foreground",
+            isNavTransparent 
+              ? "hover:text-white focus:text-white" 
+              : "hover:text-accent-foreground",
             className
           )}
         >
           <div className="flex flex-row gap-4">
             <div className="w-[12%] pt-1">
               <div className="w-8 h-8 bg-transparent rounded-[3px] flex justify-center items-center">
-                <Icon className="!w-5 !h-5" color="white" />
+                <Icon className="w-5! h-5!" color="white" />
               </div>
             </div>
             <div className="w-[88%] flex flex-col gap-1">

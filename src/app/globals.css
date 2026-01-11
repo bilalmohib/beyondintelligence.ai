@@ -43,6 +43,7 @@
   --color-primary: #6366F1;
   --color-heading: #1d1d1d;
   --color-background: #0B0C26;
+  --color-background-secondary: #151641;
   --color-buttonHover: #4F46E5;
   --color-buttonDisabled: #A5B4FC;
   --color-inputUnderline: #E5E7EB;
@@ -72,6 +73,7 @@
   --breakpoint-sssm: 330px;
 
   /* --image-competitors-going-viral: url(/Images/Sections/Home/CompetitorsGoingViralSection/goingViral.png); */
+  --image-signup-start: url(/assets/pages/signup/start/background.svg);
 
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
@@ -323,7 +325,7 @@ html {
 }
 
 @layer utilities {
-  /* .bg-image-competitors-going-viral {
-    background-image: var(--image-competitors-going-viral);
-  } */
+  .bg-image-signup-start {
+    background-image: var(--image-signup-start);
+  }
 }
