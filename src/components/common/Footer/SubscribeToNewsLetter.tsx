@@ -25,15 +25,15 @@ const SubscribeToNewsLetter = ({ className }: SubscribeToNewsLetterProps) => {
 
       <div className="flex flex-row gap-4.5 mt-3.5">
         <div className="flex flex-col gap-2">
-          <Label htmlFor="first-name">First Name</Label>
+          <Label htmlFor="first-name" className="text-white">First Name</Label>
           <Input id="first-name" type="text" placeholder="John" variant="underline" />
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="last-name">Last Name</Label>
+          <Label htmlFor="last-name" className="text-white">Last Name</Label>
           <Input id="last-name" type="text" placeholder="Doe" variant="underline" />
         </div>
         <div className="flex flex-col gap-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email" className="text-white">Email</Label>
           <Input id="email" type="email" placeholder="johndoe@gmail.com" variant="underline" />
         </div>
       </div>

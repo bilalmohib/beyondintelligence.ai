@@ -33,7 +33,7 @@ const DarkModeToggle = () => {
   return (
     <div className="flex flex-row items-center gap-3">
       <Paragraph className="text-white text-base! font-normal! leading-6!">
-        {theme === "dark" ? "Light Mode" : "Dark Mode"}
+        {theme === "dark" ? "Dark Mode" : "Light Mode"}
       </Paragraph>
       <Switch
         checked={theme === "dark"}
