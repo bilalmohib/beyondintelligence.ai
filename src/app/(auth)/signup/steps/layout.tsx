@@ -14,10 +14,8 @@ const SignupStepsLayout = ({ children }: { children: React.ReactNode }) => {
           <div className="bg-background-secondary p-24 rounded-[20px] flex flex-col gap-24">
             <SignupStepper steps={signupSteps} />
 
-            <div className="flex flex-col gap-10">
-              <Heading2 className="text-white leading-0!">
-                Parent Information
-              </Heading2>
+            <div className="flex flex-col gap-10 border border-red-600 border-solid">
+              <Heading2 className="text-white">Parent Information</Heading2>
 
               {children}
             </div>

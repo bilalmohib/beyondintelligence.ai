@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   Stepper,
   StepperNav,
@@ -27,7 +26,7 @@ const SignupStepper = ({ steps, currentStep = 1 }: SignupStepperProps) => {
                 disabled={!step.active && !step.completed}
               >
                 <StepperTrigger asChild>
-                  <StepperIndicator className="size-[70px] rounded-full border-2 border-background bg-white dark:bg-gray-800 text-[#050620] data-[state=completed]:bg-primary data-[state=completed]:text-white data-[state=completed]:border-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary">
+                  <StepperIndicator className="size-[70px] rounded-full border-2 border-background bg-white text-input-text-color data-[state=completed]:bg-primary data-[state=completed]:text-white data-[state=completed]:border-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary">
                     <Heading6 className="text-center text-inherit">
                       {step.stepValue}
                     </Heading6>

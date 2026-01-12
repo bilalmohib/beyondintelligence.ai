@@ -48,6 +48,21 @@
   --color-buttonDisabled: #A5B4FC;
   --color-inputUnderline: #E5E7EB;
   --color-inputPlaceholder: #9CA3AF;
+  --color-radio-text: #232323;
+
+  /* Input States */
+  --color-input-text: #050620;
+  --color-input-border-default: #E5E7EB;
+  --color-input-border-hover: #9CA3AF;
+  --color-input-border-focus: #A5B4FC;
+  --color-input-border-active: #9CA3AF;
+  --color-input-border-disabled: #E5E7EB;
+  --color-input-border-error: #EF4444;
+  --color-input-label-disabled: #9CA3AF;
+  
+  /* Input Shadows */
+  --shadow-input-focus: 0px 0px 0px 4px #E1E1FEB2;
+  --shadow-input-error: 0px 1px 2px 0px #10182814;
 
   --font-inter: var(--font-inter);
 
@@ -130,7 +145,7 @@
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
+  --input: #111827;
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);

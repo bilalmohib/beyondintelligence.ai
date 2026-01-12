@@ -1,6 +1,7 @@
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import Container from "@/components/common/Container";
 import { Heading1, Paragraph } from "@/components/common/Typography";
-import { Button } from "@/components/ui/button";
 
 const SignupStartPage = () => {
   return (
@@ -36,7 +37,9 @@ const SignupStartPage = () => {
             minutes.
           </Paragraph>
           <div className="flex justify-end">
-            <Button className="">Continue</Button>
+            <Button asChild>
+              <Link href="/signup/steps/parent-information">Continue</Link>
+            </Button>
           </div>
         </div>
       </div>
