@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import Container from "@/components/common/Container";
 import { Heading2, Heading4 } from "@/components/common/Typography";
 import SignupStepper from "@/app/(auth)/signup/steps/(components)/SignupStepper";
@@ -14,10 +15,16 @@ const SignupStepsLayout = ({ children }: { children: React.ReactNode }) => {
           <div className="bg-background-secondary p-24 rounded-[20px] flex flex-col gap-24">
             <SignupStepper steps={signupSteps} />
 
-            <div className="flex flex-col gap-10 border border-red-600 border-solid">
+            <div className="flex flex-col gap-10">
               <Heading2 className="text-white">Parent Information</Heading2>
 
               {children}
+
+              <div className="flex justify-end">
+                <Button variant="default" size="lg" className="w-fit px-5">
+                  Continue
+                </Button>
+              </div>
             </div>
           </div>
         </div>

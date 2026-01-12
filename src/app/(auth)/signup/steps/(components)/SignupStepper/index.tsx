@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Stepper,
   StepperNav,
@@ -26,16 +27,20 @@ const SignupStepper = ({ steps, currentStep = 1 }: SignupStepperProps) => {
                 disabled={!step.active && !step.completed}
               >
                 <StepperTrigger asChild>
-                  <StepperIndicator className="size-[70px] rounded-full border-2 border-background bg-white text-input-text-color data-[state=completed]:bg-primary data-[state=completed]:text-white data-[state=completed]:border-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary">
-                    <Heading6 className="text-center text-inherit">
-                      {step.stepValue}
-                    </Heading6>
-                  </StepperIndicator>
+                  <Link href={step.href}>
+                    <StepperIndicator className="size-[70px] rounded-full border-2 border-background bg-white text-input-text-color data-[state=completed]:bg-primary data-[state=completed]:text-white data-[state=completed]:border-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary cursor-pointer">
+                      <Heading6 className="text-center text-inherit">
+                        {step.stepValue}
+                      </Heading6>
+                    </StepperIndicator>
+                  </Link>
                 </StepperTrigger>
               </StepperItem>
-              <Paragraph className="text-center text-white font-semibold text-[13px]! leading-[120%] tracking-[0%] max-w-[120px]">
-                {step.title}
-              </Paragraph>
+              <Link href={step.href}>
+                <Paragraph className="text-center text-white font-semibold text-[13px]! leading-[120%] tracking-[0%] max-w-[120px] cursor-pointer hover:opacity-80 transition-opacity">
+                  {step.title}
+                </Paragraph>
+              </Link>
             </div>
 
             {index < steps.length - 1 && (
