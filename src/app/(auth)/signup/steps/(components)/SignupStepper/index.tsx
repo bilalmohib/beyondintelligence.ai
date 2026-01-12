@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Stepper,
   StepperNav,
@@ -11,10 +14,15 @@ import { SignupStep } from "@/app/(auth)/signup/steps/(components)/SignupStepper
 
 interface SignupStepperProps {
   steps: SignupStep[];
-  currentStep?: number;
 }
 
-const SignupStepper = ({ steps, currentStep = 1 }: SignupStepperProps) => {
+const SignupStepper = ({ steps }: SignupStepperProps) => {
+  const pathname = usePathname();
+
+  // Determine current step based on pathname
+  const currentStep =
+    steps.find((step) => pathname === step.href)?.id ?? 1;
+
   return (
     <Stepper value={currentStep} orientation="horizontal" className="w-full">
       <StepperNav className="w-full flex">

@@ -1,6 +1,6 @@
-import { Paragraph } from "@/components/common/Typography";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Paragraph } from "@/components/common/Typography";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const SignupStepParentInformationPage = () => {
