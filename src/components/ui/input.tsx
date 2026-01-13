@@ -5,13 +5,13 @@ import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 
 const inputVariants = cva(
-  "file:text-foreground selection:bg-primary selection:text-primary-foreground h-10 w-full min-w-0 gap-3 text-base transition-all duration-200 outline-none file:inline-flex file:h-8 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed md:text-sm",
+  "file:text-foreground selection:bg-primary selection:text-primary-foreground h-10 w-full min-w-0 gap-3 text-base transition-all duration-200 outline-none file:inline-flex file:h-8 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed md:text-sm text-input-text",
   {
     variants: {
       variant: {
         default: [
           "placeholder:text-inputPlaceholder",
-          "bg-white dark:bg-input/30",
+          "bg-white dark:bg-white",
           "rounded-lg border",
           "py-2 px-3",
           // Default state

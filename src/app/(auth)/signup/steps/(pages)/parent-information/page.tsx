@@ -151,22 +151,22 @@ const SignupStepParentInformationPage = () => {
         <RadioGroup defaultValue="allow" className="flex flex-row gap-3">
           <Label
             htmlFor="allow"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-[#6366F1] transition-all"
+            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
           >
             <RadioGroupItem value="allow" id="allow" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
+            <span className="text-radio-text dark:text-radio-text text-lg leading-7 font-normal">
               Allow
             </span>
           </Label>
-          <Label
+          {/* <Label
             htmlFor="no-for-now"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-[#6366F1] transition-all"
+            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
           >
             <RadioGroupItem value="no-for-now" id="no-for-now" />
             <span className="text-radio-text text-lg leading-7 font-normal">
               No for now
             </span>
-          </Label>
+          </Label> */}
         </RadioGroup>
         <div className="flex flex-row justify-between">
           <Paragraph className="text-white! text-xs!">

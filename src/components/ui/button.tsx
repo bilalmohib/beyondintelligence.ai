@@ -4,7 +4,6 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { useRipple } from "@/hooks/useRipple";
-import { useGetSiteInfoQuery } from "@/redux/apiSlice";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const buttonVariants = cva(
@@ -43,6 +42,9 @@ function Button({
   size,
   asChild = false,
   onClick,
+  startIcon,
+  endIcon,
+  children,
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
@@ -51,37 +53,55 @@ function Button({
     isRedirectToLogin?: boolean;
     isRedirectToDemo?: boolean;
     isRedirectToContact?: boolean;
+    startIcon?: React.ReactElement;
+    endIcon?: React.ReactElement;
   }) {
   const createRipple = useRipple();
-  const Comp = asChild ? Slot : "button";
-
-  const { data: siteInfo, isLoading, error } = useGetSiteInfoQuery();
-
-  const signupUrl = siteInfo?.site_url
-    ? `${siteInfo.site_url}signup`
-    : undefined;
-
-  const loginUrl = siteInfo?.site_url ? `${siteInfo.site_url}login` : undefined;
-
-  const demoUrl = siteInfo?.demo_link || undefined;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     createRipple(event);
-
     onClick?.(event);
   };
 
+  const buttonClassName = cn(
+    buttonVariants({ variant, size, className }),
+    "relative overflow-hidden cursor-pointer"
+  );
+
+  // When asChild is true, clone the child element and inject icons into its children
+  if (asChild && React.isValidElement(children)) {
+    return (
+      <Slot
+        data-slot="button"
+        data-variant={variant}
+        className={buttonClassName}
+        {...props}
+      >
+        {React.cloneElement(
+          children as React.ReactElement<{ children?: React.ReactNode }>,
+          {},
+          <>
+            {startIcon}
+            {(children as React.ReactElement<{ children?: React.ReactNode }>).props.children}
+            {endIcon}
+          </>
+        )}
+      </Slot>
+    );
+  }
+
   return (
-    <Comp
+    <button
       data-slot="button"
       data-variant={variant}
-      className={cn(
-        buttonVariants({ variant, size, className }),
-        "relative overflow-hidden cursor-pointer"
-      )}
+      className={buttonClassName}
+      onClick={handleClick}
       {...props}
-      {...(asChild ? {} : { onClick: handleClick })}
-    />
+    >
+      {startIcon}
+      {children}
+      {endIcon}
+    </button>
   );
 }
 

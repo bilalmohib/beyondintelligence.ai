@@ -20,8 +20,7 @@ const SignupStepper = ({ steps }: SignupStepperProps) => {
   const pathname = usePathname();
 
   // Determine current step based on pathname
-  const currentStep =
-    steps.find((step) => pathname === step.href)?.id ?? 1;
+  const currentStep = steps.find((step) => pathname === step.href)?.id ?? 1;
 
   return (
     <Stepper value={currentStep} orientation="horizontal" className="w-full">
@@ -36,7 +35,7 @@ const SignupStepper = ({ steps }: SignupStepperProps) => {
               >
                 <StepperTrigger asChild>
                   <Link href={step.href}>
-                    <StepperIndicator className="size-[70px] rounded-full border-2 border-background bg-white text-input-text-color data-[state=completed]:bg-primary data-[state=completed]:text-white data-[state=completed]:border-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary cursor-pointer">
+                    <StepperIndicator className="size-[70px] rounded-full border-2 border-background bg-white text-input-text data-[state=completed]:bg-primary data-[state=completed]:text-white data-[state=completed]:border-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary cursor-pointer">
                       <Heading6 className="text-center text-inherit">
                         {step.stepValue}
                       </Heading6>

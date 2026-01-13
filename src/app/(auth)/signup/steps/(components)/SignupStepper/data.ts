@@ -26,7 +26,7 @@ export const signupSteps: SignupStep[] = [
   },
   {
     id: 3,
-    title: "How their breathing behaves",
+    title: "How Their Breathing Behaves",
     href: "/signup/steps/how-their-breathing-behaves",
     stepValue: "03",
     active: false,
@@ -34,7 +34,7 @@ export const signupSteps: SignupStep[] = [
   },
   {
     id: 4,
-    title: "Home & school environment",
+    title: "Home & School Environment",
     href: "/signup/steps/home-and-school-environment",
     stepValue: "04",
     active: false,
@@ -42,7 +42,7 @@ export const signupSteps: SignupStep[] = [
   },
   {
     id: 5,
-    title: "Allergies & sensitivities",
+    title: "Allergies & Sensitivities",
     href: "/signup/steps/allergies-and-sensitivities",
     stepValue: "05",
     active: false,
@@ -58,7 +58,7 @@ export const signupSteps: SignupStep[] = [
   },
   {
     id: 7,
-    title: "Illness & recovery tendencies",
+    title: "Illness & Recovery Tendencies",
     href: "/signup/steps/illness-and-recovery-tendencies",
     stepValue: "07",
     active: false,
@@ -66,7 +66,7 @@ export const signupSteps: SignupStep[] = [
   },
   {
     id: 8,
-    title: "Your experience as a parent",
+    title: "Your Experience as a Parent",
     href: "/signup/steps/your-experience-as-a-parent",
     stepValue: "08",
     active: false,

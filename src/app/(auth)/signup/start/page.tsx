@@ -37,7 +37,7 @@ const SignupStartPage = () => {
             minutes.
           </Paragraph>
           <div className="flex justify-end">
-            <Button asChild>
+            <Button asChild className="px-5! py-3.5! text-base!">
               <Link href="/signup/steps/parent-information">Continue</Link>
             </Button>
           </div>
