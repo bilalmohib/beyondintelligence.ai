@@ -1,5 +1,11 @@
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { InfoIcon } from "@/components/icons";
 import { Paragraph } from "@/components/common/Typography";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
@@ -12,6 +18,7 @@ const SignupStepParentInformationPage = () => {
             <Input
               label="First Name*"
               required
+              type="text"
               id="first-name"
               placeholder="First Name"
               className="rounded-2xl"
@@ -23,6 +30,7 @@ const SignupStepParentInformationPage = () => {
             <Input
               label="Last Name*"
               required
+              type="text"
               id="last-name"
               placeholder="Last Name"
               className="rounded-2xl"
@@ -36,29 +44,24 @@ const SignupStepParentInformationPage = () => {
             We’ll use your name to speak with care, clarity, and respect —
             always as your child’s partner in protection.
           </Paragraph>
-          <div className="flex flex-row justify-center items-center gap-1.5">
-            <div>
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 11 11"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M11 5.5C11 2.46243 8.53757 0 5.5 0C2.46243 0 0 2.46243 0 5.5C0 8.53757 2.46243 11 5.5 11C8.53757 11 11 8.53757 11 5.5Z"
-                  fill="white"
-                />
-                <path
-                  d="M3.60229 4.21334C3.60229 3.97298 3.67947 3.72944 3.83381 3.48273C3.98815 3.23601 4.21335 3.03168 4.50941 2.86973C4.80549 2.70788 5.15087 2.62692 5.54556 2.62683C5.91238 2.62683 6.23626 2.69452 6.51719 2.8299C6.79812 2.96528 7.01511 3.14937 7.16816 3.38216C7.3187 3.60661 7.39867 3.87096 7.39779 4.14122C7.39779 4.35629 7.3541 4.54481 7.26673 4.70675C7.18483 4.8615 7.07989 5.0029 6.95551 5.12613C6.83534 5.24382 6.61965 5.44182 6.30842 5.72013C6.2357 5.78521 6.16665 5.85426 6.10157 5.92698C6.05662 5.9766 6.01776 6.03141 5.98584 6.09026C5.96131 6.13751 5.9416 6.1871 5.92701 6.23829C5.91306 6.28765 5.89218 6.3743 5.86436 6.49825C5.81627 6.76143 5.66573 6.893 5.41274 6.89296C5.35159 6.89454 5.29074 6.88394 5.23372 6.86179C5.17671 6.83964 5.12466 6.80637 5.08061 6.76393C4.99077 6.67799 4.94586 6.55021 4.94588 6.3806C4.94588 6.16807 4.97877 5.98402 5.04454 5.82845C5.10728 5.67754 5.19591 5.53875 5.30644 5.41834C5.446 5.27118 5.59294 5.13121 5.74669 4.99894C5.90861 4.85727 6.02565 4.75037 6.09781 4.67822C6.16945 4.60675 6.23075 4.52563 6.27996 4.43721C6.32918 4.34909 6.35468 4.2497 6.35395 4.14876C6.35544 4.05213 6.33603 3.95632 6.29706 3.86789C6.25809 3.77945 6.20047 3.70048 6.12815 3.63638C5.97756 3.49728 5.78336 3.4277 5.54556 3.42764C5.2672 3.42764 5.06226 3.49782 4.93072 3.63819C4.79918 3.77855 4.68783 3.9854 4.59668 4.25872C4.51064 4.54482 4.34744 4.68787 4.10709 4.68787C4.04017 4.68921 3.9737 4.67657 3.91194 4.65075C3.85017 4.62494 3.79448 4.58652 3.74841 4.53795C3.651 4.43796 3.60229 4.32976 3.60229 4.21334ZM5.45448 8.37313C5.30578 8.37523 5.16164 8.32177 5.05028 8.22321C4.93509 8.12329 4.87752 7.98349 4.87756 7.80381C4.87596 7.72884 4.88997 7.65435 4.91872 7.58508C4.94746 7.51582 4.99031 7.4533 5.04454 7.4015C5.0984 7.34813 5.16246 7.30617 5.23289 7.27812C5.30332 7.25007 5.37869 7.2365 5.45448 7.23822C5.52905 7.23714 5.60308 7.25103 5.67218 7.27907C5.74128 7.30712 5.80405 7.34874 5.85678 7.40148C5.9095 7.45422 5.95111 7.517 5.97913 7.58611C6.00716 7.65522 6.02103 7.72925 6.01993 7.80381C6.01993 7.98096 5.96299 8.12012 5.84911 8.2213C5.74156 8.32008 5.60051 8.37434 5.45448 8.37313Z"
-                  fill="#151641"
-                />
-              </svg>
+          <Tooltip>
+            <div className="flex flex-row justify-center items-center gap-1.5">
+              <div>
+                <TooltipTrigger asChild className="cursor-pointer">
+                  <InfoIcon className="text-white!" />
+                </TooltipTrigger>
+              </div>
+              <Paragraph className="text-white! text-xs! font-semibold">
+                See why this matters?
+              </Paragraph>
             </div>
-            <Paragraph className="text-white! text-xs! font-semibold">
-              See why this matters?
-            </Paragraph>
-          </div>
+            <TooltipContent>
+              <p className="text-white! dark:text-background! text-xs!">
+                We'll use your name to speak with care, clarity, and respect —
+                always as your child's partner in protection.
+              </p>
+            </TooltipContent>
+          </Tooltip>
         </div>
       </section>
 
@@ -67,6 +70,7 @@ const SignupStepParentInformationPage = () => {
           label="Email Address*"
           required
           id="email-address"
+          type="email"
           placeholder="Email Address"
           className="rounded-2xl"
           labelClassName="text-white!"
@@ -77,29 +81,24 @@ const SignupStepParentInformationPage = () => {
             Email lets Satori send longer-form insights that don’t fit into SMS
             — like seasonal guides and important updates.
           </Paragraph>
-          <div className="flex flex-row justify-center items-center gap-1.5">
-            <div>
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 11 11"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M11 5.5C11 2.46243 8.53757 0 5.5 0C2.46243 0 0 2.46243 0 5.5C0 8.53757 2.46243 11 5.5 11C8.53757 11 11 8.53757 11 5.5Z"
-                  fill="white"
-                />
-                <path
-                  d="M3.60229 4.21334C3.60229 3.97298 3.67947 3.72944 3.83381 3.48273C3.98815 3.23601 4.21335 3.03168 4.50941 2.86973C4.80549 2.70788 5.15087 2.62692 5.54556 2.62683C5.91238 2.62683 6.23626 2.69452 6.51719 2.8299C6.79812 2.96528 7.01511 3.14937 7.16816 3.38216C7.3187 3.60661 7.39867 3.87096 7.39779 4.14122C7.39779 4.35629 7.3541 4.54481 7.26673 4.70675C7.18483 4.8615 7.07989 5.0029 6.95551 5.12613C6.83534 5.24382 6.61965 5.44182 6.30842 5.72013C6.2357 5.78521 6.16665 5.85426 6.10157 5.92698C6.05662 5.9766 6.01776 6.03141 5.98584 6.09026C5.96131 6.13751 5.9416 6.1871 5.92701 6.23829C5.91306 6.28765 5.89218 6.3743 5.86436 6.49825C5.81627 6.76143 5.66573 6.893 5.41274 6.89296C5.35159 6.89454 5.29074 6.88394 5.23372 6.86179C5.17671 6.83964 5.12466 6.80637 5.08061 6.76393C4.99077 6.67799 4.94586 6.55021 4.94588 6.3806C4.94588 6.16807 4.97877 5.98402 5.04454 5.82845C5.10728 5.67754 5.19591 5.53875 5.30644 5.41834C5.446 5.27118 5.59294 5.13121 5.74669 4.99894C5.90861 4.85727 6.02565 4.75037 6.09781 4.67822C6.16945 4.60675 6.23075 4.52563 6.27996 4.43721C6.32918 4.34909 6.35468 4.2497 6.35395 4.14876C6.35544 4.05213 6.33603 3.95632 6.29706 3.86789C6.25809 3.77945 6.20047 3.70048 6.12815 3.63638C5.97756 3.49728 5.78336 3.4277 5.54556 3.42764C5.2672 3.42764 5.06226 3.49782 4.93072 3.63819C4.79918 3.77855 4.68783 3.9854 4.59668 4.25872C4.51064 4.54482 4.34744 4.68787 4.10709 4.68787C4.04017 4.68921 3.9737 4.67657 3.91194 4.65075C3.85017 4.62494 3.79448 4.58652 3.74841 4.53795C3.651 4.43796 3.60229 4.32976 3.60229 4.21334ZM5.45448 8.37313C5.30578 8.37523 5.16164 8.32177 5.05028 8.22321C4.93509 8.12329 4.87752 7.98349 4.87756 7.80381C4.87596 7.72884 4.88997 7.65435 4.91872 7.58508C4.94746 7.51582 4.99031 7.4533 5.04454 7.4015C5.0984 7.34813 5.16246 7.30617 5.23289 7.27812C5.30332 7.25007 5.37869 7.2365 5.45448 7.23822C5.52905 7.23714 5.60308 7.25103 5.67218 7.27907C5.74128 7.30712 5.80405 7.34874 5.85678 7.40148C5.9095 7.45422 5.95111 7.517 5.97913 7.58611C6.00716 7.65522 6.02103 7.72925 6.01993 7.80381C6.01993 7.98096 5.96299 8.12012 5.84911 8.2213C5.74156 8.32008 5.60051 8.37434 5.45448 8.37313Z"
-                  fill="#151641"
-                />
-              </svg>
+          <Tooltip>
+            <div className="flex flex-row justify-center items-center gap-1.5">
+              <div>
+                <TooltipTrigger asChild className="cursor-pointer">
+                  <InfoIcon className="text-white!" />
+                </TooltipTrigger>
+              </div>
+              <Paragraph className="text-white! text-xs! font-semibold">
+                See why this matters?
+              </Paragraph>
             </div>
-            <Paragraph className="text-white! text-xs! font-semibold">
-              See why this matters?
-            </Paragraph>
-          </div>
+            <TooltipContent>
+              <p className="text-white! dark:text-background! text-xs!">
+                Email lets Satori send longer-form insights that don't fit into
+                SMS — like seasonal guides and important updates.
+              </p>
+            </TooltipContent>
+          </Tooltip>
         </div>
       </section>
 
@@ -108,6 +107,7 @@ const SignupStepParentInformationPage = () => {
           label="Parent Phone*"
           required
           id="parent-phone"
+          type="tel"
           placeholder="Parent Phone"
           className="rounded-2xl"
           labelClassName="text-white!"
@@ -118,29 +118,24 @@ const SignupStepParentInformationPage = () => {
             Your phone is your secure login and the channel Satori uses to
             protect your child in real time.
           </Paragraph>
-          <div className="flex flex-row justify-center items-center gap-1.5">
-            <div>
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 11 11"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M11 5.5C11 2.46243 8.53757 0 5.5 0C2.46243 0 0 2.46243 0 5.5C0 8.53757 2.46243 11 5.5 11C8.53757 11 11 8.53757 11 5.5Z"
-                  fill="white"
-                />
-                <path
-                  d="M3.60229 4.21334C3.60229 3.97298 3.67947 3.72944 3.83381 3.48273C3.98815 3.23601 4.21335 3.03168 4.50941 2.86973C4.80549 2.70788 5.15087 2.62692 5.54556 2.62683C5.91238 2.62683 6.23626 2.69452 6.51719 2.8299C6.79812 2.96528 7.01511 3.14937 7.16816 3.38216C7.3187 3.60661 7.39867 3.87096 7.39779 4.14122C7.39779 4.35629 7.3541 4.54481 7.26673 4.70675C7.18483 4.8615 7.07989 5.0029 6.95551 5.12613C6.83534 5.24382 6.61965 5.44182 6.30842 5.72013C6.2357 5.78521 6.16665 5.85426 6.10157 5.92698C6.05662 5.9766 6.01776 6.03141 5.98584 6.09026C5.96131 6.13751 5.9416 6.1871 5.92701 6.23829C5.91306 6.28765 5.89218 6.3743 5.86436 6.49825C5.81627 6.76143 5.66573 6.893 5.41274 6.89296C5.35159 6.89454 5.29074 6.88394 5.23372 6.86179C5.17671 6.83964 5.12466 6.80637 5.08061 6.76393C4.99077 6.67799 4.94586 6.55021 4.94588 6.3806C4.94588 6.16807 4.97877 5.98402 5.04454 5.82845C5.10728 5.67754 5.19591 5.53875 5.30644 5.41834C5.446 5.27118 5.59294 5.13121 5.74669 4.99894C5.90861 4.85727 6.02565 4.75037 6.09781 4.67822C6.16945 4.60675 6.23075 4.52563 6.27996 4.43721C6.32918 4.34909 6.35468 4.2497 6.35395 4.14876C6.35544 4.05213 6.33603 3.95632 6.29706 3.86789C6.25809 3.77945 6.20047 3.70048 6.12815 3.63638C5.97756 3.49728 5.78336 3.4277 5.54556 3.42764C5.2672 3.42764 5.06226 3.49782 4.93072 3.63819C4.79918 3.77855 4.68783 3.9854 4.59668 4.25872C4.51064 4.54482 4.34744 4.68787 4.10709 4.68787C4.04017 4.68921 3.9737 4.67657 3.91194 4.65075C3.85017 4.62494 3.79448 4.58652 3.74841 4.53795C3.651 4.43796 3.60229 4.32976 3.60229 4.21334ZM5.45448 8.37313C5.30578 8.37523 5.16164 8.32177 5.05028 8.22321C4.93509 8.12329 4.87752 7.98349 4.87756 7.80381C4.87596 7.72884 4.88997 7.65435 4.91872 7.58508C4.94746 7.51582 4.99031 7.4533 5.04454 7.4015C5.0984 7.34813 5.16246 7.30617 5.23289 7.27812C5.30332 7.25007 5.37869 7.2365 5.45448 7.23822C5.52905 7.23714 5.60308 7.25103 5.67218 7.27907C5.74128 7.30712 5.80405 7.34874 5.85678 7.40148C5.9095 7.45422 5.95111 7.517 5.97913 7.58611C6.00716 7.65522 6.02103 7.72925 6.01993 7.80381C6.01993 7.98096 5.96299 8.12012 5.84911 8.2213C5.74156 8.32008 5.60051 8.37434 5.45448 8.37313Z"
-                  fill="#151641"
-                />
-              </svg>
+          <Tooltip>
+            <div className="flex flex-row justify-center items-center gap-1.5">
+              <div>
+                <TooltipTrigger asChild className="cursor-pointer">
+                  <InfoIcon className="text-white!" />
+                </TooltipTrigger>
+              </div>
+              <Paragraph className="text-white! text-xs! font-semibold">
+                See why this matters?
+              </Paragraph>
             </div>
-            <Paragraph className="text-white! text-xs! font-semibold">
-              See why this matters?
-            </Paragraph>
-          </div>
+            <TooltipContent>
+              <p className="text-white! dark:text-background! text-xs!">
+                Your phone is your secure login and the channel Satori uses to
+                protect your child in real time.
+              </p>
+            </TooltipContent>
+          </Tooltip>
         </div>
       </section>
 
@@ -173,29 +168,24 @@ const SignupStepParentInformationPage = () => {
             Satori sends life-simplifying guidance when environmental or
             meteorological conditions may affect your child’s breathing.
           </Paragraph>
-          <div className="flex flex-row justify-center items-center gap-1.5">
-            <div>
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 11 11"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M11 5.5C11 2.46243 8.53757 0 5.5 0C2.46243 0 0 2.46243 0 5.5C0 8.53757 2.46243 11 5.5 11C8.53757 11 11 8.53757 11 5.5Z"
-                  fill="white"
-                />
-                <path
-                  d="M3.60229 4.21334C3.60229 3.97298 3.67947 3.72944 3.83381 3.48273C3.98815 3.23601 4.21335 3.03168 4.50941 2.86973C4.80549 2.70788 5.15087 2.62692 5.54556 2.62683C5.91238 2.62683 6.23626 2.69452 6.51719 2.8299C6.79812 2.96528 7.01511 3.14937 7.16816 3.38216C7.3187 3.60661 7.39867 3.87096 7.39779 4.14122C7.39779 4.35629 7.3541 4.54481 7.26673 4.70675C7.18483 4.8615 7.07989 5.0029 6.95551 5.12613C6.83534 5.24382 6.61965 5.44182 6.30842 5.72013C6.2357 5.78521 6.16665 5.85426 6.10157 5.92698C6.05662 5.9766 6.01776 6.03141 5.98584 6.09026C5.96131 6.13751 5.9416 6.1871 5.92701 6.23829C5.91306 6.28765 5.89218 6.3743 5.86436 6.49825C5.81627 6.76143 5.66573 6.893 5.41274 6.89296C5.35159 6.89454 5.29074 6.88394 5.23372 6.86179C5.17671 6.83964 5.12466 6.80637 5.08061 6.76393C4.99077 6.67799 4.94586 6.55021 4.94588 6.3806C4.94588 6.16807 4.97877 5.98402 5.04454 5.82845C5.10728 5.67754 5.19591 5.53875 5.30644 5.41834C5.446 5.27118 5.59294 5.13121 5.74669 4.99894C5.90861 4.85727 6.02565 4.75037 6.09781 4.67822C6.16945 4.60675 6.23075 4.52563 6.27996 4.43721C6.32918 4.34909 6.35468 4.2497 6.35395 4.14876C6.35544 4.05213 6.33603 3.95632 6.29706 3.86789C6.25809 3.77945 6.20047 3.70048 6.12815 3.63638C5.97756 3.49728 5.78336 3.4277 5.54556 3.42764C5.2672 3.42764 5.06226 3.49782 4.93072 3.63819C4.79918 3.77855 4.68783 3.9854 4.59668 4.25872C4.51064 4.54482 4.34744 4.68787 4.10709 4.68787C4.04017 4.68921 3.9737 4.67657 3.91194 4.65075C3.85017 4.62494 3.79448 4.58652 3.74841 4.53795C3.651 4.43796 3.60229 4.32976 3.60229 4.21334ZM5.45448 8.37313C5.30578 8.37523 5.16164 8.32177 5.05028 8.22321C4.93509 8.12329 4.87752 7.98349 4.87756 7.80381C4.87596 7.72884 4.88997 7.65435 4.91872 7.58508C4.94746 7.51582 4.99031 7.4533 5.04454 7.4015C5.0984 7.34813 5.16246 7.30617 5.23289 7.27812C5.30332 7.25007 5.37869 7.2365 5.45448 7.23822C5.52905 7.23714 5.60308 7.25103 5.67218 7.27907C5.74128 7.30712 5.80405 7.34874 5.85678 7.40148C5.9095 7.45422 5.95111 7.517 5.97913 7.58611C6.00716 7.65522 6.02103 7.72925 6.01993 7.80381C6.01993 7.98096 5.96299 8.12012 5.84911 8.2213C5.74156 8.32008 5.60051 8.37434 5.45448 8.37313Z"
-                  fill="#151641"
-                />
-              </svg>
+          <Tooltip>
+            <div className="flex flex-row justify-center items-center gap-1.5">
+              <div>
+                <TooltipTrigger asChild className="cursor-pointer">
+                  <InfoIcon className="text-white!" />
+                </TooltipTrigger>
+              </div>
+              <Paragraph className="text-white! text-xs! font-semibold">
+                See why this matters?
+              </Paragraph>
             </div>
-            <Paragraph className="text-white! text-xs! font-semibold">
-              See why this matters?
-            </Paragraph>
-          </div>
+            <TooltipContent>
+              <p className="text-white! dark:text-background! text-xs!">
+                Satori sends life-simplifying guidance when environmental or
+                meteorological conditions may affect your child's breathing.
+              </p>
+            </TooltipContent>
+          </Tooltip>
         </div>
       </section>
     </form>
