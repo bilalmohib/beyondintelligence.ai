@@ -18,6 +18,7 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
           <Combobox
             label="When do their symptoms tend to get worse?"
             labelClassName="text-white!"
+            id="when-do-their-symptoms-tend-to-get-worse"
             comboBoxClassName="px-5! py-4! h-14.25! rounded-2xl! text-base!"
             data={[
               {
@@ -56,21 +57,19 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
             Breathing has rhythms — and so does the environment.
           </Paragraph>
           <Tooltip>
-            <div className="flex flex-row justify-center items-center gap-1.5">
-              <div>
-                <TooltipTrigger asChild className="cursor-pointer">
-                  <InfoIcon className="text-white!" />
-                </TooltipTrigger>
+            <TooltipTrigger asChild>
+              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
               </div>
-              <Paragraph className="text-white! text-xs! font-semibold">
-                See why this matters?
-              </Paragraph>
-            </div>
+            </TooltipTrigger>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
                 Knowing whether mornings, afternoons, or evenings are harder for
                 your child lets Satori align environmental intelligence with
-                your child’s physiological windows, timing alerts around the
+                your child's physiological windows, timing alerts around the
                 moments when they need it most
               </p>
             </TooltipContent>
@@ -82,6 +81,7 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
           <MultiSelect
             label="What usually triggers their breathing symptoms?"
             labelClassName="text-white!"
+            id="what-usually-triggers-their-breathing-symptoms"
             multiSelectClassName="px-5! py-3! h-auto! min-h-14.25! rounded-2xl! text-base!"
             data={[
               {
@@ -140,16 +140,14 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
             personalize guidance more precisely.
           </Paragraph>
           <Tooltip>
-            <div className="flex flex-row justify-center items-center gap-1.5">
-              <div>
-                <TooltipTrigger asChild className="cursor-pointer">
-                  <InfoIcon className="text-white!" />
-                </TooltipTrigger>
+            <TooltipTrigger asChild>
+              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
               </div>
-              <Paragraph className="text-white! text-xs! font-semibold">
-                See why this matters?
-              </Paragraph>
-            </div>
+            </TooltipTrigger>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
                 Satori uses an internal causal model of how pollution, weather,
