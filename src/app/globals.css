@@ -59,6 +59,7 @@
   --color-input-border-disabled: #E5E7EB;
   --color-input-border-error: #EF4444;
   --color-input-label-disabled: #9CA3AF;
+  --color-multi-select-selected-item-bg: #232562;
   
   /* Input Shadows */
   --shadow-input-focus: 0px 0px 0px 4px #E1E1FEB2;
