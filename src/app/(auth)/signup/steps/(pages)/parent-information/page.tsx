@@ -57,8 +57,10 @@ const SignupStepParentInformationPage = () => {
             </div>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
-                We'll use your name to speak with care, clarity, and respect —
-                always as your child's partner in protection.
+                Using your name ensures Satori speaks directly to you as the
+                parent, especially during moments when guidance needs to feel
+                steady, personal, and relevant to your family — not generic or
+                broadcast to others.
               </p>
             </TooltipContent>
           </Tooltip>
@@ -94,8 +96,12 @@ const SignupStepParentInformationPage = () => {
             </div>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
-                Email lets Satori send longer-form insights that don't fit into
-                SMS — like seasonal guides and important updates.
+                Some of the most meaningful support for families — seasonal
+                asthma–allergy planning, environmental insight summaries, safety
+                updates, and improvements to your child’s personalized model —
+                simply cannot fit in a text message. Email provides a reliable
+                way for Satori to help you stay one step ahead throughout the
+                year. Your email is never sold or shared.
               </p>
             </TooltipContent>
           </Tooltip>
@@ -131,8 +137,11 @@ const SignupStepParentInformationPage = () => {
             </div>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
-                Your phone is your secure login and the channel Satori uses to
-                protect your child in real time.
+                Satori is a no-app, text-first, voice-ready asthma–allergy
+                guardian. Your phone becomes your identity, security key, and
+                conversation link. This is what enables instant guidance —
+                without apps, passwords, or friction — especially during moments
+                when the environment shifts quickly.
               </p>
             </TooltipContent>
           </Tooltip>
@@ -181,8 +190,11 @@ const SignupStepParentInformationPage = () => {
             </div>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
-                Satori sends life-simplifying guidance when environmental or
-                meteorological conditions may affect your child's breathing.
+                Satori monitors real-time environmental, weather, and
+                atmospheric patterns — including pollution spikes, heat-ozone
+                surges, cold-dry air, and air-trapping events. SMS consent
+                allows Satori to reach you instantly so you can make small but
+                powerful adjustments at the exact moments they matter most.
               </p>
             </TooltipContent>
           </Tooltip>

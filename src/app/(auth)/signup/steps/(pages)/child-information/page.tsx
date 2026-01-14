@@ -6,6 +6,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { InfoIcon } from "@/components/icons";
+import { Combobox } from "@/components/ui/combo-box";
 
 const SignupStepChildInformationPage = () => {
   return (
@@ -54,7 +55,10 @@ const SignupStepChildInformationPage = () => {
             </div>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
-                Your child is a living, breathing person — not a data point.
+                Using your child’s name helps Satori frame guidance around their
+                world — their routines, their patterns, their risks — making
+                alerts feel intuitive and actionable in the moments you need
+                them.
               </p>
             </TooltipContent>
           </Tooltip>
@@ -90,8 +94,10 @@ const SignupStepChildInformationPage = () => {
             </div>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
-                Age affects how sensitive a child's breathing is to cold, heat,
-                activity, and environmental shifts.
+                A 4-year-old and a 14-year-old interact with the{" "}
+                <b>same environment</b> very differently. Age allows Satori to
+                tailor its guidance and calibrate protection based on lung
+                development, daily activity, and vulnerability windows.
               </p>
             </TooltipContent>
           </Tooltip>
@@ -99,14 +105,30 @@ const SignupStepChildInformationPage = () => {
       </section>
 
       <section className="flex flex-col gap-3 w-full">
-        <Input
+        <Combobox
           label="How would you describe their asthma right now?"
-          required
-          id="asthma-description"
-          placeholder="How would you describe their asthma right now?"
-          className="rounded-2xl"
           labelClassName="text-white!"
-          inputClassName="px-5! py-4! h-14.25! rounded-2xl! text-base!"
+          required={true}
+          id="how-would-you-describe-their-asthma-right-now"
+          comboBoxClassName="px-5! py-4! h-14.25! rounded-2xl! text-base!"
+          data={[
+            {
+              label: "Mild",
+              value: "mild",
+            },
+            {
+              label: "Moderate",
+              value: "moderate",
+            },
+            {
+              label: "Severe",
+              value: "severe",
+            },
+            {
+              label: "Not Sure",
+              value: "not sure",
+            },
+          ]}
         />
         <div className="flex flex-row justify-between">
           <Paragraph className="text-white! text-xs!">
@@ -126,8 +148,10 @@ const SignupStepChildInformationPage = () => {
             </div>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
-                This helps Satori understand how fragile or stable your child's
-                breathing feels day to day.
+                This is not a medical diagnosis — it's your lived assessment.
+                Satori uses this as a <b>sensitivity signal</b>, adjusting the
+                tone and level of protection so the guidance matches the reality
+                you navigate each day.
               </p>
             </TooltipContent>
           </Tooltip>

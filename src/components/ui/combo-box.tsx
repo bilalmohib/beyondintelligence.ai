@@ -27,6 +27,7 @@ export interface ComboboxOption {
 export interface ComboboxProps {
   className?: string;
   label?: string;
+  required?: boolean;
   labelClassName?: string;
   id?: string;
   disabled?: boolean;
@@ -41,6 +42,7 @@ export interface ComboboxProps {
 
 function Combobox({
   className,
+  required,
   label,
   labelClassName,
   id,
@@ -101,6 +103,8 @@ function Combobox({
             variant="outline"
             role="combobox"
             aria-expanded={open}
+            aria-required={required}
+            disabled={disabled}
             className={cn(
               "w-full justify-between bg-white dark:bg-white hover:bg-white dark:hover:bg-white cursor-pointer [&_.ripple]:bg-black/10!",
               comboBoxClassName
