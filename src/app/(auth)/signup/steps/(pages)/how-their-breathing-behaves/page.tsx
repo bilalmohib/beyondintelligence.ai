@@ -76,6 +76,7 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
           </Tooltip>
         </div>
       </section>
+
       <section className="flex flex-col gap-3 w-full">
         <div className="flex-1">
           <MultiSelect
@@ -154,7 +155,138 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                 allergens, and meteorology interact with specific triggers. When
                 Satori understands your child's triggers, it can detect the
                 exact environmental patterns that activate them and offer
-                targeted, high-impact guidance instead of generic advice
+                targeted, high-impact guidance instead of generic advice.
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-3 w-full">
+        <div className="flex-1">
+          <MultiSelect
+            label="What symptoms do you see when their asthma acts up?"
+            labelClassName="text-white!"
+            id="what-symptoms-do-you-see-when-their-asthma-acts-up"
+            multiSelectClassName="px-5! py-3! h-auto! min-h-14.25! rounded-2xl! text-base!"
+            data={[
+              {
+                label: "Cough",
+                value: "cough",
+              },
+              {
+                label: "Wheeze",
+                value: "wheeze",
+              },
+              {
+                label: "Shortness of Breath",
+                value: "shortness of breath",
+              },
+              {
+                label: "Chest Tightness",
+                value: "chest tightness",
+              },
+              {
+                label: "Nighttime Cough",
+                value: "nighttime cough",
+              },
+              {
+                label: "Fast Breathing",
+                value: "fast breathing",
+              },
+              {
+                label: "Not Sure",
+                value: "not sure",
+              },
+            ]}
+            onValueChange={(value) => {
+              console.log(value);
+            }}
+          />
+        </div>
+        <div className="flex flex-row justify-between">
+          <Paragraph className="text-white! text-xs!">
+            Different symptoms signal different kinds of stress on the lungs.
+          </Paragraph>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-white! dark:text-background! text-xs!">
+                A child who coughs at night and a child who wheezes during
+                sports often need different environmental guidance. This helps
+                Satori tailor its explanations and suggestions so they match
+                what you actually observe.
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-3 w-full">
+        <div className="flex-1">
+          <Combobox
+            label="How much time do they spend outdoors?"
+            labelClassName="text-white!"
+            id="how-much-time-do-they-spend-outdoors"
+            comboBoxClassName="px-5! py-4! h-14.25! rounded-2xl! text-base!"
+            data={[
+              {
+                label: "Mostly Indoors",
+                value: "mostly indoors",
+              },
+              {
+                label: "Mostly Outdoors",
+                value: "late morning",
+              },
+              {
+                label: "Midday",
+                value: "midday",
+              },
+              {
+                label: "Late Afternoon",
+                value: "late afternoon",
+              },
+              {
+                label: "Evening",
+                value: "evening",
+              },
+              {
+                label: "Night",
+                value: "night",
+              },
+              {
+                label: "Not Sure",
+                value: "not sure",
+              },
+            ]}
+          />
+        </div>
+        <div className="flex flex-row justify-between">
+          <Paragraph className="text-white! text-xs!">
+            Breathing has rhythms — and so does the environment.
+          </Paragraph>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-white! dark:text-background! text-xs!">
+                Knowing whether mornings, afternoons, or evenings are harder for
+                your child lets Satori align environmental intelligence with
+                your child's physiological windows, timing alerts around the
+                moments when they need it most
               </p>
             </TooltipContent>
           </Tooltip>
