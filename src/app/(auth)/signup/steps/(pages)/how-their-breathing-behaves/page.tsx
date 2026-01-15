@@ -277,6 +277,199 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
           </Tooltip>
         </div>
       </section>
+
+      <section className="flex flex-col gap-3 w-full">
+        <div className="flex-1">
+          <Combobox
+            label="When are they usually most active?"
+            labelClassName="text-white!"
+            id="when-are-they-usually-most-active"
+            comboBoxClassName="px-5! py-4! h-14.25! rounded-2xl! text-base!"
+            data={[
+              {
+                label: "Early Morning",
+                value: "early morning",
+              },
+              {
+                label: "Late Morning",
+                value: "late morning",
+              },
+              {
+                label: "Midday",
+                value: "midday",
+              },
+              {
+                label: "Late Afternoon",
+                value: "late afternoon",
+              },
+              {
+                label: "Evening",
+                value: "evening",
+              },
+              {
+                label: "Night",
+                value: "night",
+              },
+              {
+                label: "Varies",
+                value: "varies",
+              },
+            ]}
+          />
+        </div>
+        <div className="flex flex-row justify-between">
+          <Paragraph className="text-white! text-xs!">
+            Activity increases airflow — and exposure to whatever is in the air.
+          </Paragraph>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-white! dark:text-background! text-xs!">
+                If their most intense activity coincides with ozone, cold-dry
+                air, or pollution peaks, Satori can recommend small timing
+                shifts that reduce stress on their breathing without limiting
+                the joy of movement.
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-3 w-full">
+        <div className="flex-1">
+          <Combobox
+            label="Do they play sports or run hard regularly?"
+            labelClassName="text-white!"
+            id="do-they-play-sports-or-run-hard-regularly"
+            comboBoxClassName="px-5! py-4! h-14.25! rounded-2xl! text-base!"
+            data={[
+              {
+                label: "Yes",
+                value: "yes",
+              },
+              {
+                label: "No",
+                value: "no",
+              },
+            ]}
+          />
+        </div>
+        <div className="flex flex-row justify-between">
+          <Paragraph className="text-white! text-xs!">
+            Exercise affects how environmental conditions interact with
+            sensitive lungs.
+          </Paragraph>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-white! dark:text-background! text-xs!">
+                Sports are wonderful — but exercise plus harsh air can amplify
+                irritation. This lets Satori protect your child without asking
+                you to remove them from activities they love.
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-3 w-full">
+        <div className="flex-1">
+          <MultiSelect
+            label="What usually triggers their breathing symptoms?"
+            labelClassName="text-white!"
+            id="what-usually-triggers-their-breathing-symptoms"
+            multiSelectClassName="px-5! py-3! h-auto! min-h-14.25! rounded-2xl! text-base!"
+            data={[
+              {
+                label: "Exercise",
+                value: "exercise",
+              },
+              {
+                label: "Cold Air",
+                value: "cold air",
+              },
+              {
+                label: "Dust",
+                value: "dust",
+              },
+              {
+                label: "Pollen",
+                value: "pollen",
+              },
+              {
+                label: "Mold",
+                value: "mold",
+              },
+              {
+                label: "Pets",
+                value: "pets",
+              },
+              {
+                label: "Smoke",
+                value: "smoke",
+              },
+              {
+                label: "Strong Smells",
+                value: "strong smells",
+              },
+              {
+                label: "Infections",
+                value: "infections",
+              },
+              {
+                label: "Weather Changes",
+                value: "weather changes",
+              },
+              {
+                label: "Not Sure",
+                value: "not sure",
+              },
+            ]}
+            onValueChange={(value) => {
+              console.log(value);
+            }}
+          />
+        </div>
+        <div className="flex flex-row justify-between">
+          <Paragraph className="text-white! text-xs!">
+            Every child has unique triggers — knowing them helps Satori
+            personalize guidance more precisely.
+          </Paragraph>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-white! dark:text-background! text-xs!">
+                Satori uses an internal <b>causal model</b> of how pollution,
+                weather, allergens, and meteorology interact with specific
+                triggers. When Satori understands your child's triggers, it can
+                detect the exact environmental patterns that activate them and
+                offer targeted, high-impact guidance instead of generic advice.
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </section>
     </form>
   );
 };
