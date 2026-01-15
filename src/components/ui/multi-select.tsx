@@ -146,14 +146,21 @@ function MultiSelect({
                     }}
                   >
                     <span className="align-middle">{option.label}</span>
-                    <button
-                      type="button"
+                    <span
+                      role="button"
+                      tabIndex={0}
                       onClick={(e) => handleRemoveOption(option.value, e)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          handleRemoveOption(option.value, e as unknown as React.MouseEvent);
+                        }
+                      }}
                       className="flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
                       aria-label={`Remove ${option.label}`}
                     >
                       <X className="w-3.5 h-3.5 stroke-[2px]" />
-                    </button>
+                    </span>
                   </Badge>
                 ))
               ) : (

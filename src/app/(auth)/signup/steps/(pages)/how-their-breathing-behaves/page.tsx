@@ -151,11 +151,11 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
             </TooltipTrigger>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
-                Satori uses an internal causal model of how pollution, weather,
-                allergens, and meteorology interact with specific triggers. When
-                Satori understands your child's triggers, it can detect the
-                exact environmental patterns that activate them and offer
-                targeted, high-impact guidance instead of generic advice.
+                Satori uses an internal <b>causal model</b> of how pollution,
+                weather, allergens, and meteorology interact with specific
+                triggers. When Satori understands your child's triggers, it can
+                detect the exact environmental patterns that activate them and
+                offer targeted, high-impact guidance instead of generic advice.
               </p>
             </TooltipContent>
           </Tooltip>
@@ -242,35 +242,20 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                 value: "mostly indoors",
               },
               {
-                label: "Mostly Outdoors",
-                value: "late morning",
+                label: "Mixed",
+                value: "mixed",
               },
               {
-                label: "Midday",
-                value: "midday",
-              },
-              {
-                label: "Late Afternoon",
-                value: "late afternoon",
-              },
-              {
-                label: "Evening",
-                value: "evening",
-              },
-              {
-                label: "Night",
-                value: "night",
-              },
-              {
-                label: "Not Sure",
-                value: "not sure",
+                label: "Outdoors A Lot",
+                value: "outdoors a lot",
               },
             ]}
           />
         </div>
         <div className="flex flex-row justify-between">
           <Paragraph className="text-white! text-xs!">
-            Breathing has rhythms — and so does the environment.
+            Outdoor time changes how strongly environmental conditions affect
+            your child.
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -283,10 +268,10 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
             </TooltipTrigger>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
-                Knowing whether mornings, afternoons, or evenings are harder for
-                your child lets Satori align environmental intelligence with
-                your child's physiological windows, timing alerts around the
-                moments when they need it most
+                Kids who spend many hours outside are “inside the air” Satori
+                interprets, while indoor-heavy routines shift focus to dust,
+                humidity, and household triggers. This determines how Satori
+                balances outdoor vs. indoor guidance.
               </p>
             </TooltipContent>
           </Tooltip>
