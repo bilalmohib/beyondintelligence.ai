@@ -140,7 +140,7 @@ function MultiSelect({
                 selectedOptions.map((option) => (
                   <Badge
                     key={option.value}
-                    className="bg-multi-select-selected-item-bg text-white border-0 rounded-[50px] h-[24px] px-[10px] py-[2px] gap-[8px] flex items-center font-inter font-normal text-sm leading-[20px] tracking-normal"
+                    className="bg-multi-select-selected-item-bg text-white border-0 rounded-[50px] h-[30px] px-[10px] py-[2px] gap-[8px] flex items-center font-inter font-normal text-sm leading-[20px] tracking-normal"
                     onClick={(e) => {
                       e.stopPropagation();
                     }}
@@ -153,7 +153,10 @@ function MultiSelect({
                       onKeyDown={(e) => {
                         if (e.key === "Enter" || e.key === " ") {
                           e.preventDefault();
-                          handleRemoveOption(option.value, e as unknown as React.MouseEvent);
+                          handleRemoveOption(
+                            option.value,
+                            e as unknown as React.MouseEvent
+                          );
                         }
                       }}
                       className="flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"

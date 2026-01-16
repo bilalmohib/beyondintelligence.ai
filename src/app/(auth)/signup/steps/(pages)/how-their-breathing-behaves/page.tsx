@@ -9,6 +9,8 @@ import { InfoIcon } from "@/components/icons";
 import { Paragraph } from "@/components/common/Typography";
 import { Combobox } from "@/components/ui/combo-box";
 import { MultiSelect } from "@/components/ui/multi-select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 const SignupStepHowTheirBreathingBehavesPage = () => {
   return (
@@ -342,7 +344,7 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
         </div>
       </section>
 
-      <section className="flex flex-col gap-3 w-full">
+      {/* <section className="flex flex-col gap-3 w-full">
         <div className="flex-1">
           <Combobox
             label="Do they play sports or run hard regularly?"
@@ -384,70 +386,35 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
             </TooltipContent>
           </Tooltip>
         </div>
-      </section>
-
+      </section> */}
       <section className="flex flex-col gap-3 w-full">
-        <div className="flex-1">
-          <MultiSelect
-            label="What usually triggers their breathing symptoms?"
-            labelClassName="text-white!"
-            id="what-usually-triggers-their-breathing-symptoms"
-            multiSelectClassName="px-5! py-3! h-auto! min-h-14.25! rounded-2xl! text-base!"
-            data={[
-              {
-                label: "Exercise",
-                value: "exercise",
-              },
-              {
-                label: "Cold Air",
-                value: "cold air",
-              },
-              {
-                label: "Dust",
-                value: "dust",
-              },
-              {
-                label: "Pollen",
-                value: "pollen",
-              },
-              {
-                label: "Mold",
-                value: "mold",
-              },
-              {
-                label: "Pets",
-                value: "pets",
-              },
-              {
-                label: "Smoke",
-                value: "smoke",
-              },
-              {
-                label: "Strong Smells",
-                value: "strong smells",
-              },
-              {
-                label: "Infections",
-                value: "infections",
-              },
-              {
-                label: "Weather Changes",
-                value: "weather changes",
-              },
-              {
-                label: "Not Sure",
-                value: "not sure",
-              },
-            ]}
-            onValueChange={(value) => {
-              console.log(value);
-            }}
-          />
-        </div>
+        <Label id="consent-to-receive-sms-alerts" className="text-white!">
+          Do they play sports or run hard regularly?
+        </Label>
+        <RadioGroup defaultValue="yes" className="flex flex-row gap-3">
+          <Label
+            htmlFor="yes"
+            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+          >
+            <RadioGroupItem value="yes" id="yes" />
+            <span className="text-radio-text dark:text-radio-text text-lg leading-7 font-normal">
+              Yes
+            </span>
+          </Label>
+          <Label
+            htmlFor="no"
+            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+          >
+            <RadioGroupItem value="no" id="no" />
+            <span className="text-radio-text text-lg leading-7 font-normal">
+              No
+            </span>
+          </Label>
+        </RadioGroup>
         <div className="flex flex-row justify-between">
           <Paragraph className="text-white! text-xs!">
-            Every child has unique triggers — knowing them helps Satori
-            personalize guidance more precisely.
+            Exercise affects how environmental conditions interact with
+            sensitive lungs.
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -460,11 +427,76 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
             </TooltipTrigger>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
-                Satori uses an internal <b>causal model</b> of how pollution,
-                weather, allergens, and meteorology interact with specific
-                triggers. When Satori understands your child's triggers, it can
-                detect the exact environmental patterns that activate them and
-                offer targeted, high-impact guidance instead of generic advice.
+                Sports are wonderful — but exercise plus harsh air can amplify
+                irritation. This lets Satori protect your child without asking
+                you to remove them from activities they love.
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-3 w-full">
+        <div className="flex-1">
+          <MultiSelect
+            label="When are you usually away from your child?"
+            labelClassName="text-white!"
+            id="when-are-you-usually-away-from-your-child"
+            multiSelectClassName="px-5! py-3! h-auto! min-h-14.25! rounded-2xl! text-base!"
+            data={[
+              {
+                label: "Early Morning",
+                value: "early morning",
+              },
+              {
+                label: "Late Morning",
+                value: "late morning",
+              },
+              {
+                label: "Midday",
+                value: "midday",
+              },
+              {
+                label: "Late Afternoon",
+                value: "late afternoon",
+              },
+              {
+                label: "Evening",
+                value: "evening",
+              },
+              {
+                label: "Night",
+                value: "night",
+              },
+              {
+                label: "Varies",
+                value: "varies",
+              },
+            ]}
+            onValueChange={(value) => {
+              console.log(value);
+            }}
+          />
+        </div>
+        <div className="flex flex-row justify-between">
+          <Paragraph className="text-white! text-xs!">
+            Many parents worry most when they’re not physically present.
+          </Paragraph>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-white! dark:text-background! text-xs!">
+                Knowing when you’re typically away lets Satori time its most
+                protective guidance around the hours when your child may be more
+                exposed — and you’re less able to observe them directly. This
+                creates a safety net that works even when you can’t be there.
               </p>
             </TooltipContent>
           </Tooltip>
