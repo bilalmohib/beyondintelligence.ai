@@ -344,60 +344,17 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
         </div>
       </section>
 
-      {/* <section className="flex flex-col gap-3 w-full">
-        <div className="flex-1">
-          <Combobox
-            label="Do they play sports or run hard regularly?"
-            labelClassName="text-white!"
-            id="do-they-play-sports-or-run-hard-regularly"
-            comboBoxClassName="px-5! py-4! h-14.25! rounded-2xl! text-base!"
-            data={[
-              {
-                label: "Yes",
-                value: "yes",
-              },
-              {
-                label: "No",
-                value: "no",
-              },
-            ]}
-          />
-        </div>
-        <div className="flex flex-row justify-between">
-          <Paragraph className="text-white! text-xs!">
-            Exercise affects how environmental conditions interact with
-            sensitive lungs.
-          </Paragraph>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
-                <InfoIcon className="text-white!" />
-                <Paragraph className="text-white! text-xs! font-semibold">
-                  See why this matters?
-                </Paragraph>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Sports are wonderful — but exercise plus harsh air can amplify
-                irritation. This lets Satori protect your child without asking
-                you to remove them from activities they love.
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </div>
-      </section> */}
       <section className="flex flex-col gap-3 w-full">
-        <Label id="consent-to-receive-sms-alerts" className="text-white!">
+        <Label id="do-they-play-sports-or-run-hard-regularly" className="text-white!">
           Do they play sports or run hard regularly?
         </Label>
-        <RadioGroup defaultValue="yes" className="flex flex-row gap-3">
+        <RadioGroup defaultValue="yes" id="do-they-play-sports-or-run-hard-regularly" className="flex flex-row gap-3">
           <Label
             htmlFor="yes"
             className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
           >
             <RadioGroupItem value="yes" id="yes" />
-            <span className="text-radio-text dark:text-radio-text text-lg leading-7 font-normal">
+            <span className="text-radio-text text-lg leading-7 font-normal">
               Yes
             </span>
           </Label>
