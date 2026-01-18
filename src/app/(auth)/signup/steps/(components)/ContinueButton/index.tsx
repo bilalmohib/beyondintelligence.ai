@@ -3,10 +3,12 @@
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { signupSteps } from "@/app/(auth)/signup/steps/(components)/SignupStepper/data";
+import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
 
 const ContinueButton = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const { validateCurrentForm } = useSignupForm();
 
   const currentStepIndex = signupSteps.findIndex(
     (step) => step.href === pathname
@@ -14,7 +16,13 @@ const ContinueButton = () => {
 
   const isLastStep = currentStepIndex === signupSteps.length - 1;
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
+    const isValid = await validateCurrentForm();
+    
+    if (!isValid) {
+      return;
+    }
+
     if (isLastStep) {
       router.push("/signup/success");
       return;

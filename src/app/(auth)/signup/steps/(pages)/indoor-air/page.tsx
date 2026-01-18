@@ -1,36 +1,115 @@
+"use client";
+
+import { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { InfoIcon } from "@/components/icons";
 import { Label } from "@/components/ui/label";
 import { Paragraph } from "@/components/common/Typography";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
+
+const indoorAirSchema = z.object({
+  hasPets: z.enum(["yes", "no"], {
+    message: "Please select an option",
+  }),
+  homeFeelsHumid: z.enum(["yes", "no"], {
+    message: "Please select an option",
+  }),
+  waterLeaksOrMustySmells: z.enum(["yes", "no"], {
+    message: "Please select an option",
+  }),
+  usesGasStove: z.enum(["yes", "no"], {
+    message: "Please select an option",
+  }),
+});
+
+type IndoorAirFormData = z.infer<typeof indoorAirSchema>;
 
 const SignupStepIndoorAirPage = () => {
+  const { registerForm, unregisterForm } = useSignupForm();
+  
+  const {
+    handleSubmit,
+    control,
+    trigger,
+    formState: { errors },
+  } = useForm<IndoorAirFormData>({
+    resolver: zodResolver(indoorAirSchema),
+    defaultValues: {
+      hasPets: undefined,
+      homeFeelsHumid: undefined,
+      waterLeaksOrMustySmells: undefined,
+      usesGasStove: undefined,
+    },
+    mode: "onChange",
+  });
+
+  useEffect(() => {
+    registerForm(async () => {
+      const isValid = await trigger();
+      return isValid;
+    });
+    return () => unregisterForm();
+  }, [registerForm, unregisterForm, trigger]);
+
+  const onSubmit = (data: IndoorAirFormData) => {
+    console.log("Form submitted:", data);
+  };
+
   return (
-    <form className="flex flex-col gap-10">
+    <form 
+      className="flex flex-col gap-10" 
+      onSubmit={handleSubmit(onSubmit)}
+      aria-label="Indoor Air Form"
+    >
       <section className="flex flex-col gap-3 w-full">
         <Label id="do-you-have-pets" className="text-white!">
           Do you have pets?
         </Label>
-        <RadioGroup defaultValue="yes" id="do-you-have-pets" className="flex flex-row gap-3">
-          <Label
-            htmlFor="do-you-have-pets-yes"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="yes" id="do-you-have-pets-yes" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              Yes
-            </span>
-          </Label>
-          <Label
-            htmlFor="do-you-have-pets-no"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="no" id="do-you-have-pets-no" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              No
-            </span>
-          </Label>
-        </RadioGroup>
+        <Controller
+          name="hasPets"
+          control={control}
+          render={({ field }) => (
+            <>
+              <RadioGroup
+                value={field.value}
+                onValueChange={field.onChange}
+                id="do-you-have-pets"
+                className="flex flex-row gap-3"
+                aria-label="Do you have pets?"
+                aria-required="true"
+                aria-invalid={errors.hasPets ? "true" : "false"}
+              >
+                <Label
+                  htmlFor="do-you-have-pets-yes"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="yes" id="do-you-have-pets-yes" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    Yes
+                  </span>
+                </Label>
+                <Label
+                  htmlFor="do-you-have-pets-no"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="no" id="do-you-have-pets-no" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    No
+                  </span>
+                </Label>
+              </RadioGroup>
+              {errors.hasPets && (
+                <p id="has-pets-error" className="text-sm text-red-500 mt-1 font-medium" role="alert">
+                  {errors.hasPets.message}
+                </p>
+              )}
+            </>
+          )}
+        />
         <div className="flex flex-row justify-between">
           <Paragraph className="text-white! text-xs!">
             Pets are part of the family — and sometimes part of the breathing story.
@@ -57,26 +136,47 @@ const SignupStepIndoorAirPage = () => {
         <Label id="does-your-home-ever-feel-humid-musty-or-damp" className="text-white!">
           Does your home ever feel humid, musty, or damp?
         </Label>
-        <RadioGroup defaultValue="yes" id="does-your-home-ever-feel-humid-musty-or-damp" className="flex flex-row gap-3">
-          <Label
-            htmlFor="does-your-home-ever-feel-humid-musty-or-damp-yes"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="yes" id="does-your-home-ever-feel-humid-musty-or-damp-yes" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              Yes
-            </span>
-          </Label>
-          <Label
-            htmlFor="does-your-home-ever-feel-humid-musty-or-damp-no"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="no" id="does-your-home-ever-feel-humid-musty-or-damp-no" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              No
-            </span>
-          </Label>
-        </RadioGroup>
+        <Controller
+          name="homeFeelsHumid"
+          control={control}
+          render={({ field }) => (
+            <>
+              <RadioGroup
+                value={field.value}
+                onValueChange={field.onChange}
+                id="does-your-home-ever-feel-humid-musty-or-damp"
+                className="flex flex-row gap-3"
+                aria-label="Does your home ever feel humid, musty, or damp?"
+                aria-required="true"
+                aria-invalid={errors.homeFeelsHumid ? "true" : "false"}
+              >
+                <Label
+                  htmlFor="does-your-home-ever-feel-humid-musty-or-damp-yes"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="yes" id="does-your-home-ever-feel-humid-musty-or-damp-yes" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    Yes
+                  </span>
+                </Label>
+                <Label
+                  htmlFor="does-your-home-ever-feel-humid-musty-or-damp-no"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="no" id="does-your-home-ever-feel-humid-musty-or-damp-no" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    No
+                  </span>
+                </Label>
+              </RadioGroup>
+              {errors.homeFeelsHumid && (
+                <p id="home-feels-humid-error" className="text-sm text-red-500 mt-1 font-medium" role="alert">
+                  {errors.homeFeelsHumid.message}
+                </p>
+              )}
+            </>
+          )}
+        />
         <div className="flex flex-row justify-between">
           <Paragraph className="text-white! text-xs!">
             Humidity and dampness can increase hidden breathing triggers.
@@ -103,26 +203,47 @@ const SignupStepIndoorAirPage = () => {
         <Label id="have-you-noticed-water-leaks-or-musty-smells" className="text-white!">
           Have you noticed water leaks or musty smells?
         </Label>
-        <RadioGroup defaultValue="yes" id="have-you-noticed-water-leaks-or-musty-smells" className="flex flex-row gap-3">
-          <Label
-            htmlFor="have-you-noticed-water-leaks-or-musty-smells-yes"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="yes" id="have-you-noticed-water-leaks-or-musty-smells-yes" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              Yes
-            </span>
-          </Label>
-          <Label
-            htmlFor="have-you-noticed-water-leaks-or-musty-smells-no"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="no" id="have-you-noticed-water-leaks-or-musty-smells-no" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              No
-            </span>
-          </Label>
-        </RadioGroup>
+        <Controller
+          name="waterLeaksOrMustySmells"
+          control={control}
+          render={({ field }) => (
+            <>
+              <RadioGroup
+                value={field.value}
+                onValueChange={field.onChange}
+                id="have-you-noticed-water-leaks-or-musty-smells"
+                className="flex flex-row gap-3"
+                aria-label="Have you noticed water leaks or musty smells?"
+                aria-required="true"
+                aria-invalid={errors.waterLeaksOrMustySmells ? "true" : "false"}
+              >
+                <Label
+                  htmlFor="have-you-noticed-water-leaks-or-musty-smells-yes"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="yes" id="have-you-noticed-water-leaks-or-musty-smells-yes" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    Yes
+                  </span>
+                </Label>
+                <Label
+                  htmlFor="have-you-noticed-water-leaks-or-musty-smells-no"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="no" id="have-you-noticed-water-leaks-or-musty-smells-no" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    No
+                  </span>
+                </Label>
+              </RadioGroup>
+              {errors.waterLeaksOrMustySmells && (
+                <p id="water-leaks-error" className="text-sm text-red-500 mt-1 font-medium" role="alert">
+                  {errors.waterLeaksOrMustySmells.message}
+                </p>
+              )}
+            </>
+          )}
+        />
         <div className="flex flex-row justify-between">
           <Paragraph className="text-white! text-xs!">
             Leaks and musty odors often signal hidden mold growth.
@@ -149,26 +270,47 @@ const SignupStepIndoorAirPage = () => {
         <Label id="do-you-primarily-cook-with-a-gas-stove" className="text-white!">
           Do you primarily cook with a gas stove?
         </Label>
-        <RadioGroup defaultValue="yes" id="do-you-primarily-cook-with-a-gas-stove" className="flex flex-row gap-3">
-          <Label
-            htmlFor="do-you-primarily-cook-with-a-gas-stove-yes"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="yes" id="do-you-primarily-cook-with-a-gas-stove-yes" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              Yes
-            </span>
-          </Label>
-          <Label
-            htmlFor="do-you-primarily-cook-with-a-gas-stove-no"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="no" id="do-you-primarily-cook-with-a-gas-stove-no" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              No
-            </span>
-          </Label>
-        </RadioGroup>
+        <Controller
+          name="usesGasStove"
+          control={control}
+          render={({ field }) => (
+            <>
+              <RadioGroup
+                value={field.value}
+                onValueChange={field.onChange}
+                id="do-you-primarily-cook-with-a-gas-stove"
+                className="flex flex-row gap-3"
+                aria-label="Do you primarily cook with a gas stove?"
+                aria-required="true"
+                aria-invalid={errors.usesGasStove ? "true" : "false"}
+              >
+                <Label
+                  htmlFor="do-you-primarily-cook-with-a-gas-stove-yes"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="yes" id="do-you-primarily-cook-with-a-gas-stove-yes" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    Yes
+                  </span>
+                </Label>
+                <Label
+                  htmlFor="do-you-primarily-cook-with-a-gas-stove-no"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="no" id="do-you-primarily-cook-with-a-gas-stove-no" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    No
+                  </span>
+                </Label>
+              </RadioGroup>
+              {errors.usesGasStove && (
+                <p id="uses-gas-stove-error" className="text-sm text-red-500 mt-1 font-medium" role="alert">
+                  {errors.usesGasStove.message}
+                </p>
+              )}
+            </>
+          )}
+        />
         <div className="flex flex-row justify-between">
           <Paragraph className="text-white! text-xs!">
             Gas stoves release irritants that can influence indoor breathing quality.

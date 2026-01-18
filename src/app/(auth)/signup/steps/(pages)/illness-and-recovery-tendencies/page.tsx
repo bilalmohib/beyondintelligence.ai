@@ -1,36 +1,107 @@
+"use client";
+
+import { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Label } from "@/components/ui/label";
 import { InfoIcon } from "@/components/icons";
 import { Paragraph } from "@/components/common/Typography";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
+
+const illnessAndRecoveryTendenciesSchema = z.object({
+  catchesColdsOften: z.enum(["yes", "no"], {
+    message: "Please select an option",
+  }),
+  usesGasStove: z.enum(["yes", "no"], {
+    message: "Please select an option",
+  }),
+});
+
+type IllnessAndRecoveryTendenciesFormData = z.infer<typeof illnessAndRecoveryTendenciesSchema>;
 
 const SignupStepIllnessAndRecoveryTendenciesPage = () => {
+  const { registerForm, unregisterForm } = useSignupForm();
+  
+  const {
+    handleSubmit,
+    control,
+    trigger,
+    formState: { errors },
+  } = useForm<IllnessAndRecoveryTendenciesFormData>({
+    resolver: zodResolver(illnessAndRecoveryTendenciesSchema),
+    defaultValues: {
+      catchesColdsOften: undefined,
+      usesGasStove: undefined,
+    },
+    mode: "onChange",
+  });
+
+  useEffect(() => {
+    registerForm(async () => {
+      const isValid = await trigger();
+      return isValid;
+    });
+    return () => unregisterForm();
+  }, [registerForm, unregisterForm, trigger]);
+
+  const onSubmit = (data: IllnessAndRecoveryTendenciesFormData) => {
+    console.log("Form submitted:", data);
+  };
+
   return (
-    <form className="flex flex-col gap-10">
+    <form 
+      className="flex flex-col gap-10" 
+      onSubmit={handleSubmit(onSubmit)}
+      aria-label="Illness and Recovery Tendencies Form"
+    >
       <section className="flex flex-col gap-3 w-full">
         <Label id="does-your-child-tend-to-catch-colds-or-respiratory-infections-often" className="text-white!">
           Does your child tend to catch colds or respiratory infections often?
         </Label>
-        <RadioGroup defaultValue="yes" id="does-your-child-tend-to-catch-colds-or-respiratory-infections-often" className="flex flex-row gap-3">
-          <Label
-            htmlFor="does-your-child-tend-to-catch-colds-or-respiratory-infections-often-yes"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="yes" id="does-your-child-tend-to-catch-colds-or-respiratory-infections-often-yes" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              Yes
-            </span>
-          </Label>
-          <Label
-            htmlFor="does-your-child-tend-to-catch-colds-or-respiratory-infections-often-no"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="no" id="does-your-child-tend-to-catch-colds-or-respiratory-infections-often-no" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              No
-            </span>
-          </Label>
-        </RadioGroup>
+        <Controller
+          name="catchesColdsOften"
+          control={control}
+          render={({ field }) => (
+            <>
+              <RadioGroup
+                value={field.value}
+                onValueChange={field.onChange}
+                id="does-your-child-tend-to-catch-colds-or-respiratory-infections-often"
+                className="flex flex-row gap-3"
+                aria-label="Does your child tend to catch colds or respiratory infections often?"
+                aria-required="true"
+                aria-invalid={errors.catchesColdsOften ? "true" : "false"}
+              >
+                <Label
+                  htmlFor="does-your-child-tend-to-catch-colds-or-respiratory-infections-often-yes"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="yes" id="does-your-child-tend-to-catch-colds-or-respiratory-infections-often-yes" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    Yes
+                  </span>
+                </Label>
+                <Label
+                  htmlFor="does-your-child-tend-to-catch-colds-or-respiratory-infections-often-no"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="no" id="does-your-child-tend-to-catch-colds-or-respiratory-infections-often-no" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    No
+                  </span>
+                </Label>
+              </RadioGroup>
+              {errors.catchesColdsOften && (
+                <p id="catches-colds-error" className="text-sm text-red-500 mt-1 font-medium" role="alert">
+                  {errors.catchesColdsOften.message}
+                </p>
+              )}
+            </>
+          )}
+        />
         <div className="flex flex-row justify-between">
           <Paragraph className="text-white! text-xs!">
             Some children recover quickly, while others stay sensitive longer after illness.
@@ -46,7 +117,7 @@ const SignupStepIllnessAndRecoveryTendenciesPage = () => {
             </TooltipTrigger>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
-                If your child gets sick frequently, Satori treats their lungs as more likely to be in a “sensitive state” throughout the year. This influences how protective guidance is timed around difficult weather or air events.
+                If your child gets sick frequently, Satori treats their lungs as more likely to be in a "sensitive state" throughout the year. This influences how protective guidance is timed around difficult weather or air events.
               </p>
             </TooltipContent>
           </Tooltip>
@@ -57,26 +128,47 @@ const SignupStepIllnessAndRecoveryTendenciesPage = () => {
         <Label id="do-you-primarily-cook-with-a-gas-stove" className="text-white!">
           Do you primarily cook with a gas stove?
         </Label>
-        <RadioGroup defaultValue="yes" id="do-you-primarily-cook-with-a-gas-stove" className="flex flex-row gap-3">
-          <Label
-            htmlFor="do-you-primarily-cook-with-a-gas-stove-yes"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="yes" id="do-you-primarily-cook-with-a-gas-stove-yes" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              Yes
-            </span>
-          </Label>
-          <Label
-            htmlFor="do-you-primarily-cook-with-a-gas-stove-no"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="no" id="do-you-primarily-cook-with-a-gas-stove-no" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              No
-            </span>
-          </Label>
-        </RadioGroup>
+        <Controller
+          name="usesGasStove"
+          control={control}
+          render={({ field }) => (
+            <>
+              <RadioGroup
+                value={field.value}
+                onValueChange={field.onChange}
+                id="do-you-primarily-cook-with-a-gas-stove"
+                className="flex flex-row gap-3"
+                aria-label="Do you primarily cook with a gas stove?"
+                aria-required="true"
+                aria-invalid={errors.usesGasStove ? "true" : "false"}
+              >
+                <Label
+                  htmlFor="do-you-primarily-cook-with-a-gas-stove-yes"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="yes" id="do-you-primarily-cook-with-a-gas-stove-yes" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    Yes
+                  </span>
+                </Label>
+                <Label
+                  htmlFor="do-you-primarily-cook-with-a-gas-stove-no"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="no" id="do-you-primarily-cook-with-a-gas-stove-no" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    No
+                  </span>
+                </Label>
+              </RadioGroup>
+              {errors.usesGasStove && (
+                <p id="uses-gas-stove-error" className="text-sm text-red-500 mt-1 font-medium" role="alert">
+                  {errors.usesGasStove.message}
+                </p>
+              )}
+            </>
+          )}
+        />
         <div className="flex flex-row justify-between">
           <Paragraph className="text-white! text-xs!">
             Gas stoves release irritants that can influence indoor breathing quality.

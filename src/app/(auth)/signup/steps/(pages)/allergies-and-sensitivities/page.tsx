@@ -1,48 +1,115 @@
 "use client";
 
+import { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Label } from "@/components/ui/label";
 import { InfoIcon } from "@/components/icons";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { Paragraph } from "@/components/common/Typography";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
+
+const allergiesAndSensitivitiesSchema = z.object({
+  hasAllergies: z.enum(["yes", "no", "not-sure"], {
+    message: "Please select an option",
+  }),
+  allergies: z.array(z.string()).min(1, "Please select at least one option"),
+});
+
+type AllergiesAndSensitivitiesFormData = z.infer<typeof allergiesAndSensitivitiesSchema>;
 
 const SignupStepAllergiesAndSensitivitiesPage = () => {
+  const { registerForm, unregisterForm } = useSignupForm();
+  
+  const {
+    handleSubmit,
+    control,
+    trigger,
+    formState: { errors },
+  } = useForm<AllergiesAndSensitivitiesFormData>({
+    resolver: zodResolver(allergiesAndSensitivitiesSchema),
+    defaultValues: {
+      hasAllergies: undefined,
+      allergies: [],
+    },
+    mode: "onChange",
+  });
+
+  useEffect(() => {
+    registerForm(async () => {
+      const isValid = await trigger();
+      return isValid;
+    });
+    return () => unregisterForm();
+  }, [registerForm, unregisterForm, trigger]);
+
+  const onSubmit = (data: AllergiesAndSensitivitiesFormData) => {
+    console.log("Form submitted:", data);
+  };
+
   return (
-    <form className="flex flex-col gap-10">
+    <form 
+      className="flex flex-col gap-10" 
+      onSubmit={handleSubmit(onSubmit)}
+      aria-label="Allergies and Sensitivities Form"
+    >
       <section className="flex flex-col gap-3 w-full">
         <Label id="has-your-child-been-diagnosed-with-allergies" className="text-white!">
           Has your child been diagnosed with allergies?
         </Label>
-        <RadioGroup defaultValue="yes" id="has-your-child-been-diagnosed-with-allergies" className="flex flex-row gap-3">
-          <Label
-            htmlFor="has-your-child-been-diagnosed-with-allergies-yes"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="yes" id="has-your-child-been-diagnosed-with-allergies-yes" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              Yes
-            </span>
-          </Label>
-          <Label
-            htmlFor="has-your-child-been-diagnosed-with-allergies-no"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="no" id="has-your-child-been-diagnosed-with-allergies-no" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              No
-            </span>
-          </Label>
-          <Label
-            htmlFor="has-your-child-been-diagnosed-with-allergies-not-sure"
-            className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
-          >
-            <RadioGroupItem value="not-sure" id="has-your-child-been-diagnosed-with-allergies-not-sure" />
-            <span className="text-radio-text text-lg leading-7 font-normal">
-              Not Sure
-            </span>
-          </Label>
-        </RadioGroup>
+        <Controller
+          name="hasAllergies"
+          control={control}
+          render={({ field }) => (
+            <>
+              <RadioGroup
+                value={field.value}
+                onValueChange={field.onChange}
+                id="has-your-child-been-diagnosed-with-allergies"
+                className="flex flex-row gap-3"
+                aria-label="Has your child been diagnosed with allergies?"
+                aria-required="true"
+                aria-invalid={errors.hasAllergies ? "true" : "false"}
+              >
+                <Label
+                  htmlFor="has-your-child-been-diagnosed-with-allergies-yes"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="yes" id="has-your-child-been-diagnosed-with-allergies-yes" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    Yes
+                  </span>
+                </Label>
+                <Label
+                  htmlFor="has-your-child-been-diagnosed-with-allergies-no"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="no" id="has-your-child-been-diagnosed-with-allergies-no" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    No
+                  </span>
+                </Label>
+                <Label
+                  htmlFor="has-your-child-been-diagnosed-with-allergies-not-sure"
+                  className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
+                >
+                  <RadioGroupItem value="not-sure" id="has-your-child-been-diagnosed-with-allergies-not-sure" />
+                  <span className="text-radio-text text-lg leading-7 font-normal">
+                    Not Sure
+                  </span>
+                </Label>
+              </RadioGroup>
+              {errors.hasAllergies && (
+                <p id="has-allergies-error" className="text-sm text-red-500 mt-1 font-medium" role="alert">
+                  {errors.hasAllergies.message}
+                </p>
+              )}
+            </>
+          )}
+        />
         <div className="flex flex-row justify-between">
           <Paragraph className="text-white! text-xs!">
             Allergies and asthma often amplify each other.
@@ -58,7 +125,7 @@ const SignupStepAllergiesAndSensitivitiesPage = () => {
             </TooltipTrigger>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
-                This helps Satori decide whether to treat allergens — like pollen, dust mites, mold, or pet dander — as major co-drivers of your child’s breathing patterns or to keep focus primarily on environmental triggers like cold air and pollution.
+                This helps Satori decide whether to treat allergens — like pollen, dust mites, mold, or pet dander — as major co-drivers of your child's breathing patterns or to keep focus primarily on environmental triggers like cold air and pollution.
               </p>
             </TooltipContent>
           </Tooltip>
@@ -67,36 +134,54 @@ const SignupStepAllergiesAndSensitivitiesPage = () => {
 
       <section className="flex flex-col gap-3 w-full">
         <div className="flex-1">
-          <MultiSelect
-            label="Which allergies do they have?"
-            labelClassName="text-white!"
-            id="which-allergies-do-they-have"
-            multiSelectClassName="px-5! py-3! h-auto! min-h-14.25! rounded-2xl! text-base!"
-            data={[
-              {
-                label: "Pollen",
-                value: "pollen"
-              },
-              {
-                label: "Dust Mites",
-                value: "dust mites"
-              },
-              {
-                label: "Pets",
-                value: "pets"
-              },
-              {
-                label: "Mold",
-                value: "mold"
-              },
-              {
-                label: "Other",
-                value: "other"
-              }
-            ]}
-            onValueChange={(value) => {
-              console.log(value);
-            }}
+          <Controller
+            name="allergies"
+            control={control}
+            render={({ field }) => (
+              <>
+                <MultiSelect
+                  label="Which allergies do they have?"
+                  labelClassName="text-white!"
+                  id="which-allergies-do-they-have"
+                  multiSelectClassName={`px-5! py-3! h-auto! min-h-14.25! rounded-2xl! text-base! ${
+                    errors.allergies ? "border-red-500! focus:border-red-500! focus-visible:border-red-500! focus-visible:ring-red-500!" : ""
+                  }`}
+                  aria-label="Which allergies do they have?"
+                  aria-required="true"
+                  aria-invalid={errors.allergies ? "true" : "false"}
+                  aria-describedby={errors.allergies ? "allergies-error" : undefined}
+                  data={[
+                    {
+                      label: "Pollen",
+                      value: "pollen"
+                    },
+                    {
+                      label: "Dust Mites",
+                      value: "dust mites"
+                    },
+                    {
+                      label: "Pets",
+                      value: "pets"
+                    },
+                    {
+                      label: "Mold",
+                      value: "mold"
+                    },
+                    {
+                      label: "Other",
+                      value: "other"
+                    }
+                  ]}
+                  value={field.value || []}
+                  onValueChange={field.onChange}
+                />
+                {errors.allergies && (
+                  <p id="allergies-error" className="text-sm text-red-500 mt-1 font-medium" role="alert">
+                    {errors.allergies.message}
+                  </p>
+                )}
+              </>
+            )}
           />
         </div>
         <div className="flex flex-row justify-between">

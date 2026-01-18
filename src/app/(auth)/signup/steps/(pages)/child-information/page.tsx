@@ -1,3 +1,10 @@
+"use client";
+
+import { useEffect } from "react";
+import { z } from "zod";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Input } from "@/components/ui/input";
 import { Paragraph } from "@/components/common/Typography";
 import {
@@ -7,10 +14,57 @@ import {
 } from "@/components/ui/tooltip";
 import { InfoIcon } from "@/components/icons";
 import { Combobox } from "@/components/ui/combo-box";
+import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
+
+const childInformationSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  age: z.number({ message: "Age is required" }).min(1, "Age is required").max(18, "Age must be 18 or less"),
+  asthmaDescription: z.enum(["mild", "moderate", "severe", "not sure"], {
+    message: "Please select an option",
+  }),
+});
+
+type ChildInformationFormData = z.infer<typeof childInformationSchema>;
 
 const SignupStepChildInformationPage = () => {
+  const { registerForm, unregisterForm } = useSignupForm();
+  
+  const {
+    register,
+    handleSubmit,
+    control,
+    trigger,
+    formState: { errors },
+  } = useForm<ChildInformationFormData>({
+    resolver: zodResolver(childInformationSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      age: undefined,
+      asthmaDescription: undefined,
+    },
+    mode: "onChange",
+  });
+
+  useEffect(() => {
+    registerForm(async () => {
+      const isValid = await trigger();
+      return isValid;
+    });
+    return () => unregisterForm();
+  }, [registerForm, unregisterForm, trigger]);
+
+  const onSubmit = (data: ChildInformationFormData) => {
+    console.log("Form submitted:", data);
+  };
+
   return (
-    <form className="flex flex-col gap-10">
+    <form 
+      className="flex flex-col gap-10" 
+      onSubmit={handleSubmit(onSubmit)}
+      aria-label="Child Information Form"
+    >
       <section className="flex flex-col gap-3 w-full">
         <div className="flex flex-row gap-4 w-full">
           <div className="flex-1">
@@ -22,8 +76,20 @@ const SignupStepChildInformationPage = () => {
               placeholder="First Name"
               className="rounded-2xl"
               labelClassName="text-white!"
-              inputClassName="px-5! py-4! h-14.25! rounded-2xl! text-base!"
+              inputClassName={`px-5! py-4! h-14.25! rounded-2xl! text-base! ${
+                errors.firstName ? "border-red-500! focus:border-red-500! focus-visible:border-red-500! focus-visible:ring-red-500!" : ""
+              }`}
+              aria-label="Child First Name"
+              aria-required="true"
+              aria-invalid={errors.firstName ? "true" : "false"}
+              aria-describedby={errors.firstName ? "first-name-error" : undefined}
+              {...register("firstName")}
             />
+            {errors.firstName && (
+              <p id="first-name-error" className="text-sm text-red-500 mt-1 font-medium" role="alert">
+                {errors.firstName.message}
+              </p>
+            )}
           </div>
           <div className="flex-1">
             <Input
@@ -34,8 +100,20 @@ const SignupStepChildInformationPage = () => {
               placeholder="Last Name"
               className="rounded-2xl"
               labelClassName="text-white!"
-              inputClassName="px-5! py-4! h-14.25! rounded-2xl! text-base!"
+              inputClassName={`px-5! py-4! h-14.25! rounded-2xl! text-base! ${
+                errors.lastName ? "border-red-500! focus:border-red-500! focus-visible:border-red-500! focus-visible:ring-red-500!" : ""
+              }`}
+              aria-label="Child Last Name"
+              aria-required="true"
+              aria-invalid={errors.lastName ? "true" : "false"}
+              aria-describedby={errors.lastName ? "last-name-error" : undefined}
+              {...register("lastName")}
             />
+            {errors.lastName && (
+              <p id="last-name-error" className="text-sm text-red-500 mt-1 font-medium" role="alert">
+                {errors.lastName.message}
+              </p>
+            )}
           </div>
         </div>
         <div className="flex flex-row justify-between">
@@ -55,7 +133,7 @@ const SignupStepChildInformationPage = () => {
             </div>
             <TooltipContent>
               <p className="text-white! dark:text-background! text-xs!">
-                Using your child’s name helps Satori frame guidance around their
+                Using your child's name helps Satori frame guidance around their
                 world — their routines, their patterns, their risks — making
                 alerts feel intuitive and actionable in the moments you need
                 them.
@@ -74,11 +152,23 @@ const SignupStepChildInformationPage = () => {
           placeholder="Child age"
           className="rounded-2xl"
           labelClassName="text-white!"
-          inputClassName="px-5! py-4! h-14.25! rounded-2xl! text-base!"
+          inputClassName={`px-5! py-4! h-14.25! rounded-2xl! text-base! ${
+            errors.age ? "border-red-500! focus:border-red-500! focus-visible:border-red-500! focus-visible:ring-red-500!" : ""
+          }`}
+          aria-label="Child Age"
+          aria-required="true"
+          aria-invalid={errors.age ? "true" : "false"}
+          aria-describedby={errors.age ? "age-error" : undefined}
+          {...register("age", { valueAsNumber: true })}
         />
+        {errors.age && (
+          <p id="age-error" className="text-sm text-red-500 mt-1 font-medium" role="alert">
+            {errors.age.message}
+          </p>
+        )}
         <div className="flex flex-row justify-between">
           <Paragraph className="text-white! text-xs!">
-            Age affects how sensitive a child’s breathing is to cold, heat,
+            Age affects how sensitive a child's breathing is to cold, heat,
             activity, and environmental shifts.
           </Paragraph>
           <Tooltip>
@@ -105,34 +195,55 @@ const SignupStepChildInformationPage = () => {
       </section>
 
       <section className="flex flex-col gap-3 w-full">
-        <Combobox
-          label="How would you describe their asthma right now?"
-          labelClassName="text-white!"
-          required={true}
-          id="how-would-you-describe-their-asthma-right-now"
-          comboBoxClassName="px-5! py-4! h-14.25! rounded-2xl! text-base!"
-          data={[
-            {
-              label: "Mild",
-              value: "mild",
-            },
-            {
-              label: "Moderate",
-              value: "moderate",
-            },
-            {
-              label: "Severe",
-              value: "severe",
-            },
-            {
-              label: "Not Sure",
-              value: "not sure",
-            },
-          ]}
+        <Controller
+          name="asthmaDescription"
+          control={control}
+          render={({ field }) => (
+            <>
+              <Combobox
+                label="How would you describe their asthma right now?"
+                labelClassName="text-white!"
+                required={true}
+                id="how-would-you-describe-their-asthma-right-now"
+                comboBoxClassName={`px-5! py-4! h-14.25! rounded-2xl! text-base! ${
+                  errors.asthmaDescription ? "border-red-500! focus:border-red-500! focus-visible:border-red-500! focus-visible:ring-red-500!" : ""
+                }`}
+                aria-label="How would you describe their asthma right now?"
+                aria-required="true"
+                aria-invalid={errors.asthmaDescription ? "true" : "false"}
+                aria-describedby={errors.asthmaDescription ? "asthma-description-error" : undefined}
+                data={[
+                  {
+                    label: "Mild",
+                    value: "mild",
+                  },
+                  {
+                    label: "Moderate",
+                    value: "moderate",
+                  },
+                  {
+                    label: "Severe",
+                    value: "severe",
+                  },
+                  {
+                    label: "Not Sure",
+                    value: "not sure",
+                  },
+                ]}
+                value={field.value}
+                onValueChange={field.onChange}
+              />
+              {errors.asthmaDescription && (
+                <p id="asthma-description-error" className="text-sm text-red-500 mt-1 font-medium" role="alert">
+                  {errors.asthmaDescription.message}
+                </p>
+              )}
+            </>
+          )}
         />
         <div className="flex flex-row justify-between">
           <Paragraph className="text-white! text-xs!">
-            This helps Satori understand how fragile or stable your child’s
+            This helps Satori understand how fragile or stable your child's
             breathing feels day to day.{" "}
           </Paragraph>
           <Tooltip>
