@@ -13,19 +13,19 @@ const SignupStepIllnessAndRecoveryTendenciesPage = () => {
         </Label>
         <RadioGroup defaultValue="yes" id="does-your-child-tend-to-catch-colds-or-respiratory-infections-often" className="flex flex-row gap-3">
           <Label
-            htmlFor="yes"
+            htmlFor="does-your-child-tend-to-catch-colds-or-respiratory-infections-often-yes"
             className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
           >
-            <RadioGroupItem value="yes" id="yes" />
+            <RadioGroupItem value="yes" id="does-your-child-tend-to-catch-colds-or-respiratory-infections-often-yes" />
             <span className="text-radio-text text-lg leading-7 font-normal">
               Yes
             </span>
           </Label>
           <Label
-            htmlFor="no"
+            htmlFor="does-your-child-tend-to-catch-colds-or-respiratory-infections-often-no"
             className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
           >
-            <RadioGroupItem value="no" id="no" />
+            <RadioGroupItem value="no" id="does-your-child-tend-to-catch-colds-or-respiratory-infections-often-no" />
             <span className="text-radio-text text-lg leading-7 font-normal">
               No
             </span>
@@ -59,19 +59,19 @@ const SignupStepIllnessAndRecoveryTendenciesPage = () => {
         </Label>
         <RadioGroup defaultValue="yes" id="do-you-primarily-cook-with-a-gas-stove" className="flex flex-row gap-3">
           <Label
-            htmlFor="yes"
+            htmlFor="do-you-primarily-cook-with-a-gas-stove-yes"
             className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
           >
-            <RadioGroupItem value="yes" id="yes" />
+            <RadioGroupItem value="yes" id="do-you-primarily-cook-with-a-gas-stove-yes" />
             <span className="text-radio-text text-lg leading-7 font-normal">
               Yes
             </span>
           </Label>
           <Label
-            htmlFor="no"
+            htmlFor="do-you-primarily-cook-with-a-gas-stove-no"
             className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
           >
-            <RadioGroupItem value="no" id="no" />
+            <RadioGroupItem value="no" id="do-you-primarily-cook-with-a-gas-stove-no" />
             <span className="text-radio-text text-lg leading-7 font-normal">
               No
             </span>

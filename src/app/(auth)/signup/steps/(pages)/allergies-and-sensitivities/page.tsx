@@ -16,28 +16,28 @@ const SignupStepAllergiesAndSensitivitiesPage = () => {
         </Label>
         <RadioGroup defaultValue="yes" id="has-your-child-been-diagnosed-with-allergies" className="flex flex-row gap-3">
           <Label
-            htmlFor="yes"
+            htmlFor="has-your-child-been-diagnosed-with-allergies-yes"
             className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
           >
-            <RadioGroupItem value="yes" id="yes" />
+            <RadioGroupItem value="yes" id="has-your-child-been-diagnosed-with-allergies-yes" />
             <span className="text-radio-text text-lg leading-7 font-normal">
               Yes
             </span>
           </Label>
           <Label
-            htmlFor="no"
+            htmlFor="has-your-child-been-diagnosed-with-allergies-no"
             className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
           >
-            <RadioGroupItem value="no" id="no" />
+            <RadioGroupItem value="no" id="has-your-child-been-diagnosed-with-allergies-no" />
             <span className="text-radio-text text-lg leading-7 font-normal">
               No
             </span>
           </Label>
           <Label
-            htmlFor="not-sure"
+            htmlFor="has-your-child-been-diagnosed-with-allergies-not-sure"
             className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
           >
-            <RadioGroupItem value="not-sure" id="not-sure" />
+            <RadioGroupItem value="not-sure" id="has-your-child-been-diagnosed-with-allergies-not-sure" />
             <span className="text-radio-text text-lg leading-7 font-normal">
               Not Sure
             </span>
