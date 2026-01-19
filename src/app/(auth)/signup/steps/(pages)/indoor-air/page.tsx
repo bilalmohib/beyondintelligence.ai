@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useEffect } from "react";
 import { InfoIcon } from "@/components/icons";
 import { Label } from "@/components/ui/label";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Paragraph } from "@/components/common/Typography";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -35,6 +35,7 @@ const SignupStepIndoorAirPage = () => {
     handleSubmit,
     control,
     trigger,
+    getValues,
     formState: { errors },
   } = useForm<IndoorAirFormData>({
     resolver: zodResolver(indoorAirSchema),
@@ -48,12 +49,15 @@ const SignupStepIndoorAirPage = () => {
   });
 
   useEffect(() => {
-    registerForm(async () => {
-      const isValid = await trigger();
-      return isValid;
-    });
+    registerForm(
+      async () => {
+        const isValid = await trigger();
+        return isValid;
+      },
+      () => getValues()
+    );
     return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger]);
+  }, [registerForm, unregisterForm, trigger, getValues]);
 
   const onSubmit = (data: IndoorAirFormData) => {
     console.log("Form submitted:", data);

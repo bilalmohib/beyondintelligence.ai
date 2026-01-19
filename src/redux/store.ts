@@ -1,10 +1,11 @@
-// redux/store.ts
+import { apiSlice } from '@/redux/apiSlice';
 import { configureStore } from '@reduxjs/toolkit';
-import { apiSlice } from './apiSlice';
+import signupReducer from '@/redux/slices/signupSlice';
 
 export const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
+    signup: signupReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),

@@ -1,0 +1,34 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Rounded square background with gradient -->
+  <rect
+    x="2"
+    y="2"
+    width="28"
+    height="28"
+    rx="7"
+    fill="url(#biGradient)"
+  />
+  <!-- Letter B -->
+  <path
+    d="M10 9V23M10 9H13.5C14.8 9 15.8 9.8 15.8 11C15.8 12.2 14.8 13 13.5 13H10M10 13H13.5C14.8 13 15.8 13.8 15.8 15C15.8 16.2 14.8 17 13.5 17H10"
+    stroke="white"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    fill="none"
+  />
+  <!-- Letter I -->
+  <path
+    d="M19 9V23M20.5 9H17.5M20.5 23H17.5"
+    stroke="white"
+    strokeWidth="2"
+    strokeLinecap="round"
+    fill="none"
+  />
+  <defs>
+    <linearGradient id="biGradient" x1="16" y1="2" x2="16" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#6366F1" />
+      <stop offset="100%" stopColor="#8B5CF6" />
+    </linearGradient>
+  </defs>
+</svg>

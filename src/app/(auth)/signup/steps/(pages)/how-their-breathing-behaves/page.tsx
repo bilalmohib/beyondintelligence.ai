@@ -1,19 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Combobox } from "@/components/ui/combo-box";
+import { useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { InfoIcon } from "@/components/icons";
+import { Combobox } from "@/components/ui/combo-box";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Paragraph } from "@/components/common/Typography";
-
 import { MultiSelect } from "@/components/ui/multi-select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
@@ -39,6 +38,7 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
     handleSubmit,
     control,
     trigger,
+    getValues,
     formState: { errors },
   } = useForm<HowTheirBreathingBehavesFormData>({
     resolver: zodResolver(howTheirBreathingBehavesSchema),
@@ -55,12 +55,15 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
   });
 
   useEffect(() => {
-    registerForm(async () => {
-      const isValid = await trigger();
-      return isValid;
-    });
+    registerForm(
+      async () => {
+        const isValid = await trigger();
+        return isValid;
+      },
+      () => getValues()
+    );
     return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger]);
+  }, [registerForm, unregisterForm, trigger, getValues]);
 
   const onSubmit = (data: HowTheirBreathingBehavesFormData) => {
     console.log("Form submitted:", data);
@@ -120,7 +123,7 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                       value: "not sure",
                     },
                   ]}
-                  value={field.value}
+                  value={field.value || ""}
                   onValueChange={field.onChange}
                 />
                 {errors.symptomsWorseTime && (
@@ -377,7 +380,7 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                       value: "outdoors a lot",
                     },
                   ]}
-                  value={field.value}
+                  value={field.value || ""}
                   onValueChange={field.onChange}
                 />
                 {errors.timeOutdoors && (
@@ -463,7 +466,7 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                       value: "varies",
                     },
                   ]}
-                  value={field.value}
+                  value={field.value || ""}
                   onValueChange={field.onChange}
                 />
                 {errors.mostActiveTime && (

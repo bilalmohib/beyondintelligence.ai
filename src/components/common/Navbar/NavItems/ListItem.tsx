@@ -29,10 +29,8 @@ function ListItem({
         <Link
           href={href}
           className={cn(
-            "block select-none space-y-1 rounded-[8px] p-3 leading-none no-underline outline-none transition-colors hover:bg-primary hover:shadow-sm focus:bg-accent focus:text-accent-foreground",
-            isNavTransparent 
-              ? "hover:text-white focus:text-white" 
-              : "hover:text-accent-foreground",
+            "block select-none space-y-1 rounded-[8px] p-3 leading-none no-underline outline-none transition-colors hover:bg-primary hover:shadow-sm focus:bg-primary focus:text-white",
+            "hover:text-white",
             className
           )}
         >
