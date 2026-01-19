@@ -39,8 +39,9 @@ const NavItems = ({ isNavTransparent }: NavItemsProps) => {
                 </NavigationMenuTrigger>
                 <NavigationMenuContent
                   className={cn(
-                    "w-[400px]! rounded-lg",
-                    isNavTransparent ? "bg-primary!" : "bg-background!"
+                    "w-[400px]! rounded-lg border shadow-lg z-50 transition-all duration-200",
+                    "bg-[#1F2937]! border-[#374151]!",
+                    "data-[state=closed]:bg-transparent! data-[state=closed]:border-transparent! data-[state=closed]:shadow-none!"
                   )}
                 >
                   <ul className="grid gap-2">

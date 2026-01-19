@@ -23,6 +23,7 @@ const SignupStepYourExperienceAsAParentPage = () => {
     handleSubmit,
     control,
     trigger,
+    getValues,
     formState: { errors },
   } = useForm<YourExperienceAsAParentFormData>({
     resolver: zodResolver(yourExperienceAsAParentSchema),
@@ -33,12 +34,15 @@ const SignupStepYourExperienceAsAParentPage = () => {
   });
 
   useEffect(() => {
-    registerForm(async () => {
-      const isValid = await trigger();
-      return isValid;
-    });
+    registerForm(
+      async () => {
+        const isValid = await trigger();
+        return isValid;
+      },
+      () => getValues()
+    );
     return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger]);
+  }, [registerForm, unregisterForm, trigger, getValues]);
 
   const onSubmit = (data: YourExperienceAsAParentFormData) => {
     console.log("Form submitted:", data);
@@ -101,7 +105,7 @@ const SignupStepYourExperienceAsAParentPage = () => {
                       value: "other",
                     },
                   ]}
-                  value={field.value}
+                  value={field.value || []}
                   onValueChange={field.onChange}
                 />
                 {errors.worries && (

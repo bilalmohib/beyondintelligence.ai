@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useEffect } from "react";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InfoIcon } from "@/components/icons";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Paragraph } from "@/components/common/Typography";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Input } from "@/components/ui/input";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
 
 // Address validation that works for US and international addresses
@@ -48,6 +48,7 @@ const SignupStepHomeAndSchoolEnvironmentPage = () => {
     handleSubmit,
     control,
     trigger,
+    getValues,
     formState: { errors },
   } = useForm<HomeAndSchoolEnvironmentFormData>({
     resolver: zodResolver(homeAndSchoolEnvironmentSchema),
@@ -60,12 +61,15 @@ const SignupStepHomeAndSchoolEnvironmentPage = () => {
   });
 
   useEffect(() => {
-    registerForm(async () => {
-      const isValid = await trigger();
-      return isValid;
-    });
+    registerForm(
+      async () => {
+        const isValid = await trigger();
+        return isValid;
+      },
+      () => getValues()
+    );
     return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger]);
+  }, [registerForm, unregisterForm, trigger, getValues]);
 
   const onSubmit = (data: HomeAndSchoolEnvironmentFormData) => {
     console.log("Form submitted:", data);

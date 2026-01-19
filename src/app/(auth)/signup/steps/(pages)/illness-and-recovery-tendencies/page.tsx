@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { InfoIcon } from "@/components/icons";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Paragraph } from "@/components/common/Typography";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -24,11 +24,12 @@ type IllnessAndRecoveryTendenciesFormData = z.infer<typeof illnessAndRecoveryTen
 
 const SignupStepIllnessAndRecoveryTendenciesPage = () => {
   const { registerForm, unregisterForm } = useSignupForm();
-  
+
   const {
     handleSubmit,
     control,
     trigger,
+    getValues,
     formState: { errors },
   } = useForm<IllnessAndRecoveryTendenciesFormData>({
     resolver: zodResolver(illnessAndRecoveryTendenciesSchema),
@@ -40,20 +41,23 @@ const SignupStepIllnessAndRecoveryTendenciesPage = () => {
   });
 
   useEffect(() => {
-    registerForm(async () => {
-      const isValid = await trigger();
-      return isValid;
-    });
+    registerForm(
+      async () => {
+        const isValid = await trigger();
+        return isValid;
+      },
+      () => getValues()
+    );
     return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger]);
+  }, [registerForm, unregisterForm, trigger, getValues]);
 
   const onSubmit = (data: IllnessAndRecoveryTendenciesFormData) => {
     console.log("Form submitted:", data);
   };
 
   return (
-    <form 
-      className="flex flex-col gap-10" 
+    <form
+      className="flex flex-col gap-10"
       onSubmit={handleSubmit(onSubmit)}
       aria-label="Illness and Recovery Tendencies Form"
     >

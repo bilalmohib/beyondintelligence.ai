@@ -35,6 +35,7 @@ const SignupStepChildInformationPage = () => {
     handleSubmit,
     control,
     trigger,
+    getValues,
     formState: { errors },
   } = useForm<ChildInformationFormData>({
     resolver: zodResolver(childInformationSchema),
@@ -48,12 +49,15 @@ const SignupStepChildInformationPage = () => {
   });
 
   useEffect(() => {
-    registerForm(async () => {
-      const isValid = await trigger();
-      return isValid;
-    });
+    registerForm(
+      async () => {
+        const isValid = await trigger();
+        return isValid;
+      },
+      () => getValues()
+    );
     return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger]);
+  }, [registerForm, unregisterForm, trigger, getValues]);
 
   const onSubmit = (data: ChildInformationFormData) => {
     console.log("Form submitted:", data);

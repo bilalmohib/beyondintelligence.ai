@@ -6,7 +6,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InfoIcon } from "@/components/icons";
@@ -27,6 +27,24 @@ const parentInformationSchema = z.object({
     .regex(
       /^\+[1-9]\d{1,14}$/,
       "Please enter a valid phone number in E.164 format (e.g., +1234567890)"
+    )
+    .refine(
+      (val) => {
+        // E.164 format: +[country code][subscriber number]
+        // Must start with +, followed by country code (1-3 digits starting with 1-9), then subscriber number
+        // Total digits after + must be between 1-15
+        const digits = val.slice(1); // Remove the +
+        if (digits.length < 1 || digits.length > 15) return false;
+        
+        // First digit after + must be 1-9 (country codes don't start with 0)
+        if (!/^[1-9]/.test(digits)) return false;
+        
+        // All remaining characters must be digits
+        return /^\d+$/.test(digits);
+      },
+      {
+        message: "Invalid E.164 format. Must be +[country code][number] (e.g., +923081511889)",
+      }
     ),
   smsConsent: z.enum(["allow"], {
     message: "SMS consent is required",
@@ -35,7 +53,11 @@ const parentInformationSchema = z.object({
 
 type ParentInformationFormData = z.infer<typeof parentInformationSchema>;
 
-const formatPhoneNumber = (value: string): string => {
+/**
+ * Normalizes phone input to canonical E.164 format (+1234567890)
+ * This is what gets stored in the form state and sent to the API
+ */
+const normalizePhoneToE164 = (value: string): string => {
   // Remove all non-digit characters except the leading +
   let cleaned = value.replace(/[^\d+]/g, "");
 
@@ -55,6 +77,65 @@ const formatPhoneNumber = (value: string): string => {
   return cleaned;
 };
 
+/**
+ * Formats E.164 phone number for display (e.g., +1 (234) 567-8900)
+ * This is what the user sees in the input field
+ */
+const formatPhoneDisplay = (e164Value: string): string => {
+  if (!e164Value || !e164Value.startsWith("+")) {
+    return e164Value || "";
+  }
+
+  // Extract country code and number
+  const digits = e164Value.slice(1); // Remove the +
+  
+  if (digits.length === 0) {
+    return "+";
+  }
+
+  // US/Canada format: +1 (234) 567-8900
+  if (digits.startsWith("1")) {
+    if (digits.length <= 1) {
+      return `+${digits}`;
+    } else if (digits.length <= 4) {
+      return `+${digits.slice(0, 1)} (${digits.slice(1)}`;
+    } else if (digits.length <= 7) {
+      return `+${digits.slice(0, 1)} (${digits.slice(1, 4)}) ${digits.slice(4)}`;
+    } else if (digits.length <= 10) {
+      return `+${digits.slice(0, 1)} (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
+    } else {
+      // Full format: +1 (234) 567-8900
+      return `+${digits.slice(0, 1)} (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7, 11)}`;
+    }
+  }
+
+  // UK format: +44 20 1234 5678
+  if (digits.startsWith("44")) {
+    if (digits.length <= 2) {
+      return `+${digits}`;
+    } else if (digits.length <= 4) {
+      return `+${digits.slice(0, 2)} ${digits.slice(2)}`;
+    } else if (digits.length <= 8) {
+      return `+${digits.slice(0, 2)} ${digits.slice(2, 4)} ${digits.slice(4)}`;
+    } else {
+      return `+${digits.slice(0, 2)} ${digits.slice(2, 4)} ${digits.slice(4, 8)} ${digits.slice(8, 12)}`;
+    }
+  }
+
+  // Generic international format with progressive formatting
+  if (digits.length <= 2) {
+    return `+${digits}`;
+  } else if (digits.length <= 5) {
+    return `+${digits.slice(0, 2)} ${digits.slice(2)}`;
+  } else if (digits.length <= 8) {
+    return `+${digits.slice(0, 2)} ${digits.slice(2, 5)} ${digits.slice(5)}`;
+  } else if (digits.length <= 11) {
+    return `+${digits.slice(0, 2)} ${digits.slice(2, 5)} ${digits.slice(5, 8)} ${digits.slice(8)}`;
+  } else {
+    return `+${digits.slice(0, 2)} ${digits.slice(2, 5)} ${digits.slice(5, 8)} ${digits.slice(8, 12)}`;
+  }
+};
+
 const SignupStepParentInformationPage = () => {
   const { registerForm, unregisterForm } = useSignupForm();
 
@@ -64,6 +145,7 @@ const SignupStepParentInformationPage = () => {
     control,
     watch,
     trigger,
+    getValues,
     formState: { errors },
   } = useForm<ParentInformationFormData>({
     resolver: zodResolver(parentInformationSchema),
@@ -78,17 +160,32 @@ const SignupStepParentInformationPage = () => {
   });
 
   useEffect(() => {
-    registerForm(async () => {
-      const isValid = await trigger();
-      return isValid;
-    });
+    registerForm(
+      async () => {
+        const isValid = await trigger();
+        return isValid;
+      },
+      () => getValues()
+    );
     return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger]);
+  }, [registerForm, unregisterForm, trigger, getValues]);
 
   const phoneValue = watch("phone");
   const isPhoneValid = phoneValue
     ? parentInformationSchema.shape.phone.safeParse(phoneValue).success
     : false;
+  
+  // Local state for formatted display value
+  const [phoneDisplay, setPhoneDisplay] = useState("");
+
+  // Sync display value when form value changes (e.g., from Redux or initial load)
+  useEffect(() => {
+    if (phoneValue) {
+      setPhoneDisplay(formatPhoneDisplay(phoneValue));
+    } else {
+      setPhoneDisplay("");
+    }
+  }, [phoneValue]);
 
   const onSubmit = (data: ParentInformationFormData) => {
     console.log("Form submitted:", data);
@@ -241,7 +338,7 @@ const SignupStepParentInformationPage = () => {
                   required
                   id="parent-phone"
                   type="tel"
-                  placeholder="+1234567890"
+                  placeholder="+1 (234) 567-8900"
                   className="rounded-2xl"
                   labelClassName="text-white!"
                   inputClassName={`px-5! py-4! h-14.25! rounded-2xl! text-base! ${errors.phone ? "border-red-500! focus:border-red-500! focus-visible:border-red-500! focus-visible:ring-red-500!" : ""
@@ -250,11 +347,17 @@ const SignupStepParentInformationPage = () => {
                   aria-required="true"
                   aria-invalid={errors.phone ? "true" : "false"}
                   aria-describedby={errors.phone ? "phone-error" : undefined}
-                  {...field}
+                  value={phoneDisplay}
                   onChange={(e) => {
-                    const formatted = formatPhoneNumber(e.target.value);
-                    field.onChange(formatted);
+                    const inputValue = e.target.value;
+                    // Normalize to E.164 format for storage
+                    const e164Value = normalizePhoneToE164(inputValue);
+                    // Update display with formatted version
+                    setPhoneDisplay(formatPhoneDisplay(e164Value));
+                    // Store canonical E.164 in form state
+                    field.onChange(e164Value);
                   }}
+                  onBlur={field.onBlur}
                 />
                 {errors.phone && (
                   <p
@@ -272,7 +375,7 @@ const SignupStepParentInformationPage = () => {
                 )}
                 {!errors.phone && !phoneValue && (
                   <p className="text-xs text-gray-400 mt-1">
-                    Format: E.164 (e.g., +1234567890)
+                    Format: E.164 (e.g., +1 (234) 567-8900)
                   </p>
                 )}
               </>
