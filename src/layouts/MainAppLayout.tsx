@@ -21,6 +21,13 @@ const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
   const isNavTransparent = navTransparentRoutes.includes(pathname);
   const shouldBeTransparent = isNavTransparent && !isScrolled;
 
+  const noLayoutRoutes = [
+    "/landing-transitions1",
+    "/landing-transitions2",
+    "/landing-transition1",
+    "/landing-transition2",
+  ];
+
   useLayoutEffect(() => {
     setIsScrolled(window.scrollY > 0);
   }, []);
@@ -34,8 +41,15 @@ const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (AUTH_ROUTES.includes(pathname)) {
-    return <div className="relative z-10">{children}</div>;
+  const normalizedPathname = pathname.replace(/\/$/, "") || "/";
+  
+  const shouldSkipLayout = 
+    AUTH_ROUTES.includes(normalizedPathname) || 
+    noLayoutRoutes.includes(normalizedPathname) ||
+    noLayoutRoutes.some(route => normalizedPathname.startsWith(`${route}/`));
+
+  if (shouldSkipLayout) {
+    return <>{children}</>;
   }
 
   return (
@@ -56,4 +70,5 @@ const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
     </div>
   );
 };
+
 export default MainAppLayout;
