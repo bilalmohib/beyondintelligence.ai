@@ -17,9 +17,17 @@ const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
     return false;
   });
 
-  const navTransparentRoutes = ["/signup/start"];
+  const navTransparentRoutes = ["/", "/signup/start"];
   const isNavTransparent = navTransparentRoutes.includes(pathname);
   const shouldBeTransparent = isNavTransparent && !isScrolled;
+  const isHomePage = pathname === "/";
+
+  const noLayoutRoutes = [
+    "/landing-transitions1",
+    "/landing-transitions2",
+    "/landing-transition1",
+    "/landing-transition2",
+  ];
 
   useLayoutEffect(() => {
     setIsScrolled(window.scrollY > 0);
@@ -34,17 +42,25 @@ const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (AUTH_ROUTES.includes(pathname)) {
-    return <div className="relative z-10">{children}</div>;
+  const normalizedPathname = pathname.replace(/\/$/, "") || "/";
+  
+  const shouldSkipLayout = 
+    AUTH_ROUTES.includes(normalizedPathname) || 
+    noLayoutRoutes.includes(normalizedPathname) ||
+    noLayoutRoutes.some(route => normalizedPathname.startsWith(`${route}/`));
+
+  if (shouldSkipLayout) {
+    return <>{children}</>;
   }
 
   return (
     <div>
       <ScrollRestoration />
       <div
-        className={cn("top-0 z-50 w-full", {
+        className={cn("top-0 z-50 w-full transition-[padding] duration-300", {
           "absolute left-0 right-0": shouldBeTransparent,
           sticky: !shouldBeTransparent,
+          "pt-5": isHomePage && !isScrolled,
         })}
       >
         <Navbar isNavTransparent={shouldBeTransparent} />
@@ -56,4 +72,5 @@ const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
     </div>
   );
 };
+
 export default MainAppLayout;
