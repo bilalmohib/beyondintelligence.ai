@@ -10,11 +10,11 @@ const SHADOW_LAYERS = [
     { width: "170%", height: "120%", blur: 140, opacity: 0.2 },
 ] as const;
 
+const TRANSITION_DELAY_MS = 2000;
+const ANIMATION_DURATION_MS = 800;
 const BLUE_SHADOW_COLOR = "#7CCEFF";
 const IMAGE_CONTAINER_WIDTH = 800.1121826171875;
 const IMAGE_CONTAINER_HEIGHT = 525.9652099609375;
-const TRANSITION_DELAY_MS = 2000;
-const ANIMATION_DURATION_MS = 800;
 
 const ChildsLifeBiggerTransition = () => {
     const [isTransitioned, setIsTransitioned] = useState(false);

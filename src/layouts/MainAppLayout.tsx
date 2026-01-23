@@ -17,9 +17,10 @@ const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
     return false;
   });
 
-  const navTransparentRoutes = ["/signup/start"];
+  const navTransparentRoutes = ["/", "/signup/start"];
   const isNavTransparent = navTransparentRoutes.includes(pathname);
   const shouldBeTransparent = isNavTransparent && !isScrolled;
+  const isHomePage = pathname === "/";
 
   const noLayoutRoutes = [
     "/landing-transitions1",
@@ -56,9 +57,10 @@ const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
     <div>
       <ScrollRestoration />
       <div
-        className={cn("top-0 z-50 w-full", {
+        className={cn("top-0 z-50 w-full transition-[padding] duration-300", {
           "absolute left-0 right-0": shouldBeTransparent,
           sticky: !shouldBeTransparent,
+          "pt-5": isHomePage && !isScrolled,
         })}
       >
         <Navbar isNavTransparent={shouldBeTransparent} />

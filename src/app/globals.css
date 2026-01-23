@@ -60,6 +60,9 @@
   --color-input-border-error: #EF4444;
   --color-input-label-disabled: #9CA3AF;
   --color-multi-select-selected-item-bg: #232562;
+
+  /* Video Backgrounds */
+  --video-background-landing-page-hero-001: var(--video-hero-001);
   
   /* Input Shadows */
   --shadow-input-focus: 0px 0px 0px 4px #E1E1FEB2;
@@ -90,6 +93,7 @@
 
   /* --image-competitors-going-viral: url(/Images/Sections/Home/CompetitorsGoingViralSection/goingViral.png); */
   --image-signup-start: url(/assets/pages/signup/start/background.svg);
+  --video-hero-001: url(/assets/pages/landing/videos/HeroVideo001.mp4);
 
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
