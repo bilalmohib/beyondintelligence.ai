@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRef, useEffect } from "react";
 import { Heading1, Paragraph } from "@/components/common/Typography";
 import { Button } from "@/components/ui/button";
+import Container from "@/components/common/Container";
 
 function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -82,7 +83,7 @@ function Home() {
             Your browser does not support the video tag.
           </video>
 
-          <div className="absolute bottom-0 left-0 right-0 px-12.5 pb-12.5 grid grid-cols-2 justify-between">
+          <Container className="absolute bottom-0 left-0 right-0 pb-12.5 grid grid-cols-2 justify-between">
             <div className="flex flex-col gap-4">
               <div>
                 <Image src="/assets/pages/landing/images/satori_beta.svg" alt="Logo" width={162.76} height={31.11} />
@@ -107,7 +108,7 @@ function Home() {
                 </Button>
               </div>
             </div>
-          </div>
+          </Container>
         </div>
       </div>
     </div>
