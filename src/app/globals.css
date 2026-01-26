@@ -94,6 +94,7 @@
   /* --image-competitors-going-viral: url(/Images/Sections/Home/CompetitorsGoingViralSection/goingViral.png); */
   --image-signup-start: url(/assets/pages/signup/start/background.svg);
   --video-hero-001: url(/assets/pages/landing/videos/HeroVideo001.mp4);
+  --image-air-carries-hidden-risk-section: url(/assets/pages/landing/images/AirCarriesHiddenSection/background.png);
 
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
@@ -347,5 +348,8 @@ html {
 @layer utilities {
   .bg-image-signup-start {
     background-image: var(--image-signup-start);
+  }
+  .bg-image-air-carries-hidden-risk-section {
+    background-image: url(/assets/pages/landing/images/AirCarriesHiddenSection/background.png);
   }
 }
