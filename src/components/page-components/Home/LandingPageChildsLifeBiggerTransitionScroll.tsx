@@ -20,6 +20,10 @@ const ANIMATION_DURATION_MS = 800;
 const SCROLL_THRESHOLD = 150;
 const TRANSITION_COOLDOWN_MS = 900;
 const APPROACH_ZONE_PX = 600;
+// Only "capture" scroll when this component is basically at the viewport edge.
+const ENTRY_SNAP_OFFSET_PX = 80;
+// Fast + smooth snap duration (for "buttery" entry).
+const ENTRY_SNAP_SCROLL_MS = 260;
 
 type TransitionState = "first" | "second" | "exiting";
 type EntryDirection = "from_above" | "from_below" | null;
@@ -34,6 +38,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
     const section2Ref = useRef<HTMLDivElement>(null);
     const lastTransitionTime = useRef(0);
     const isAnimating = useRef(false);
+    const isEntering = useRef(false);
     const nextEntryDirection = useRef<EntryDirection>(null);
 
     useEffect(() => {
@@ -74,11 +79,11 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
     }, [isComponentInView, transitionState]);
 
     useEffect(() => {
-        const snapToSection = (section: "first" | "second") => {
+        const snapToSection = (section: "first" | "second", behavior: ScrollBehavior = "auto") => {
             const el = section === "first" ? section1Ref.current : section2Ref.current;
             if (!el) return;
             const top = el.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({ top, behavior: "auto" });
+            window.scrollTo({ top, behavior });
         };
 
         const scrollToSeparatedSecond = () => {
@@ -102,16 +107,27 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
             const rect = el.getBoundingClientRect();
             const vh = window.innerHeight;
 
+            // While we are doing the short entry snap, ignore all wheel input
+            // so the snap feels smooth and doesn't stutter.
+            if (isEntering.current) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+            }
+
             if (!isComponentInView) {
+                // Scrolling UP into this component (coming from below): snap when its bottom is near viewport bottom.
                 if (e.deltaY < 0) {
-                    const approachingFromBelow = rect.bottom > -APPROACH_ZONE_PX && rect.top < vh;
-                    if (approachingFromBelow) {
+                    const shouldSnapFromBelow =
+                        rect.bottom >= vh - ENTRY_SNAP_OFFSET_PX &&
+                        rect.bottom <= vh + APPROACH_ZONE_PX &&
+                        rect.top < vh;
+
+                    if (shouldSnapFromBelow) {
                         e.preventDefault();
                         e.stopPropagation();
-                        snapToSection("second");
-                        document.body.style.overflow = "hidden";
-                        document.documentElement.style.overflow = "hidden";
-                        setIsComponentInView(true);
+                        isEntering.current = true;
+                        snapToSection("second", "smooth");
                         setTransitionState("second");
                         setShowOverlay(false);
                         nextEntryDirection.current = null;
@@ -119,18 +135,27 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                         lastTransitionTime.current = Date.now();
                         isAnimating.current = true;
                         setTimeout(() => { isAnimating.current = false; }, TRANSITION_COOLDOWN_MS);
+                        setTimeout(() => {
+                            setIsComponentInView(true);
+                            isEntering.current = false;
+                        }, ENTRY_SNAP_SCROLL_MS);
                         return;
                     }
                 }
+
+                // Scrolling DOWN into this component (coming from above): snap once the component
+                // has actually entered the viewport (so we don't steal scroll from the slider above).
                 if (e.deltaY > 0) {
-                    const approachingFromAbove = rect.top > vh && rect.top < vh + APPROACH_ZONE_PX;
-                    if (approachingFromAbove) {
+                    const shouldSnapFromAbove =
+                        rect.top >= 0 &&
+                        rect.top <= vh - ENTRY_SNAP_OFFSET_PX &&
+                        rect.bottom > 0;
+
+                    if (shouldSnapFromAbove) {
                         e.preventDefault();
                         e.stopPropagation();
-                        snapToSection("first");
-                        document.body.style.overflow = "hidden";
-                        document.documentElement.style.overflow = "hidden";
-                        setIsComponentInView(true);
+                        isEntering.current = true;
+                        snapToSection("first", "smooth");
                         setTransitionState("first");
                         setShowOverlay(false);
                         nextEntryDirection.current = null;
@@ -138,6 +163,10 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                         lastTransitionTime.current = Date.now();
                         isAnimating.current = true;
                         setTimeout(() => { isAnimating.current = false; }, TRANSITION_COOLDOWN_MS);
+                        setTimeout(() => {
+                            setIsComponentInView(true);
+                            isEntering.current = false;
+                        }, ENTRY_SNAP_SCROLL_MS);
                         return;
                     }
                 }
@@ -172,8 +201,11 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                     nextEntryDirection.current = "from_below";
                     document.body.style.overflow = "";
                     document.documentElement.style.overflow = "";
-                    const r = containerRef.current?.getBoundingClientRect();
-                    if (r) window.scrollBy({ top: r.height - r.top + 50, behavior: "smooth" });
+                    const container = containerRef.current;
+                    if (container) {
+                        const targetTop = container.offsetTop + container.offsetHeight;
+                        window.scrollTo({ top: targetTop, behavior: "smooth" });
+                    }
                     setTimeout(() => { isAnimating.current = false; }, 500);
                 }
             } else if (e.deltaY < 0) {
@@ -351,6 +383,9 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                         left: "50%",
                         top: "50%",
                         transform: "translate(-50%, -50%)",
+                        width: "110%",
+                        height: "110%",
+                        overflow: "visible",
                     }}
                 >
                     {/* Shadow 1 - Top Left */}
