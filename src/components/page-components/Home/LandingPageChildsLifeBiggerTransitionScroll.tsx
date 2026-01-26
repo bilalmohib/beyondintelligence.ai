@@ -6,14 +6,16 @@ import Container from "@/components/common/Container";
 import { Heading2 } from "@/components/common/Typography";
 
 const SHADOW_LAYERS = [
-    { width: "95%", height: "85%", blur: 100, opacity: 0.5 },
-    { width: "130%", height: "100%", blur: 120, opacity: 0.35 },
-    { width: "170%", height: "120%", blur: 140, opacity: 0.2 },
+    { width: "50%", height: "25%", blur: 80, opacity: 0.6 },
+    { width: "60%", height: "30%", blur: 100, opacity: 0.4 },
+    { width: "70%", height: "35%", blur: 120, opacity: 0.25 },
 ] as const;
 
 const BLUE_SHADOW_COLOR = "#7CCEFF";
-const IMAGE_CONTAINER_WIDTH = 800.1121826171875;
-const IMAGE_CONTAINER_HEIGHT = 525.9652099609375;
+const IMAGE_CONTAINER_WIDTH = 911.91;
+const IMAGE_CONTAINER_HEIGHT = 576.75;
+
+const IMAGE_ASPECT_RATIO = IMAGE_CONTAINER_WIDTH / IMAGE_CONTAINER_HEIGHT;
 const ANIMATION_DURATION_MS = 800;
 const SCROLL_THRESHOLD = 150;
 const TRANSITION_COOLDOWN_MS = 900;
@@ -216,7 +218,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
         width,
         height,
         left: "50%",
-        top: "60%",
+        top: "50%",
         transform: "translate(-50%, -50%)",
         borderRadius: "50%",
         backgroundColor: BLUE_SHADOW_COLOR,
@@ -226,18 +228,35 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
         zIndex: 1,
     });
 
+    const shadowStyleAlwaysVisible = (
+        width: string,
+        height: string,
+        blur: number,
+        baseOpacity: number
+    ) => ({
+        position: "absolute" as const,
+        width,
+        height,
+        left: "50%",
+        top: "50%",
+        transform: "translate(-50%, -50%)",
+        borderRadius: "50%",
+        backgroundColor: BLUE_SHADOW_COLOR,
+        filter: `blur(${blur}px)`,
+        opacity: baseOpacity,
+        zIndex: 1,
+    });
+
     return (
         <div ref={containerRef} className="w-full relative overflow-hidden">
-            {/* Section 1: First screen */}
             <section
                 ref={section1Ref}
-                className="w-full relative overflow-hidden py-30 min-h-screen max-h-screen h-screen"
-                style={{ backgroundColor: "#0B0C26" }}
+                className="w-full relative overflow-hidden min-h-screen max-h-screen h-screen bg-background py-6"
             >
                 <Container className="h-full">
-                    <div className="flex flex-col justify-center items-center w-full h-full px-4" style={{ gap: 64 }}>
+                    <div className="flex flex-col items-center w-full h-full px-4 gap-16">
                         <Heading2
-                            className="text-white text-center leading-[120%]! relative z-20"
+                            className="text-white text-center leading-[120%]! relative z-20 shrink-0"
                             style={{
                                 opacity: isOnSecondScreen ? 0 : 1,
                                 transition: `opacity ${ANIMATION_DURATION_MS}ms linear`,
@@ -247,12 +266,52 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                             It&apos;s made of moments you never want to miss.
                         </Heading2>
                         <div
-                            className="relative"
+                            className="relative w-full flex-1 min-h-0"
                             style={{
-                                width: IMAGE_CONTAINER_WIDTH,
-                                height: IMAGE_CONTAINER_HEIGHT,
+                                maxWidth: `${IMAGE_CONTAINER_WIDTH}px`,
                             }}
                         >
+                            {/* Shadow 1 - Top Left */}
+                            <div
+                                className="absolute z-0"
+                                style={{
+                                    top: "-10%",
+                                    left: "-15%",
+                                    width: "60%",
+                                    height: "60%",
+                                    opacity: isOnSecondScreen ? 0 : 1,
+                                    transition: `opacity ${ANIMATION_DURATION_MS}ms linear`,
+                                    filter: "blur(92px)",
+                                }}
+                            >
+                                <Image
+                                    src="/assets/components/transition1/shadow1Mix.svg"
+                                    alt=""
+                                    fill
+                                    className="object-contain"
+                                />
+                            </div>
+                            {/* Shadow 2 - Bottom Right */}
+                            <div
+                                className="absolute z-0"
+                                style={{
+                                    bottom: "-10%",
+                                    right: "-10%",
+                                    width: "50%",
+                                    height: "50%",
+                                    opacity: isOnSecondScreen ? 0 : 1,
+                                    transition: `opacity ${ANIMATION_DURATION_MS}ms linear`,
+                                    filter: "blur(92px)",
+                                }}
+                            >
+                                <Image
+                                    src="/assets/components/transition1/shadow2Orange.svg"
+                                    alt=""
+                                    fill
+                                    className="object-contain"
+                                />
+                            </div>
+                            {/* CSS Shadow layers for center glow */}
                             {SHADOW_LAYERS.map((layer, index) => (
                                 <div
                                     key={index}
@@ -267,10 +326,10 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                             ))}
                             <div className="relative z-10 w-full h-full">
                                 <Image
-                                    src="/assets/components/transition1/image.png"
+                                    src="/assets/components/transition1/image.svg"
                                     alt="Child's Life is Bigger than Asthma"
                                     fill
-                                    className="object-cover"
+                                    className="object-contain"
                                     loading="eager"
                                 />
                             </div>
@@ -282,28 +341,91 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
             {/* Section 2: Second screen – blurred image behind text */}
             <section
                 ref={section2Ref}
-                className="w-full relative overflow-hidden min-h-screen max-h-screen h-screen flex items-center justify-center"
-                style={{ backgroundColor: "#0B0C26" }}
+                className="w-full relative overflow-hidden min-h-screen max-h-screen h-screen flex items-center justify-center bg-background py-30"
             >
-                {/* Blurred collage positioned in center, same size as first screen */}
+                {/* Image container - same as Section 1, then blurred */}
                 <div
-                    className="absolute z-0"
+                    className="absolute z-0 w-full h-full"
                     style={{
-                        width: IMAGE_CONTAINER_WIDTH,
-                        height: IMAGE_CONTAINER_HEIGHT,
+                        maxWidth: `${IMAGE_CONTAINER_WIDTH}px`,
                         left: "50%",
                         top: "50%",
                         transform: "translate(-50%, -50%)",
                     }}
                 >
-                    <Image
-                        src="/assets/components/transition1/image.png"
-                        alt=""
-                        fill
-                        className="object-cover"
-                        style={{ filter: "blur(24px)", opacity: 0.6 }}
-                    />
+                    {/* Shadow 1 - Top Left */}
+                    <div
+                        className="absolute z-0"
+                        style={{
+                            top: "-5%",
+                            left: "-10%",
+                            width: "50%",
+                            height: "50%",
+                            filter: "blur(92px)",
+                        }}
+                    >
+                        <Image
+                            src="/assets/components/transition1/shadow1Mix.svg"
+                            alt=""
+                            fill
+                            className="object-contain"
+                        />
+                    </div>
+                    {/* Shadow 2 - Bottom Right */}
+                    <div
+                        className="absolute z-0"
+                        style={{
+                            bottom: "-5%",
+                            right: "-10%",
+                            width: "50%",
+                            height: "50%",
+                            filter: "blur(92px)",
+                        }}
+                    >
+                        <Image
+                            src="/assets/components/transition1/shadow2Orange.svg"
+                            alt=""
+                            fill
+                            className="object-contain"
+                        />
+                    </div>
+                    {/* CSS Shadow layers for center glow */}
+                    {SHADOW_LAYERS.map((layer, index) => (
+                        <div
+                            key={index}
+                            className="absolute rounded-full"
+                            style={shadowStyleAlwaysVisible(
+                                layer.width,
+                                layer.height,
+                                layer.blur,
+                                layer.opacity
+                            )}
+                        />
+                    ))}
+                    <div
+                        className="relative w-full h-full z-10"
+                        style={{
+                            boxShadow: "0px 4px 4px 0px #00000040",
+                        }}
+                    >
+                        <Image
+                            src="/assets/components/transition1/image.svg"
+                            alt=""
+                            fill
+                            className="object-contain"
+                            loading="eager"
+                            style={{ filter: "blur(10px)", opacity: 0.7 }}
+                        />
+                    </div>
                 </div>
+                {/* Dark overlay on top of blurred image - from Figma */}
+                <div
+                    className="absolute inset-0 z-5"
+                    style={{
+                        backgroundColor: "#0b0c26",
+                        opacity: 0.6,
+                    }}
+                />
                 <Heading2
                     className="text-white text-center leading-[120%]! relative z-20 px-8 max-w-[1200px]"
                 >
@@ -322,26 +444,41 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                     backgroundColor: "#0B0C26",
                     opacity: showOverlay ? 1 : 0,
                     transition: `opacity ${ANIMATION_DURATION_MS}ms linear`,
+                    paddingTop: "120px",
+                    paddingBottom: "120px",
                 }}
             >
-                {/* Blurred collage positioned in center, same size as first screen */}
                 <div
-                    className="absolute"
+                    className="absolute w-full h-full"
                     style={{
-                        width: IMAGE_CONTAINER_WIDTH,
-                        height: IMAGE_CONTAINER_HEIGHT,
+                        maxWidth: `${IMAGE_CONTAINER_WIDTH}px`,
                         left: "50%",
                         top: "50%",
                         transform: "translate(-50%, -50%)",
                     }}
                 >
-                    <Image
-                        src="/assets/components/transition1/image.png"
-                        alt=""
-                        fill
-                        className="object-cover"
-                        style={{ filter: "blur(24px)", opacity: 0.6 }}
-                    />
+                    {SHADOW_LAYERS.map((layer, index) => (
+                        <div
+                            key={index}
+                            className="absolute rounded-full"
+                            style={shadowStyleAlwaysVisible(
+                                layer.width,
+                                layer.height,
+                                layer.blur,
+                                layer.opacity
+                            )}
+                        />
+                    ))}
+                    <div className="relative w-full h-full z-10">
+                        <Image
+                            src="/assets/components/transition1/image.svg"
+                            alt=""
+                            fill
+                            className="object-contain"
+                            loading="eager"
+                            style={{ filter: "blur(30px)", opacity: 0.6 }}
+                        />
+                    </div>
                 </div>
                 <Heading2
                     className="text-white text-center leading-[120%]! relative z-10 px-8"
