@@ -10,17 +10,12 @@ import ScrollRestoration from "@/components/common/ScrollRestoration";
 
 const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  const [isScrolled, setIsScrolled] = useState(() => {
-    if (typeof window !== "undefined") {
-      return window.scrollY > 0;
-    }
-    return false;
-  });
+  const [isScrolled, setIsScrolled] = useState(false);
 
+  const isHomePage = pathname === "/";
   const navTransparentRoutes = ["/", "/signup/start"];
   const isNavTransparent = navTransparentRoutes.includes(pathname);
   const shouldBeTransparent = isNavTransparent && !isScrolled;
-  const isHomePage = pathname === "/";
 
   const noLayoutRoutes = [
     "/landing-transitions1",

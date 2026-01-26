@@ -1,4 +1,4 @@
-import ChildsLifeBiggerTransitionScroll from "@/components/transitions/ChildsLifeBiggerTransitionScroll";
+import ChildsLifeBiggerTransitionScroll from "@/components/page-components/Home/LandingPageChildsLifeBiggerTransitionScroll";
 
 const LandingTransitions2Page = () => {
     return (
