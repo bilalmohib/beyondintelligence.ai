@@ -12,7 +12,7 @@ const AirCarriesHiddenRiskSection = () => {
                     className="absolute inset-0 pointer-events-none"
                     style={{
                         background:
-                            "linear-gradient(180deg, transparent 0%, transparent 82%, rgba(26,28,78,0.2) 88%, rgba(26,28,78,0.75) 94%, #1A1C4E 99%)",
+                            "linear-gradient(180deg, transparent 0%, transparent 86%, rgba(26,28,78,0.2) 90%, rgba(26,28,78,0.75) 95%, #1A1C4E 99.5%)",
                     }}
                 />
 
