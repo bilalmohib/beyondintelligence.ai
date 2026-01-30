@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import toast from "react-hot-toast";
 import {
   saveParentInformation,
   saveChildInformation,
@@ -9,15 +11,18 @@ import {
   saveIndoorAir,
   saveIllnessAndRecoveryTendencies,
   saveYourExperienceAsAParent,
+  saveSignupResponse,
 } from "@/redux/slices/signupSlice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import { Button } from "@/components/ui/button";
-import { useSignupData } from "@/hooks/useSignupData";
 import { usePathname, useRouter } from "next/navigation";
 import { signupSteps } from "@/app/(auth)/signup/steps/(components)/SignupStepper/data";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
 import { normalizeFormData } from "@/utils/normalizeFormData";
+import { useSignupMutation } from "@/redux/signupApiSlice";
+import { transformSignupData } from "@/utils/transformSignupData";
+import { Loader2 } from "lucide-react";
 
 const stepActionMap: Record<string, (data: any) => any> = {
   "/signup/steps/parent-information": saveParentInformation,
@@ -33,10 +38,12 @@ const stepActionMap: Record<string, (data: any) => any> = {
 const ContinueButton = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
-  const { getAllSignupData } = useSignupData();
+  const formData = useSelector((state: RootState) => state.signup.formData);
   const { validateCurrentForm, getCurrentFormValues } = useSignupForm();
+  const [signup] = useSignupMutation();
 
   const currentStepIndex = signupSteps.findIndex(
     (step) => step.href === pathname
@@ -61,8 +68,65 @@ const ContinueButton = () => {
     }
 
     if (isLastStep) {
-      getAllSignupData();
-      router.push("/signup/success");
+      setIsSubmitting(true);
+      
+      try {
+        // Get the complete form data including the current step's data
+        const completeFormData = {
+          ...formData,
+          yourExperienceAsAParent: normalizeFormData(formValues),
+        };
+
+        // Transform form data to API request format
+        const apiRequest = transformSignupData(completeFormData);
+
+        // Log the request for debugging
+        console.log('=== Signup API Request ===');
+        console.log(JSON.stringify(apiRequest, null, 2));
+        console.log('==========================');
+
+        // Make the API call
+        const response = await signup(apiRequest).unwrap();
+
+        // Log the response for debugging
+        console.log('=== Signup API Response ===');
+        console.log(JSON.stringify(response, null, 2));
+        console.log('===========================');
+
+        // Save response to Redux
+        dispatch(saveSignupResponse(response));
+
+        // Show success toast
+        toast.success('Account created successfully! Check your SMS for the next steps.', {
+          duration: 5000,
+        });
+
+        // Navigate to success page
+        router.push("/signup/success");
+      } catch (error: any) {
+        console.error('Signup error:', error);
+        
+        // Extract error message from API response
+        let errorMessage = 'Something went wrong. Please try again.';
+        
+        if (error?.data?.message) {
+          errorMessage = error.data.message;
+        } else if (error?.data?.error) {
+          errorMessage = error.data.error;
+        } else if (error?.message) {
+          errorMessage = error.message;
+        } else if (typeof error?.data === 'string') {
+          errorMessage = error.data;
+        }
+
+        // Show error toast
+        toast.error(errorMessage, {
+          duration: 6000,
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
+      
       return;
     }
 
@@ -78,8 +142,18 @@ const ContinueButton = () => {
       size="lg"
       className="w-fit px-5! py-3.5! text-base!"
       onClick={handleContinue}
+      disabled={isSubmitting}
     >
-      {isLastStep ? "Submit" : "Continue"}
+      {isSubmitting ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Submitting...
+        </>
+      ) : isLastStep ? (
+        "Submit"
+      ) : (
+        "Continue"
+      )}
     </Button>
   );
 };

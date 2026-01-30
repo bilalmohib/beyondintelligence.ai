@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { SignupResponse } from '@/redux/signupApiSlice';
 
 interface SignupFormData {
   parentInformation?: {
@@ -49,10 +50,14 @@ interface SignupFormData {
 
 interface SignupState {
   formData: SignupFormData;
+  signupResponse: SignupResponse | null;
+  isSignupComplete: boolean;
 }
 
 const initialState: SignupState = {
   formData: {},
+  signupResponse: null,
+  isSignupComplete: false,
 };
 
 const signupSlice = createSlice({
@@ -83,8 +88,14 @@ const signupSlice = createSlice({
     saveYourExperienceAsAParent: (state, action: PayloadAction<SignupFormData['yourExperienceAsAParent']>) => {
       state.formData.yourExperienceAsAParent = action.payload;
     },
+    saveSignupResponse: (state, action: PayloadAction<SignupResponse>) => {
+      state.signupResponse = action.payload;
+      state.isSignupComplete = true;
+    },
     resetSignupData: (state) => {
       state.formData = {};
+      state.signupResponse = null;
+      state.isSignupComplete = false;
     },
   },
 });
@@ -98,10 +109,13 @@ export const {
   saveIndoorAir,
   saveIllnessAndRecoveryTendencies,
   saveYourExperienceAsAParent,
+  saveSignupResponse,
   resetSignupData,
 } = signupSlice.actions;
 
 export const selectSignupData = (state: { signup: SignupState }) => state.signup.formData;
 export const selectAllSignupData = (state: { signup: SignupState }) => state.signup.formData;
+export const selectSignupResponse = (state: { signup: SignupState }) => state.signup.signupResponse;
+export const selectIsSignupComplete = (state: { signup: SignupState }) => state.signup.isSignupComplete;
 
 export default signupSlice.reducer;
