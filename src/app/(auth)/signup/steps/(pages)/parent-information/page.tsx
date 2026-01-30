@@ -22,7 +22,6 @@ import { useFormSyncWithRedux } from "@/hooks/useFormSyncWithRedux";
 import { selectSignupData } from "@/redux/slices/signupSlice";
 import type { RootState } from "@/redux/store";
 
-// Zod schema for form validation
 const parentInformationSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
@@ -36,16 +35,9 @@ const parentInformationSchema = z.object({
     )
     .refine(
       (val) => {
-        // E.164 format: +[country code][subscriber number]
-        // Must start with +, followed by country code (1-3 digits starting with 1-9), then subscriber number
-        // Total digits after + must be between 1-15
-        const digits = val.slice(1); // Remove the +
+        const digits = val.slice(1);
         if (digits.length < 1 || digits.length > 15) return false;
-        
-        // First digit after + must be 1-9 (country codes don't start with 0)
         if (!/^[1-9]/.test(digits)) return false;
-        
-        // All remaining characters must be digits
         return /^\d+$/.test(digits);
       },
       {
@@ -59,23 +51,15 @@ const parentInformationSchema = z.object({
 
 type ParentInformationFormData = z.infer<typeof parentInformationSchema>;
 
-/**
- * Normalizes phone input to canonical E.164 format (+1234567890)
- * This is what gets stored in the form state and sent to the API
- */
 const normalizePhoneToE164 = (value: string): string => {
-  // Remove all non-digit characters except the leading +
   let cleaned = value.replace(/[^\d+]/g, "");
 
-  // Ensure it starts with +
   if (!cleaned.startsWith("+")) {
     cleaned = "+" + cleaned.replace(/\+/g, "");
   }
 
-  // Remove any additional + signs after the first one
   cleaned = cleaned.charAt(0) + cleaned.slice(1).replace(/\+/g, "");
 
-  // Limit to 16 characters (1 for + and up to 15 digits)
   if (cleaned.length > 16) {
     cleaned = cleaned.slice(0, 16);
   }
@@ -83,23 +67,17 @@ const normalizePhoneToE164 = (value: string): string => {
   return cleaned;
 };
 
-/**
- * Formats E.164 phone number for display (e.g., +1 (234) 567-8900)
- * This is what the user sees in the input field
- */
 const formatPhoneDisplay = (e164Value: string): string => {
   if (!e164Value || !e164Value.startsWith("+")) {
     return e164Value || "";
   }
 
-  // Extract country code and number
-  const digits = e164Value.slice(1); // Remove the +
-  
+  const digits = e164Value.slice(1);
+
   if (digits.length === 0) {
     return "+";
   }
 
-  // US/Canada format: +1 (234) 567-8900
   if (digits.startsWith("1")) {
     if (digits.length <= 1) {
       return `+${digits}`;
@@ -110,12 +88,10 @@ const formatPhoneDisplay = (e164Value: string): string => {
     } else if (digits.length <= 10) {
       return `+${digits.slice(0, 1)} (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
     } else {
-      // Full format: +1 (234) 567-8900
       return `+${digits.slice(0, 1)} (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7, 11)}`;
     }
   }
 
-  // UK format: +44 20 1234 5678
   if (digits.startsWith("44")) {
     if (digits.length <= 2) {
       return `+${digits}`;
@@ -128,7 +104,6 @@ const formatPhoneDisplay = (e164Value: string): string => {
     }
   }
 
-  // Generic international format with progressive formatting
   if (digits.length <= 2) {
     return `+${digits}`;
   } else if (digits.length <= 5) {
@@ -181,7 +156,6 @@ const SignupStepParentInformationPage = () => {
     mode: "onChange",
   });
 
-  // Sync form with Redux state when navigating back to this step
   useFormSyncWithRedux<ParentInformationFormData>(savedData, reset, defaultValues);
 
   useEffect(() => {
@@ -202,11 +176,9 @@ const SignupStepParentInformationPage = () => {
   const isPhoneValid = phoneValue
     ? parentInformationSchema.shape.phone.safeParse(phoneValue).success
     : false;
-  
-  // Local state for formatted display value
+
   const [phoneDisplay, setPhoneDisplay] = useState("");
 
-  // Sync display value when form value changes (e.g., from Redux or initial load)
   useEffect(() => {
     if (phoneValue) {
       setPhoneDisplay(formatPhoneDisplay(phoneValue));
@@ -378,11 +350,8 @@ const SignupStepParentInformationPage = () => {
                   value={phoneDisplay}
                   onChange={(e) => {
                     const inputValue = e.target.value;
-                    // Normalize to E.164 format for storage
                     const e164Value = normalizePhoneToE164(inputValue);
-                    // Update display with formatted version
                     setPhoneDisplay(formatPhoneDisplay(e164Value));
-                    // Store canonical E.164 in form state
                     field.onChange(e164Value);
                   }}
                   onBlur={field.onBlur}

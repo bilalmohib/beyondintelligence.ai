@@ -79,7 +79,6 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
     mode: "onChange",
   });
 
-  // Sync form with Redux state when navigating back to this step
   useFormSyncWithRedux<HowTheirBreathingBehavesFormData>(savedData, reset, defaultValues);
 
   useEffect(() => {

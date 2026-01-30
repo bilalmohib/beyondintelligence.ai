@@ -51,7 +51,6 @@ export const SignupProgressRestore = () => {
       }
     }
 
-    // Navigate to the step where user should continue (first incomplete step)
     const stepToContinue = getStepToContinue();
     if (stepToContinue && stepToContinue !== pathname) {
       router.replace(stepToContinue);

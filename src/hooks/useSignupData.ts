@@ -18,8 +18,7 @@ export const useSignupData = () => {
       ...formData.illnessAndRecoveryTendencies,
       ...formData.yourExperienceAsAParent,
     };
-    
-    // Normalize all data (trim strings) before returning for API submission
+
     const normalizedData = normalizeFormData(allData);
     
     console.log('=== Complete Signup Data ===');

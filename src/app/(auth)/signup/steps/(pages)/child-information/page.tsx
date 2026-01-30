@@ -70,7 +70,6 @@ const SignupStepChildInformationPage = () => {
     mode: "onChange",
   });
 
-  // Sync form with Redux state when navigating back to this step
   useFormSyncWithRedux<ChildInformationFormData>(savedData, reset, defaultValues);
 
   useEffect(() => {

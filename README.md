@@ -455,14 +455,14 @@ interface SignupFormData {
 
 ## API Integration
 
-### Submission Method
-**Planned**: **Next.js Server Actions** or **Server Routes**
+### Signup submission (proxy)
 
-The final submission will use one of:
-- **Server Actions**: Next.js server actions for type-safe API calls
-- **Server Routes**: API routes (`/api/*`) proxying to backend
+Signup is submitted from the client to the **same-origin** route `POST /api/v1/signup`. That API route proxies the request to your backend.
 
-**Current State**: Form data collection and validation complete. API integration pending backend endpoint confirmation.
+- **Client** always POSTs to `/api/v1/signup` (no CORS, no 405 on Vercel).
+- **Proxy** forwards to `{API_BASE_URL}/v1/signup` or `{NEXT_PUBLIC_API_BASE_URL}/v1/signup`.
+
+**On Vercel**: set **`API_BASE_URL`** (or `NEXT_PUBLIC_API_BASE_URL`) in Project → Settings → Environment Variables to your backend URL (e.g. `http://staging-alb-313415913.us-east-1.elb.amazonaws.com`). If this is not set, the proxy returns 503 and the form shows "Something went wrong."
 
 ### API Contract
 

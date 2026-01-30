@@ -3,11 +3,12 @@ export const AUTH_ROUTES = [
     "/register"
 ];
 
-// API Configuration
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? '';
+
 export const API_CONFIG = {
-    BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL!,
+    BASE_URL: baseUrl,
     PORT: 80,
     ENDPOINTS: {
-        SIGNUP: '/v1/signup',
+        SIGNUP: baseUrl ? '/v1/signup' : '/api/v1/signup',
     },
 } as const;
