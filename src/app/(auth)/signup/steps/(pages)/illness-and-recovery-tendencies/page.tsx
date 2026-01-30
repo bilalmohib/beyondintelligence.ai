@@ -34,10 +34,17 @@ const SignupStepIllnessAndRecoveryTendenciesPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).illnessAndRecoveryTendencies);
 
-  const defaultValues = useMemo(() => ({
-    catchesColdsOften: savedData?.catchesColdsOften ?? undefined,
-    usesGasStove: savedData?.usesGasStove ?? undefined,
-  }), [savedData]);
+  const defaultValues = useMemo((): {
+    catchesColdsOften?: IllnessAndRecoveryTendenciesFormData["catchesColdsOften"];
+    usesGasStove?: IllnessAndRecoveryTendenciesFormData["usesGasStove"];
+  } => {
+    const yesNo = (v: string | undefined): "yes" | "no" | undefined =>
+      v === "yes" || v === "no" ? v : undefined;
+    return {
+      catchesColdsOften: yesNo(savedData?.catchesColdsOften),
+      usesGasStove: yesNo(savedData?.usesGasStove),
+    };
+  }, [savedData]);
 
   const {
     handleSubmit,
@@ -53,7 +60,7 @@ const SignupStepIllnessAndRecoveryTendenciesPage = () => {
   });
 
   // Sync form with Redux state when navigating back to this step
-  useFormSyncWithRedux(savedData, reset, defaultValues);
+  useFormSyncWithRedux<IllnessAndRecoveryTendenciesFormData>(savedData, reset, defaultValues);
 
   useEffect(() => {
     registerForm(

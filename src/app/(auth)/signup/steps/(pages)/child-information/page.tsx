@@ -39,12 +39,22 @@ const SignupStepChildInformationPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).childInformation);
 
-  const defaultValues = useMemo(() => ({
-    firstName: savedData?.firstName ?? "",
-    lastName: savedData?.lastName ?? "",
-    age: savedData?.age ?? undefined,
-    asthmaDescription: savedData?.asthmaDescription ?? undefined,
-  }), [savedData]);
+  const defaultValues = useMemo((): {
+    firstName: string;
+    lastName: string;
+    age: number | undefined;
+    asthmaDescription?: ChildInformationFormData["asthmaDescription"];
+  } => {
+    const raw = savedData?.asthmaDescription;
+    const asthmaDescription: ChildInformationFormData["asthmaDescription"] | undefined =
+      raw === "mild" || raw === "moderate" || raw === "severe" || raw === "not sure" ? raw : undefined;
+    return {
+      firstName: savedData?.firstName ?? "",
+      lastName: savedData?.lastName ?? "",
+      age: savedData?.age ?? undefined,
+      asthmaDescription,
+    };
+  }, [savedData]);
 
   const {
     register,
@@ -61,7 +71,7 @@ const SignupStepChildInformationPage = () => {
   });
 
   // Sync form with Redux state when navigating back to this step
-  useFormSyncWithRedux(savedData, reset, defaultValues);
+  useFormSyncWithRedux<ChildInformationFormData>(savedData, reset, defaultValues);
 
   useEffect(() => {
     registerForm(

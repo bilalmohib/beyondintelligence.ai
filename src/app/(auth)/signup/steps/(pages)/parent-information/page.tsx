@@ -148,13 +148,23 @@ const SignupStepParentInformationPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).parentInformation);
 
-  const defaultValues = useMemo(() => ({
-    firstName: savedData?.firstName ?? "",
-    lastName: savedData?.lastName ?? "",
-    email: savedData?.email ?? "",
-    phone: savedData?.phone ?? "",
-    smsConsent: savedData?.smsConsent ?? "allow",
-  }), [savedData]);
+  const defaultValues = useMemo((): {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    smsConsent: ParentInformationFormData["smsConsent"];
+  } => {
+    const smsConsent: ParentInformationFormData["smsConsent"] =
+      savedData?.smsConsent === "allow" ? "allow" : "allow";
+    return {
+      firstName: savedData?.firstName ?? "",
+      lastName: savedData?.lastName ?? "",
+      email: savedData?.email ?? "",
+      phone: savedData?.phone ?? "",
+      smsConsent,
+    };
+  }, [savedData]);
 
   const {
     register,
@@ -172,7 +182,7 @@ const SignupStepParentInformationPage = () => {
   });
 
   // Sync form with Redux state when navigating back to this step
-  useFormSyncWithRedux(savedData, reset, defaultValues);
+  useFormSyncWithRedux<ParentInformationFormData>(savedData, reset, defaultValues);
 
   useEffect(() => {
     registerForm(

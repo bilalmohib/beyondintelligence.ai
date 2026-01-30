@@ -40,12 +40,21 @@ const SignupStepIndoorAirPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).indoorAir);
 
-  const defaultValues = useMemo(() => ({
-    hasPets: savedData?.hasPets ?? undefined,
-    homeFeelsHumid: savedData?.homeFeelsHumid ?? undefined,
-    waterLeaksOrMustySmells: savedData?.waterLeaksOrMustySmells ?? undefined,
-    usesGasStove: savedData?.usesGasStove ?? undefined,
-  }), [savedData]);
+  const defaultValues = useMemo((): {
+    hasPets?: IndoorAirFormData["hasPets"];
+    homeFeelsHumid?: IndoorAirFormData["homeFeelsHumid"];
+    waterLeaksOrMustySmells?: IndoorAirFormData["waterLeaksOrMustySmells"];
+    usesGasStove?: IndoorAirFormData["usesGasStove"];
+  } => {
+    const yesNo = (v: string | undefined): "yes" | "no" | undefined =>
+      v === "yes" || v === "no" ? v : undefined;
+    return {
+      hasPets: yesNo(savedData?.hasPets),
+      homeFeelsHumid: yesNo(savedData?.homeFeelsHumid),
+      waterLeaksOrMustySmells: yesNo(savedData?.waterLeaksOrMustySmells),
+      usesGasStove: yesNo(savedData?.usesGasStove),
+    };
+  }, [savedData]);
 
   const {
     handleSubmit,
@@ -61,7 +70,7 @@ const SignupStepIndoorAirPage = () => {
   });
 
   // Sync form with Redux state when navigating back to this step
-  useFormSyncWithRedux(savedData, reset, defaultValues);
+  useFormSyncWithRedux<IndoorAirFormData>(savedData, reset, defaultValues);
 
   useEffect(() => {
     registerForm(
