@@ -2,6 +2,8 @@
 
 import { z } from "zod";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
 import { InfoIcon } from "@/components/icons";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +11,9 @@ import { Paragraph } from "@/components/common/Typography";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
+import { useSignupProgress } from "@/hooks/useSignupProgress";
+import { selectSignupData } from "@/redux/slices/signupSlice";
+import type { RootState } from "@/redux/store";
 
 const yourExperienceAsAParentSchema = z.object({
   worries: z.array(z.string()).min(1, "Please select at least one option"),
@@ -17,7 +22,10 @@ const yourExperienceAsAParentSchema = z.object({
 type YourExperienceAsAParentFormData = z.infer<typeof yourExperienceAsAParentSchema>;
 
 const SignupStepYourExperienceAsAParentPage = () => {
+  const pathname = usePathname();
   const { registerForm, unregisterForm } = useSignupForm();
+  const { saveStepDraft } = useSignupProgress();
+  const savedData = useSelector((state: RootState) => selectSignupData(state).yourExperienceAsAParent);
 
   const {
     handleSubmit,
@@ -28,7 +36,7 @@ const SignupStepYourExperienceAsAParentPage = () => {
   } = useForm<YourExperienceAsAParentFormData>({
     resolver: zodResolver(yourExperienceAsAParentSchema),
     defaultValues: {
-      worries: [],
+      worries: savedData?.worries ?? [],
     },
     mode: "onChange",
   });
@@ -41,8 +49,11 @@ const SignupStepYourExperienceAsAParentPage = () => {
       },
       () => getValues()
     );
-    return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger, getValues]);
+    return () => {
+      saveStepDraft(pathname, getValues());
+      unregisterForm();
+    };
+  }, [registerForm, unregisterForm, trigger, getValues, pathname, saveStepDraft]);
 
   const onSubmit = (data: YourExperienceAsAParentFormData) => {
     console.log("Form submitted:", data);

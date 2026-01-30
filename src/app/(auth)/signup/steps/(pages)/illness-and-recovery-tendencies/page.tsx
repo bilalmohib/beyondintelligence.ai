@@ -2,6 +2,8 @@
 
 import { z } from "zod";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
 import { Label } from "@/components/ui/label";
 import { InfoIcon } from "@/components/icons";
 import { useForm, Controller } from "react-hook-form";
@@ -10,6 +12,9 @@ import { Paragraph } from "@/components/common/Typography";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
+import { useSignupProgress } from "@/hooks/useSignupProgress";
+import { selectSignupData } from "@/redux/slices/signupSlice";
+import type { RootState } from "@/redux/store";
 
 const illnessAndRecoveryTendenciesSchema = z.object({
   catchesColdsOften: z.enum(["yes", "no"], {
@@ -23,7 +28,10 @@ const illnessAndRecoveryTendenciesSchema = z.object({
 type IllnessAndRecoveryTendenciesFormData = z.infer<typeof illnessAndRecoveryTendenciesSchema>;
 
 const SignupStepIllnessAndRecoveryTendenciesPage = () => {
+  const pathname = usePathname();
   const { registerForm, unregisterForm } = useSignupForm();
+  const { saveStepDraft } = useSignupProgress();
+  const savedData = useSelector((state: RootState) => selectSignupData(state).illnessAndRecoveryTendencies);
 
   const {
     handleSubmit,
@@ -34,8 +42,8 @@ const SignupStepIllnessAndRecoveryTendenciesPage = () => {
   } = useForm<IllnessAndRecoveryTendenciesFormData>({
     resolver: zodResolver(illnessAndRecoveryTendenciesSchema),
     defaultValues: {
-      catchesColdsOften: undefined,
-      usesGasStove: undefined,
+      catchesColdsOften: savedData?.catchesColdsOften ?? undefined,
+      usesGasStove: savedData?.usesGasStove ?? undefined,
     },
     mode: "onChange",
   });
@@ -48,8 +56,11 @@ const SignupStepIllnessAndRecoveryTendenciesPage = () => {
       },
       () => getValues()
     );
-    return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger, getValues]);
+    return () => {
+      saveStepDraft(pathname, getValues());
+      unregisterForm();
+    };
+  }, [registerForm, unregisterForm, trigger, getValues, pathname, saveStepDraft]);
 
   const onSubmit = (data: IllnessAndRecoveryTendenciesFormData) => {
     console.log("Form submitted:", data);

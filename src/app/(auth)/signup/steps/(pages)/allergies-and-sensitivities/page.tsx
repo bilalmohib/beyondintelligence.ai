@@ -2,6 +2,8 @@
 
 import { z } from "zod";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
 import { Label } from "@/components/ui/label";
 import { InfoIcon } from "@/components/icons";
 import { useForm, Controller } from "react-hook-form";
@@ -11,6 +13,9 @@ import { Paragraph } from "@/components/common/Typography";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
+import { useSignupProgress } from "@/hooks/useSignupProgress";
+import { selectSignupData } from "@/redux/slices/signupSlice";
+import type { RootState } from "@/redux/store";
 
 const allergiesAndSensitivitiesSchema = z.object({
   hasAllergies: z.enum(["yes", "no", "not-sure"], {
@@ -22,8 +27,11 @@ const allergiesAndSensitivitiesSchema = z.object({
 type AllergiesAndSensitivitiesFormData = z.infer<typeof allergiesAndSensitivitiesSchema>;
 
 const SignupStepAllergiesAndSensitivitiesPage = () => {
+  const pathname = usePathname();
   const { registerForm, unregisterForm } = useSignupForm();
-  
+  const { saveStepDraft } = useSignupProgress();
+  const savedData = useSelector((state: RootState) => selectSignupData(state).allergiesAndSensitivities);
+
   const {
     handleSubmit,
     control,
@@ -33,8 +41,8 @@ const SignupStepAllergiesAndSensitivitiesPage = () => {
   } = useForm<AllergiesAndSensitivitiesFormData>({
     resolver: zodResolver(allergiesAndSensitivitiesSchema),
     defaultValues: {
-      hasAllergies: undefined,
-      allergies: [],
+      hasAllergies: savedData?.hasAllergies ?? undefined,
+      allergies: savedData?.allergies ?? [],
     },
     mode: "onChange",
   });
@@ -47,8 +55,11 @@ const SignupStepAllergiesAndSensitivitiesPage = () => {
       },
       () => getValues()
     );
-    return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger, getValues]);
+    return () => {
+      saveStepDraft(pathname, getValues());
+      unregisterForm();
+    };
+  }, [registerForm, unregisterForm, trigger, getValues, pathname, saveStepDraft]);
 
   const onSubmit = (data: AllergiesAndSensitivitiesFormData) => {
     console.log("Form submitted:", data);

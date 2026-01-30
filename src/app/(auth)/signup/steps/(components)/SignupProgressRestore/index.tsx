@@ -1,0 +1,71 @@
+"use client";
+
+import { useLayoutEffect, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import {
+  saveParentInformation,
+  saveChildInformation,
+  saveHowTheirBreathingBehaves,
+  saveHomeAndSchoolEnvironment,
+  saveAllergiesAndSensitivities,
+  saveIndoorAir,
+  saveIllnessAndRecoveryTendencies,
+  saveYourExperienceAsAParent,
+} from "@/redux/slices/signupSlice";
+import type { AppDispatch } from "@/redux/store";
+import { useSignupProgress } from "@/hooks/useSignupProgress";
+
+/**
+ * Rehydrates Redux from localStorage and redirects to last step if needed.
+ * Saves current step to localStorage when pathname changes.
+ */
+export const SignupProgressRestore = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
+  const pathname = usePathname();
+  const { getSavedFormData, getLastStep, saveLastStep } = useSignupProgress();
+
+  // Rehydrate Redux and redirect to last step (before paint)
+  useLayoutEffect(() => {
+    const saved = getSavedFormData();
+    if (saved) {
+      if (saved.parentInformation) {
+        dispatch(saveParentInformation(saved.parentInformation as any));
+      }
+      if (saved.childInformation) {
+        dispatch(saveChildInformation(saved.childInformation as any));
+      }
+      if (saved.howTheirBreathingBehaves) {
+        dispatch(saveHowTheirBreathingBehaves(saved.howTheirBreathingBehaves as any));
+      }
+      if (saved.homeAndSchoolEnvironment) {
+        dispatch(saveHomeAndSchoolEnvironment(saved.homeAndSchoolEnvironment as any));
+      }
+      if (saved.allergiesAndSensitivities) {
+        dispatch(saveAllergiesAndSensitivities(saved.allergiesAndSensitivities as any));
+      }
+      if (saved.indoorAir) {
+        dispatch(saveIndoorAir(saved.indoorAir as any));
+      }
+      if (saved.illnessAndRecoveryTendencies) {
+        dispatch(saveIllnessAndRecoveryTendencies(saved.illnessAndRecoveryTendencies as any));
+      }
+      if (saved.yourExperienceAsAParent) {
+        dispatch(saveYourExperienceAsAParent(saved.yourExperienceAsAParent as any));
+      }
+    }
+
+    const lastStep = getLastStep();
+    if (lastStep && lastStep !== pathname) {
+      router.replace(lastStep);
+    }
+  }, []); // Run once on mount
+
+  // Save current step whenever pathname changes (after redirect / navigation)
+  useEffect(() => {
+    saveLastStep(pathname);
+  }, [pathname, saveLastStep]);
+
+  return null;
+};
