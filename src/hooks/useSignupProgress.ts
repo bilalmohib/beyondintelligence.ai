@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const SIGNUP_FORM_DATA_KEY = 'satori_signup_form_data';
 const SIGNUP_LAST_STEP_KEY = 'satori_signup_last_step';
@@ -13,6 +13,18 @@ export const SIGNUP_PATHNAME_TO_KEY: Record<string, string> = {
   '/signup/steps/illness-and-recovery-tendencies': 'illnessAndRecoveryTendencies',
   '/signup/steps/your-experience-as-a-parent': 'yourExperienceAsAParent',
 };
+
+// Ordered list of steps - used to determine progress
+export const SIGNUP_STEPS_ORDER = [
+  { pathname: '/signup/steps/parent-information', key: 'parentInformation' },
+  { pathname: '/signup/steps/child-information', key: 'childInformation' },
+  { pathname: '/signup/steps/how-their-breathing-behaves', key: 'howTheirBreathingBehaves' },
+  { pathname: '/signup/steps/home-and-school-environment', key: 'homeAndSchoolEnvironment' },
+  { pathname: '/signup/steps/allergies-and-sensitivities', key: 'allergiesAndSensitivities' },
+  { pathname: '/signup/steps/indoor-air', key: 'indoorAir' },
+  { pathname: '/signup/steps/illness-and-recovery-tendencies', key: 'illnessAndRecoveryTendencies' },
+  { pathname: '/signup/steps/your-experience-as-a-parent', key: 'yourExperienceAsAParent' },
+];
 
 export type SignupFormDataPersisted = Record<string, unknown>;
 
@@ -66,6 +78,38 @@ export const useSignupProgress = () => {
     setLastStep(null);
   }, []);
 
+  /**
+   * Gets the step where the user should continue from based on saved progress.
+   * Returns the first incomplete step (step after the last completed one).
+   * If all steps are complete, returns the last step.
+   * If no steps are complete, returns the first step.
+   */
+  const getStepToContinue = useCallback((): string => {
+    const saved = getSavedFormData();
+    if (!saved) {
+      return SIGNUP_STEPS_ORDER[0].pathname;
+    }
+
+    // Find the index of the first step that doesn't have data
+    let firstIncompleteIndex = SIGNUP_STEPS_ORDER.length;
+    for (let i = 0; i < SIGNUP_STEPS_ORDER.length; i++) {
+      const step = SIGNUP_STEPS_ORDER[i];
+      const stepData = saved[step.key];
+      // Check if step has meaningful data (not just an empty object)
+      if (!stepData || (typeof stepData === 'object' && Object.keys(stepData).length === 0)) {
+        firstIncompleteIndex = i;
+        break;
+      }
+    }
+
+    // If all steps are complete, return the last step
+    if (firstIncompleteIndex >= SIGNUP_STEPS_ORDER.length) {
+      return SIGNUP_STEPS_ORDER[SIGNUP_STEPS_ORDER.length - 1].pathname;
+    }
+
+    return SIGNUP_STEPS_ORDER[firstIncompleteIndex].pathname;
+  }, [getSavedFormData]);
+
   return {
     getSavedFormData,
     getLastStep,
@@ -73,6 +117,7 @@ export const useSignupProgress = () => {
     saveLastStep,
     saveStepDraft,
     clearProgress,
+    getStepToContinue,
     lastStep,
     formData,
   };

@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
 import { InfoIcon } from "@/components/icons";
@@ -12,6 +12,7 @@ import { MultiSelect } from "@/components/ui/multi-select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
 import { useSignupProgress } from "@/hooks/useSignupProgress";
+import { useFormSyncWithRedux } from "@/hooks/useFormSyncWithRedux";
 import { selectSignupData } from "@/redux/slices/signupSlice";
 import type { RootState } from "@/redux/store";
 
@@ -27,19 +28,25 @@ const SignupStepYourExperienceAsAParentPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).yourExperienceAsAParent);
 
+  const defaultValues = useMemo(() => ({
+    worries: savedData?.worries ?? [],
+  }), [savedData]);
+
   const {
     handleSubmit,
     control,
     trigger,
     getValues,
+    reset,
     formState: { errors },
   } = useForm<YourExperienceAsAParentFormData>({
     resolver: zodResolver(yourExperienceAsAParentSchema),
-    defaultValues: {
-      worries: savedData?.worries ?? [],
-    },
+    defaultValues,
     mode: "onChange",
   });
+
+  // Sync form with Redux state when navigating back to this step
+  useFormSyncWithRedux(savedData, reset, defaultValues);
 
   useEffect(() => {
     registerForm(

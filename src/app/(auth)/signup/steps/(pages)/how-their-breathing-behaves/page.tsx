@@ -6,7 +6,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
 import { Label } from "@/components/ui/label";
@@ -19,6 +19,7 @@ import { MultiSelect } from "@/components/ui/multi-select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
 import { useSignupProgress } from "@/hooks/useSignupProgress";
+import { useFormSyncWithRedux } from "@/hooks/useFormSyncWithRedux";
 import { selectSignupData } from "@/redux/slices/signupSlice";
 import type { RootState } from "@/redux/store";
 
@@ -42,25 +43,31 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).howTheirBreathingBehaves);
 
+  const defaultValues = useMemo(() => ({
+    symptomsWorseTime: savedData?.symptomsWorseTime ?? undefined,
+    triggers: savedData?.triggers ?? [],
+    symptoms: savedData?.symptoms ?? [],
+    timeOutdoors: savedData?.timeOutdoors ?? undefined,
+    mostActiveTime: savedData?.mostActiveTime ?? undefined,
+    playsSports: savedData?.playsSports ?? undefined,
+    awayFromChild: savedData?.awayFromChild ?? [],
+  }), [savedData]);
+
   const {
     handleSubmit,
     control,
     trigger,
     getValues,
+    reset,
     formState: { errors },
   } = useForm<HowTheirBreathingBehavesFormData>({
     resolver: zodResolver(howTheirBreathingBehavesSchema),
-    defaultValues: {
-      symptomsWorseTime: savedData?.symptomsWorseTime ?? undefined,
-      triggers: savedData?.triggers ?? [],
-      symptoms: savedData?.symptoms ?? [],
-      timeOutdoors: savedData?.timeOutdoors ?? undefined,
-      mostActiveTime: savedData?.mostActiveTime ?? undefined,
-      playsSports: savedData?.playsSports ?? undefined,
-      awayFromChild: savedData?.awayFromChild ?? [],
-    },
+    defaultValues,
     mode: "onChange",
   });
+
+  // Sync form with Redux state when navigating back to this step
+  useFormSyncWithRedux(savedData, reset, defaultValues);
 
   useEffect(() => {
     registerForm(

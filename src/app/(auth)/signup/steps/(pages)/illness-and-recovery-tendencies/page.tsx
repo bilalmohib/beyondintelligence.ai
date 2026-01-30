@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
 import { Label } from "@/components/ui/label";
@@ -13,6 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
 import { useSignupProgress } from "@/hooks/useSignupProgress";
+import { useFormSyncWithRedux } from "@/hooks/useFormSyncWithRedux";
 import { selectSignupData } from "@/redux/slices/signupSlice";
 import type { RootState } from "@/redux/store";
 
@@ -33,20 +34,26 @@ const SignupStepIllnessAndRecoveryTendenciesPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).illnessAndRecoveryTendencies);
 
+  const defaultValues = useMemo(() => ({
+    catchesColdsOften: savedData?.catchesColdsOften ?? undefined,
+    usesGasStove: savedData?.usesGasStove ?? undefined,
+  }), [savedData]);
+
   const {
     handleSubmit,
     control,
     trigger,
     getValues,
+    reset,
     formState: { errors },
   } = useForm<IllnessAndRecoveryTendenciesFormData>({
     resolver: zodResolver(illnessAndRecoveryTendenciesSchema),
-    defaultValues: {
-      catchesColdsOften: savedData?.catchesColdsOften ?? undefined,
-      usesGasStove: savedData?.usesGasStove ?? undefined,
-    },
+    defaultValues,
     mode: "onChange",
   });
+
+  // Sync form with Redux state when navigating back to this step
+  useFormSyncWithRedux(savedData, reset, defaultValues);
 
   useEffect(() => {
     registerForm(

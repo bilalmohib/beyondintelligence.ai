@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
 import { useSignupProgress } from "@/hooks/useSignupProgress";
+import { useFormSyncWithRedux } from "@/hooks/useFormSyncWithRedux";
 import { selectSignupData } from "@/redux/slices/signupSlice";
 import type { RootState } from "@/redux/store";
 
@@ -51,22 +52,28 @@ const SignupStepHomeAndSchoolEnvironmentPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).homeAndSchoolEnvironment);
 
+  const defaultValues = useMemo(() => ({
+    usesAirPurifier: savedData?.usesAirPurifier ?? undefined,
+    homeAddress: savedData?.homeAddress ?? "",
+    schoolAddress: savedData?.schoolAddress ?? "",
+  }), [savedData]);
+
   const {
     register,
     handleSubmit,
     control,
     trigger,
     getValues,
+    reset,
     formState: { errors },
   } = useForm<HomeAndSchoolEnvironmentFormData>({
     resolver: zodResolver(homeAndSchoolEnvironmentSchema),
-    defaultValues: {
-      usesAirPurifier: savedData?.usesAirPurifier ?? undefined,
-      homeAddress: savedData?.homeAddress ?? "",
-      schoolAddress: savedData?.schoolAddress ?? "",
-    },
+    defaultValues,
     mode: "onChange",
   });
+
+  // Sync form with Redux state when navigating back to this step
+  useFormSyncWithRedux(savedData, reset, defaultValues);
 
   useEffect(() => {
     registerForm(

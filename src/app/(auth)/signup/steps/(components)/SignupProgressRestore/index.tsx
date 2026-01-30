@@ -20,7 +20,7 @@ export const SignupProgressRestore = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const pathname = usePathname();
-  const { getSavedFormData, getLastStep, saveLastStep } = useSignupProgress();
+  const { getSavedFormData, getStepToContinue, saveLastStep } = useSignupProgress();
 
   useLayoutEffect(() => {
     const saved = getSavedFormData();
@@ -51,9 +51,10 @@ export const SignupProgressRestore = () => {
       }
     }
 
-    const lastStep = getLastStep();
-    if (lastStep && lastStep !== pathname) {
-      router.replace(lastStep);
+    // Navigate to the step where user should continue (first incomplete step)
+    const stepToContinue = getStepToContinue();
+    if (stepToContinue && stepToContinue !== pathname) {
+      router.replace(stepToContinue);
     }
   }, []);
 
