@@ -2,26 +2,43 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { CheckCircle2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { HelpCenterIcon } from "@/components/icons";
-import Container from "@/components/common/Container";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "@/redux/store";
+import { Button } from "@/components/ui/button";
+import Container from "@/components/common/Container";
 import { Heading1, Paragraph } from "@/components/common/Typography";
+import { HelpCenterIcon } from "@/components/icons";
 import { resetSignupData, selectSignupResponse } from "@/redux/slices/signupSlice";
+import type { AppDispatch, RootState } from "@/redux/store";
+import { useSignupCompletion } from "@/hooks/useSignupCompletion";
+import { CheckCircle2, InfoIcon } from "lucide-react";
 
 const SignupSuccessPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const signupResponse = useSelector((state: RootState) => selectSignupResponse(state));
+  const { isSignupComplete, completionData } = useSignupCompletion();
 
-  // Clear signup data when user navigates away (cleanup on unmount)
+  // Determine if this is a return visit (signup was completed previously but no fresh response in Redux)
+  const isReturnVisit = isSignupComplete && !signupResponse;
+
+  // Clear Redux signup data when user navigates away (cleanup on unmount)
+  // But keep localStorage data to prevent re-signup
   useEffect(() => {
     return () => {
-      // Reset signup data when leaving the success page
+      // Reset Redux signup data when leaving the success page
       dispatch(resetSignupData());
     };
   }, [dispatch]);
+
+  // Format the completion date if available
+  const completionDate = completionData.timestamp
+    ? new Date(completionData.timestamp).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    : null;
 
   return (
     <div>
@@ -31,21 +48,42 @@ const SignupSuccessPage = () => {
             <div className="flex items-center gap-3">
               <CheckCircle2 className="h-10 w-10 text-white" />
               <Heading1 className="text-white">
-                Thank you!
+                {isReturnVisit ? "Welcome back!" : "Thank you!"}
               </Heading1>
             </div>
             <Heading1 className="text-white">
-              Your child's account is almost ready.
+              {isReturnVisit 
+                ? "Your response has already been recorded."
+                : "Your child's account is almost ready."}
             </Heading1>
             <Paragraph className="text-white">
-              Satori now has the foundation it needs to protect your child with
-              hyperlocal, deeply personalized environmental intelligence.
+              {isReturnVisit
+                ? "You have already completed the signup process. Your child's Satori account is being set up."
+                : "Satori now has the foundation it needs to protect your child with hyperlocal, deeply personalized environmental intelligence."}
             </Paragraph>
           </div>
         </Container>
       </div>
       <div className="py-24 px-12.5 flex flex-row justify-center items-center max-w-[900px] mx-auto">
         <div className="bg-background-secondary p-8 rounded-[20px] flex flex-col gap-8">
+          {/* Show return visit notification */}
+          {isReturnVisit && (
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 flex items-start gap-3">
+              <InfoIcon className="h-5 w-5 text-amber-400 mt-0.5 shrink-0" />
+              <div>
+                <Paragraph className="text-amber-200 text-sm! font-semibold">
+                  Your response has already been recorded
+                </Paragraph>
+                <Paragraph className="text-amber-200/80 text-xs! mt-1">
+                  You completed the signup process
+                  {completionDate && ` on ${completionDate}`}.
+                  If you need to make changes, please contact our support team.
+                </Paragraph>
+              </div>
+            </div>
+          )}
+
+          {/* Show API response details for fresh signups */}
           {signupResponse && (
             <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
               <Paragraph className="text-white text-sm!">
@@ -58,6 +96,7 @@ const SignupSuccessPage = () => {
               </Paragraph>
             </div>
           )}
+
           <Paragraph className="text-white">
             Please check your SMS for a special link — your child's
             Environmental Safety Map — a powerful visualization of the

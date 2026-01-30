@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
 import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +17,9 @@ import {
 import { InfoIcon } from "@/components/icons";
 import { Combobox } from "@/components/ui/combo-box";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
+import { useSignupProgress } from "@/hooks/useSignupProgress";
+import { selectSignupData } from "@/redux/slices/signupSlice";
+import type { RootState } from "@/redux/store";
 
 const childInformationSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -28,8 +33,11 @@ const childInformationSchema = z.object({
 type ChildInformationFormData = z.infer<typeof childInformationSchema>;
 
 const SignupStepChildInformationPage = () => {
+  const pathname = usePathname();
   const { registerForm, unregisterForm } = useSignupForm();
-  
+  const { saveStepDraft } = useSignupProgress();
+  const savedData = useSelector((state: RootState) => selectSignupData(state).childInformation);
+
   const {
     register,
     handleSubmit,
@@ -40,10 +48,10 @@ const SignupStepChildInformationPage = () => {
   } = useForm<ChildInformationFormData>({
     resolver: zodResolver(childInformationSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      age: undefined,
-      asthmaDescription: undefined,
+      firstName: savedData?.firstName ?? "",
+      lastName: savedData?.lastName ?? "",
+      age: savedData?.age ?? undefined,
+      asthmaDescription: savedData?.asthmaDescription ?? undefined,
     },
     mode: "onChange",
   });
@@ -56,8 +64,11 @@ const SignupStepChildInformationPage = () => {
       },
       () => getValues()
     );
-    return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger, getValues]);
+    return () => {
+      saveStepDraft(pathname, getValues());
+      unregisterForm();
+    };
+  }, [registerForm, unregisterForm, trigger, getValues, pathname, saveStepDraft]);
 
   const onSubmit = (data: ChildInformationFormData) => {
     console.log("Form submitted:", data);

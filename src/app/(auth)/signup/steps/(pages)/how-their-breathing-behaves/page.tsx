@@ -7,6 +7,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
 import { Label } from "@/components/ui/label";
 import { InfoIcon } from "@/components/icons";
 import { Combobox } from "@/components/ui/combo-box";
@@ -16,6 +18,9 @@ import { Paragraph } from "@/components/common/Typography";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
+import { useSignupProgress } from "@/hooks/useSignupProgress";
+import { selectSignupData } from "@/redux/slices/signupSlice";
+import type { RootState } from "@/redux/store";
 
 const howTheirBreathingBehavesSchema = z.object({
   symptomsWorseTime: z.string().min(1, "Please select an option"),
@@ -32,8 +37,11 @@ const howTheirBreathingBehavesSchema = z.object({
 type HowTheirBreathingBehavesFormData = z.infer<typeof howTheirBreathingBehavesSchema>;
 
 const SignupStepHowTheirBreathingBehavesPage = () => {
+  const pathname = usePathname();
   const { registerForm, unregisterForm } = useSignupForm();
-  
+  const { saveStepDraft } = useSignupProgress();
+  const savedData = useSelector((state: RootState) => selectSignupData(state).howTheirBreathingBehaves);
+
   const {
     handleSubmit,
     control,
@@ -43,13 +51,13 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
   } = useForm<HowTheirBreathingBehavesFormData>({
     resolver: zodResolver(howTheirBreathingBehavesSchema),
     defaultValues: {
-      symptomsWorseTime: undefined,
-      triggers: [],
-      symptoms: [],
-      timeOutdoors: undefined,
-      mostActiveTime: undefined,
-      playsSports: undefined,
-      awayFromChild: [],
+      symptomsWorseTime: savedData?.symptomsWorseTime ?? undefined,
+      triggers: savedData?.triggers ?? [],
+      symptoms: savedData?.symptoms ?? [],
+      timeOutdoors: savedData?.timeOutdoors ?? undefined,
+      mostActiveTime: savedData?.mostActiveTime ?? undefined,
+      playsSports: savedData?.playsSports ?? undefined,
+      awayFromChild: savedData?.awayFromChild ?? [],
     },
     mode: "onChange",
   });
@@ -62,8 +70,11 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
       },
       () => getValues()
     );
-    return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger, getValues]);
+    return () => {
+      saveStepDraft(pathname, getValues());
+      unregisterForm();
+    };
+  }, [registerForm, unregisterForm, trigger, getValues, pathname, saveStepDraft]);
 
   const onSubmit = (data: HowTheirBreathingBehavesFormData) => {
     console.log("Form submitted:", data);

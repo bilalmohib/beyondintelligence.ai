@@ -2,6 +2,8 @@
 
 import { z } from "zod";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InfoIcon } from "@/components/icons";
@@ -11,6 +13,9 @@ import { Paragraph } from "@/components/common/Typography";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
+import { useSignupProgress } from "@/hooks/useSignupProgress";
+import { selectSignupData } from "@/redux/slices/signupSlice";
+import type { RootState } from "@/redux/store";
 
 // Address validation that works for US and international addresses
 const addressSchema = z
@@ -41,8 +46,11 @@ const homeAndSchoolEnvironmentSchema = z.object({
 type HomeAndSchoolEnvironmentFormData = z.infer<typeof homeAndSchoolEnvironmentSchema>;
 
 const SignupStepHomeAndSchoolEnvironmentPage = () => {
+  const pathname = usePathname();
   const { registerForm, unregisterForm } = useSignupForm();
-  
+  const { saveStepDraft } = useSignupProgress();
+  const savedData = useSelector((state: RootState) => selectSignupData(state).homeAndSchoolEnvironment);
+
   const {
     register,
     handleSubmit,
@@ -53,9 +61,9 @@ const SignupStepHomeAndSchoolEnvironmentPage = () => {
   } = useForm<HomeAndSchoolEnvironmentFormData>({
     resolver: zodResolver(homeAndSchoolEnvironmentSchema),
     defaultValues: {
-      usesAirPurifier: undefined,
-      homeAddress: "",
-      schoolAddress: "",
+      usesAirPurifier: savedData?.usesAirPurifier ?? undefined,
+      homeAddress: savedData?.homeAddress ?? "",
+      schoolAddress: savedData?.schoolAddress ?? "",
     },
     mode: "onChange",
   });
@@ -68,8 +76,11 @@ const SignupStepHomeAndSchoolEnvironmentPage = () => {
       },
       () => getValues()
     );
-    return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger, getValues]);
+    return () => {
+      saveStepDraft(pathname, getValues());
+      unregisterForm();
+    };
+  }, [registerForm, unregisterForm, trigger, getValues, pathname, saveStepDraft]);
 
   const onSubmit = (data: HomeAndSchoolEnvironmentFormData) => {
     console.log("Form submitted:", data);

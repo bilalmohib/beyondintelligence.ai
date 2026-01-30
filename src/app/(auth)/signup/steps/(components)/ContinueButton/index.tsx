@@ -22,6 +22,8 @@ import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupForm
 import { normalizeFormData } from "@/utils/normalizeFormData";
 import { useSignupMutation } from "@/redux/signupApiSlice";
 import { transformSignupData } from "@/utils/transformSignupData";
+import { useSignupCompletion } from "@/hooks/useSignupCompletion";
+import { useSignupProgress, SIGNUP_PATHNAME_TO_KEY } from "@/hooks/useSignupProgress";
 import { Loader2 } from "lucide-react";
 
 const stepActionMap: Record<string, (data: any) => any> = {
@@ -44,6 +46,8 @@ const ContinueButton = () => {
   const formData = useSelector((state: RootState) => state.signup.formData);
   const { validateCurrentForm, getCurrentFormValues } = useSignupForm();
   const [signup] = useSignupMutation();
+  const { markSignupComplete } = useSignupCompletion();
+  const { saveFormData, saveLastStep, clearProgress } = useSignupProgress();
 
   const currentStepIndex = signupSteps.findIndex(
     (step) => step.href === pathname
@@ -66,6 +70,13 @@ const ContinueButton = () => {
       const normalizedValues = normalizeFormData(formValues);
       dispatch(saveAction(normalizedValues));
     }
+
+    // Persist form data to localStorage so user can resume later
+    const pathKey = SIGNUP_PATHNAME_TO_KEY[pathname];
+    const updatedFormData = pathKey && formValues
+      ? { ...formData, [pathKey]: normalizeFormData(formValues) }
+      : { ...formData };
+    saveFormData(updatedFormData);
 
     if (isLastStep) {
       setIsSubmitting(true);
@@ -95,6 +106,10 @@ const ContinueButton = () => {
 
         // Save response to Redux
         dispatch(saveSignupResponse(response));
+
+        // Mark signup as complete and clear progress (persists across page refreshes)
+        markSignupComplete(response.user_id);
+        clearProgress();
 
         // Show success toast
         toast.success('Account created successfully! Check your SMS for the next steps.', {
@@ -132,6 +147,7 @@ const ContinueButton = () => {
 
     const nextStep = signupSteps[currentStepIndex + 1];
     if (nextStep) {
+      saveLastStep(nextStep.href);
       router.push(nextStep.href);
     }
   };

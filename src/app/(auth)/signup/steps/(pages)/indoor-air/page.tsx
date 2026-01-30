@@ -2,6 +2,8 @@
 
 import { z } from "zod";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
 import { InfoIcon } from "@/components/icons";
 import { Label } from "@/components/ui/label";
 import { useForm, Controller } from "react-hook-form";
@@ -10,6 +12,9 @@ import { Paragraph } from "@/components/common/Typography";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
+import { useSignupProgress } from "@/hooks/useSignupProgress";
+import { selectSignupData } from "@/redux/slices/signupSlice";
+import type { RootState } from "@/redux/store";
 
 const indoorAirSchema = z.object({
   hasPets: z.enum(["yes", "no"], {
@@ -29,8 +34,11 @@ const indoorAirSchema = z.object({
 type IndoorAirFormData = z.infer<typeof indoorAirSchema>;
 
 const SignupStepIndoorAirPage = () => {
+  const pathname = usePathname();
   const { registerForm, unregisterForm } = useSignupForm();
-  
+  const { saveStepDraft } = useSignupProgress();
+  const savedData = useSelector((state: RootState) => selectSignupData(state).indoorAir);
+
   const {
     handleSubmit,
     control,
@@ -40,10 +48,10 @@ const SignupStepIndoorAirPage = () => {
   } = useForm<IndoorAirFormData>({
     resolver: zodResolver(indoorAirSchema),
     defaultValues: {
-      hasPets: undefined,
-      homeFeelsHumid: undefined,
-      waterLeaksOrMustySmells: undefined,
-      usesGasStove: undefined,
+      hasPets: savedData?.hasPets ?? undefined,
+      homeFeelsHumid: savedData?.homeFeelsHumid ?? undefined,
+      waterLeaksOrMustySmells: savedData?.waterLeaksOrMustySmells ?? undefined,
+      usesGasStove: savedData?.usesGasStove ?? undefined,
     },
     mode: "onChange",
   });
@@ -56,8 +64,11 @@ const SignupStepIndoorAirPage = () => {
       },
       () => getValues()
     );
-    return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger, getValues]);
+    return () => {
+      saveStepDraft(pathname, getValues());
+      unregisterForm();
+    };
+  }, [registerForm, unregisterForm, trigger, getValues, pathname, saveStepDraft]);
 
   const onSubmit = (data: IndoorAirFormData) => {
     console.log("Form submitted:", data);

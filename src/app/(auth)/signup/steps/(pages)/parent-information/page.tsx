@@ -7,6 +7,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InfoIcon } from "@/components/icons";
@@ -15,6 +17,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Paragraph } from "@/components/common/Typography";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
+import { useSignupProgress } from "@/hooks/useSignupProgress";
+import { selectSignupData } from "@/redux/slices/signupSlice";
+import type { RootState } from "@/redux/store";
 
 // Zod schema for form validation
 const parentInformationSchema = z.object({
@@ -137,7 +142,10 @@ const formatPhoneDisplay = (e164Value: string): string => {
 };
 
 const SignupStepParentInformationPage = () => {
+  const pathname = usePathname();
   const { registerForm, unregisterForm } = useSignupForm();
+  const { saveStepDraft } = useSignupProgress();
+  const savedData = useSelector((state: RootState) => selectSignupData(state).parentInformation);
 
   const {
     register,
@@ -150,11 +158,11 @@ const SignupStepParentInformationPage = () => {
   } = useForm<ParentInformationFormData>({
     resolver: zodResolver(parentInformationSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      smsConsent: "allow",
+      firstName: savedData?.firstName ?? "",
+      lastName: savedData?.lastName ?? "",
+      email: savedData?.email ?? "",
+      phone: savedData?.phone ?? "",
+      smsConsent: savedData?.smsConsent ?? "allow",
     },
     mode: "onChange",
   });
@@ -167,8 +175,11 @@ const SignupStepParentInformationPage = () => {
       },
       () => getValues()
     );
-    return () => unregisterForm();
-  }, [registerForm, unregisterForm, trigger, getValues]);
+    return () => {
+      saveStepDraft(pathname, getValues());
+      unregisterForm();
+    };
+  }, [registerForm, unregisterForm, trigger, getValues, pathname, saveStepDraft]);
 
   const phoneValue = watch("phone");
   const isPhoneValid = phoneValue
