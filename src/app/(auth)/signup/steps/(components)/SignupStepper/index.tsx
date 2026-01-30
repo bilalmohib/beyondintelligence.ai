@@ -1,9 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useSelector } from "react-redux";
-import toast from "react-hot-toast";
 import {
   Stepper,
   StepperNav,
@@ -11,10 +8,13 @@ import {
   StepperTrigger,
   StepperIndicator,
 } from "@/components/ui/stepper";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { usePathname } from "next/navigation";
+import type { RootState } from "@/redux/store";
+import { selectSignupData } from "@/redux/slices/signupSlice";
 import { Heading6, Paragraph } from "@/components/common/Typography";
 import { SignupStep } from "@/app/(auth)/signup/steps/(components)/SignupStepper/data";
-import { selectSignupData } from "@/redux/slices/signupSlice";
-import type { RootState } from "@/redux/store";
 
 const STEP_FORM_KEYS = [
   "parentInformation",
