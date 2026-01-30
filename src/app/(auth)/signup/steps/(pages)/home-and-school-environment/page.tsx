@@ -52,11 +52,20 @@ const SignupStepHomeAndSchoolEnvironmentPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).homeAndSchoolEnvironment);
 
-  const defaultValues = useMemo(() => ({
-    usesAirPurifier: savedData?.usesAirPurifier ?? undefined,
-    homeAddress: savedData?.homeAddress ?? "",
-    schoolAddress: savedData?.schoolAddress ?? "",
-  }), [savedData]);
+  const defaultValues = useMemo((): {
+    usesAirPurifier?: HomeAndSchoolEnvironmentFormData["usesAirPurifier"];
+    homeAddress: string;
+    schoolAddress: string;
+  } => {
+    const raw = savedData?.usesAirPurifier;
+    const usesAirPurifier: HomeAndSchoolEnvironmentFormData["usesAirPurifier"] | undefined =
+      raw === "yes" || raw === "no" ? raw : undefined;
+    return {
+      usesAirPurifier,
+      homeAddress: savedData?.homeAddress ?? "",
+      schoolAddress: savedData?.schoolAddress ?? "",
+    };
+  }, [savedData]);
 
   const {
     register,
@@ -73,7 +82,7 @@ const SignupStepHomeAndSchoolEnvironmentPage = () => {
   });
 
   // Sync form with Redux state when navigating back to this step
-  useFormSyncWithRedux(savedData, reset, defaultValues);
+  useFormSyncWithRedux<HomeAndSchoolEnvironmentFormData>(savedData, reset, defaultValues);
 
   useEffect(() => {
     registerForm(

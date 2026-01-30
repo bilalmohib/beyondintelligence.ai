@@ -43,15 +43,28 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).howTheirBreathingBehaves);
 
-  const defaultValues = useMemo(() => ({
-    symptomsWorseTime: savedData?.symptomsWorseTime ?? undefined,
-    triggers: savedData?.triggers ?? [],
-    symptoms: savedData?.symptoms ?? [],
-    timeOutdoors: savedData?.timeOutdoors ?? undefined,
-    mostActiveTime: savedData?.mostActiveTime ?? undefined,
-    playsSports: savedData?.playsSports ?? undefined,
-    awayFromChild: savedData?.awayFromChild ?? [],
-  }), [savedData]);
+  const defaultValues = useMemo((): {
+    symptomsWorseTime?: string;
+    triggers: string[];
+    symptoms: string[];
+    timeOutdoors?: string;
+    mostActiveTime?: string;
+    playsSports?: HowTheirBreathingBehavesFormData["playsSports"];
+    awayFromChild: string[];
+  } => {
+    const raw = savedData?.playsSports;
+    const playsSports: HowTheirBreathingBehavesFormData["playsSports"] | undefined =
+      raw === "yes" || raw === "no" ? raw : undefined;
+    return {
+      symptomsWorseTime: savedData?.symptomsWorseTime ?? undefined,
+      triggers: savedData?.triggers ?? [],
+      symptoms: savedData?.symptoms ?? [],
+      timeOutdoors: savedData?.timeOutdoors ?? undefined,
+      mostActiveTime: savedData?.mostActiveTime ?? undefined,
+      playsSports,
+      awayFromChild: savedData?.awayFromChild ?? [],
+    };
+  }, [savedData]);
 
   const {
     handleSubmit,
@@ -67,7 +80,7 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
   });
 
   // Sync form with Redux state when navigating back to this step
-  useFormSyncWithRedux(savedData, reset, defaultValues);
+  useFormSyncWithRedux<HowTheirBreathingBehavesFormData>(savedData, reset, defaultValues);
 
   useEffect(() => {
     registerForm(

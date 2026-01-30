@@ -33,10 +33,18 @@ const SignupStepAllergiesAndSensitivitiesPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).allergiesAndSensitivities);
 
-  const defaultValues = useMemo(() => ({
-    hasAllergies: savedData?.hasAllergies ?? undefined,
-    allergies: savedData?.allergies ?? [],
-  }), [savedData]);
+  const defaultValues = useMemo((): {
+    hasAllergies?: AllergiesAndSensitivitiesFormData["hasAllergies"];
+    allergies: string[];
+  } => {
+    const raw = savedData?.hasAllergies;
+    const hasAllergies: AllergiesAndSensitivitiesFormData["hasAllergies"] | undefined =
+      raw === "yes" || raw === "no" || raw === "not-sure" ? raw : undefined;
+    return {
+      hasAllergies,
+      allergies: savedData?.allergies ?? [],
+    };
+  }, [savedData]);
 
   const {
     handleSubmit,
@@ -52,7 +60,7 @@ const SignupStepAllergiesAndSensitivitiesPage = () => {
   });
 
   // Sync form with Redux state when navigating back to this step
-  useFormSyncWithRedux(savedData, reset, defaultValues);
+  useFormSyncWithRedux<AllergiesAndSensitivitiesFormData>(savedData, reset, defaultValues);
 
   useEffect(() => {
     registerForm(

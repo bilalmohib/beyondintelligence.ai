@@ -90,7 +90,7 @@ const SignupStepper = ({ steps }: SignupStepperProps) => {
                       onClick={(e) => handleStepClick(e, index)}
                       aria-current={index === safeCurrentStepIndex ? "step" : undefined}
                     >
-                      <StepperIndicator className="size-[70px] rounded-full border-2 border-background bg-white text-input-text data-[state=completed]:bg-primary data-[state=completed]:text-white data-[state=completed]:border-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary cursor-pointer">
+                      <StepperIndicator className={`size-[70px] rounded-full border-2 border-background bg-white text-input-text data-[state=completed]:bg-primary data-[state=completed]:text-white data-[state=completed]:border-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary cursor-pointer ${index === safeCurrentStepIndex ? "ring-[0.5px] ring-white" : ""}`}>
                         <Heading6 className="text-center text-inherit">
                           {step.stepValue}
                         </Heading6>
@@ -119,5 +119,4 @@ const SignupStepper = ({ steps }: SignupStepperProps) => {
     </Stepper>
   );
 };
-
 export default SignupStepper;
