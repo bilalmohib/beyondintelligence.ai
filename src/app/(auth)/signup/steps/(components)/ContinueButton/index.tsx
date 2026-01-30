@@ -66,12 +66,10 @@ const ContinueButton = () => {
     const saveAction = stepActionMap[pathname];
 
     if (formValues && saveAction) {
-      // Normalize form data (trim strings) before saving to Redux
       const normalizedValues = normalizeFormData(formValues);
       dispatch(saveAction(normalizedValues));
     }
 
-    // Persist form data to localStorage so user can resume later
     const pathKey = SIGNUP_PATHNAME_TO_KEY[pathname];
     const updatedFormData = pathKey && formValues
       ? { ...formData, [pathKey]: normalizeFormData(formValues) }
@@ -82,46 +80,27 @@ const ContinueButton = () => {
       setIsSubmitting(true);
       
       try {
-        // Get the complete form data including the current step's data
         const completeFormData = {
           ...formData,
           yourExperienceAsAParent: normalizeFormData(formValues),
         };
 
-        // Transform form data to API request format
         const apiRequest = transformSignupData(completeFormData);
 
-        // Log the request for debugging
-        console.log('=== Signup API Request ===');
-        console.log(JSON.stringify(apiRequest, null, 2));
-        console.log('==========================');
-
-        // Make the API call
         const response = await signup(apiRequest).unwrap();
 
-        // Log the response for debugging
-        console.log('=== Signup API Response ===');
-        console.log(JSON.stringify(response, null, 2));
-        console.log('===========================');
-
-        // Save response to Redux
         dispatch(saveSignupResponse(response));
-
-        // Mark signup as complete and clear progress (persists across page refreshes)
         markSignupComplete(response.user_id);
         clearProgress();
 
-        // Show success toast
         toast.success('Account created successfully! Check your SMS for the next steps.', {
           duration: 5000,
         });
 
-        // Navigate to success page
         router.push("/signup/success");
       } catch (error: any) {
         console.error('Signup error:', error);
-        
-        // Extract error message from API response
+
         let errorMessage = 'Something went wrong. Please try again.';
         
         if (error?.data?.message) {
@@ -134,7 +113,6 @@ const ContinueButton = () => {
           errorMessage = error.data;
         }
 
-        // Show error toast
         toast.error(errorMessage, {
           duration: 6000,
         });

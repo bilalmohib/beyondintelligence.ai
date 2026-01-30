@@ -16,7 +16,6 @@ import { SignupStep } from "@/app/(auth)/signup/steps/(components)/SignupStepper
 import { selectSignupData } from "@/redux/slices/signupSlice";
 import type { RootState } from "@/redux/store";
 
-// Keys in formData for each step index (0-based) – used to mark steps as completed
 const STEP_FORM_KEYS = [
   "parentInformation",
   "childInformation",
@@ -36,14 +35,10 @@ const SignupStepper = ({ steps }: SignupStepperProps) => {
   const pathname = usePathname();
   const formData = useSelector((state: RootState) => selectSignupData(state));
 
-  // Current step index (0-based) from pathname
   const currentStepIndex = steps.findIndex((step) => pathname === step.href);
   const safeCurrentStepIndex = currentStepIndex >= 0 ? currentStepIndex : 0;
-
-  // Determine current step id for Stepper value
   const currentStep = steps.find((step) => pathname === step.href)?.id ?? 1;
 
-  // Check if a step has saved data (user has already filled it)
   const stepHasSavedData = (idx: number) => {
     const key = STEP_FORM_KEYS[idx];
     const data = key ? formData[key] : null;
@@ -53,13 +48,9 @@ const SignupStepper = ({ steps }: SignupStepperProps) => {
   };
 
   const handleStepClick = (e: React.MouseEvent, stepIndex: number) => {
-    // Current or previous step: always allow
     if (stepIndex <= safeCurrentStepIndex) return;
-
-    // Future step: allow only if that step already has saved data
     if (stepHasSavedData(stepIndex)) return;
 
-    // No data for this future step – block and show warning
     e.preventDefault();
     toast("Please complete the current step first before moving ahead.", {
       duration: 4000,

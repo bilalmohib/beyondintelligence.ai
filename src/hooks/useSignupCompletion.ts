@@ -9,9 +9,6 @@ interface SignupCompletionData {
   userId: string | null;
 }
 
-/**
- * Hook to manage signup completion status with localStorage persistence
- */
 export const useSignupCompletion = () => {
   const [isSignupComplete, setIsSignupComplete] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -21,7 +18,6 @@ export const useSignupCompletion = () => {
     userId: null,
   });
 
-  // Check localStorage on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem(SIGNUP_COMPLETION_KEY);
@@ -39,7 +35,6 @@ export const useSignupCompletion = () => {
     }
   }, []);
 
-  // Mark signup as complete
   const markSignupComplete = useCallback((userId?: string) => {
     if (typeof window !== 'undefined') {
       const now = Date.now();
@@ -58,7 +53,6 @@ export const useSignupCompletion = () => {
     }
   }, []);
 
-  // Clear signup completion (for testing/admin purposes)
   const clearSignupCompletion = useCallback(() => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem(SIGNUP_COMPLETION_KEY);

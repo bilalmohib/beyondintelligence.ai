@@ -22,14 +22,12 @@ const SignupStepsLayout = ({ children }: SignupStepsLayoutProps) => {
   const router = useRouter();
   const { isSignupComplete, isLoading } = useSignupCompletion();
 
-  // Redirect to success page if signup is already complete
   useEffect(() => {
     if (!isLoading && isSignupComplete) {
       router.replace("/signup/success");
     }
   }, [isLoading, isSignupComplete, router]);
 
-  // Show loading state while checking completion status
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -41,7 +39,6 @@ const SignupStepsLayout = ({ children }: SignupStepsLayoutProps) => {
     );
   }
 
-  // If signup is complete, show redirecting message (will redirect via useEffect)
   if (isSignupComplete) {
     return (
       <div className="min-h-screen flex items-center justify-center">
