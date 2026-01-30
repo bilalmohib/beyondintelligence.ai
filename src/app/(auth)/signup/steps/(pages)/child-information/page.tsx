@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
 import { z } from "zod";
@@ -18,6 +18,7 @@ import { InfoIcon } from "@/components/icons";
 import { Combobox } from "@/components/ui/combo-box";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
 import { useSignupProgress } from "@/hooks/useSignupProgress";
+import { useFormSyncWithRedux } from "@/hooks/useFormSyncWithRedux";
 import { selectSignupData } from "@/redux/slices/signupSlice";
 import type { RootState } from "@/redux/store";
 
@@ -38,23 +39,29 @@ const SignupStepChildInformationPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).childInformation);
 
+  const defaultValues = useMemo(() => ({
+    firstName: savedData?.firstName ?? "",
+    lastName: savedData?.lastName ?? "",
+    age: savedData?.age ?? undefined,
+    asthmaDescription: savedData?.asthmaDescription ?? undefined,
+  }), [savedData]);
+
   const {
     register,
     handleSubmit,
     control,
     trigger,
     getValues,
+    reset,
     formState: { errors },
   } = useForm<ChildInformationFormData>({
     resolver: zodResolver(childInformationSchema),
-    defaultValues: {
-      firstName: savedData?.firstName ?? "",
-      lastName: savedData?.lastName ?? "",
-      age: savedData?.age ?? undefined,
-      asthmaDescription: savedData?.asthmaDescription ?? undefined,
-    },
+    defaultValues,
     mode: "onChange",
   });
+
+  // Sync form with Redux state when navigating back to this step
+  useFormSyncWithRedux(savedData, reset, defaultValues);
 
   useEffect(() => {
     registerForm(

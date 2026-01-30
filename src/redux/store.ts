@@ -2,6 +2,7 @@ import { apiSlice } from '@/redux/apiSlice';
 import { signupApiSlice } from '@/redux/signupApiSlice';
 import { configureStore } from '@reduxjs/toolkit';
 import signupReducer from '@/redux/slices/signupSlice';
+import { signupLocalStorageMiddleware } from '@/redux/signupLocalStorageMiddleware';
 
 export const store = configureStore({
   reducer: {
@@ -12,7 +13,8 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(apiSlice.middleware)
-      .concat(signupApiSlice.middleware),
+      .concat(signupApiSlice.middleware)
+      .concat(signupLocalStorageMiddleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

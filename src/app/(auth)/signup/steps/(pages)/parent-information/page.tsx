@@ -6,7 +6,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,7 @@ import { Paragraph } from "@/components/common/Typography";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useSignupForm } from "@/app/(auth)/signup/steps/(components)/SignupFormContext";
 import { useSignupProgress } from "@/hooks/useSignupProgress";
+import { useFormSyncWithRedux } from "@/hooks/useFormSyncWithRedux";
 import { selectSignupData } from "@/redux/slices/signupSlice";
 import type { RootState } from "@/redux/store";
 
@@ -147,6 +148,14 @@ const SignupStepParentInformationPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).parentInformation);
 
+  const defaultValues = useMemo(() => ({
+    firstName: savedData?.firstName ?? "",
+    lastName: savedData?.lastName ?? "",
+    email: savedData?.email ?? "",
+    phone: savedData?.phone ?? "",
+    smsConsent: savedData?.smsConsent ?? "allow",
+  }), [savedData]);
+
   const {
     register,
     handleSubmit,
@@ -154,18 +163,16 @@ const SignupStepParentInformationPage = () => {
     watch,
     trigger,
     getValues,
+    reset,
     formState: { errors },
   } = useForm<ParentInformationFormData>({
     resolver: zodResolver(parentInformationSchema),
-    defaultValues: {
-      firstName: savedData?.firstName ?? "",
-      lastName: savedData?.lastName ?? "",
-      email: savedData?.email ?? "",
-      phone: savedData?.phone ?? "",
-      smsConsent: savedData?.smsConsent ?? "allow",
-    },
+    defaultValues,
     mode: "onChange",
   });
+
+  // Sync form with Redux state when navigating back to this step
+  useFormSyncWithRedux(savedData, reset, defaultValues);
 
   useEffect(() => {
     registerForm(
