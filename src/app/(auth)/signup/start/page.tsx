@@ -15,7 +15,6 @@ const SignupStartPage = () => {
   const { isSignupComplete, isLoading } = useSignupCompletion();
   const { getLastStep } = useSignupProgress();
 
-  // Redirect to success page if signup is already complete, or to last step if user has progress
   useEffect(() => {
     if (isLoading) return;
     if (isSignupComplete) {
@@ -28,7 +27,6 @@ const SignupStartPage = () => {
     }
   }, [isLoading, isSignupComplete, getLastStep, router]);
 
-  // Show loading state while checking completion status
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -40,7 +38,6 @@ const SignupStartPage = () => {
     );
   }
 
-  // If signup is complete or user has progress, show redirecting message (will redirect via useEffect)
   if (isSignupComplete || getLastStep()) {
     return (
       <div className="min-h-screen flex items-center justify-center">

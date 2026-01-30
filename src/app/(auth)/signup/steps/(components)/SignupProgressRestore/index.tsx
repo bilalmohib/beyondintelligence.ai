@@ -16,17 +16,12 @@ import {
 import type { AppDispatch } from "@/redux/store";
 import { useSignupProgress } from "@/hooks/useSignupProgress";
 
-/**
- * Rehydrates Redux from localStorage and redirects to last step if needed.
- * Saves current step to localStorage when pathname changes.
- */
 export const SignupProgressRestore = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const pathname = usePathname();
   const { getSavedFormData, getLastStep, saveLastStep } = useSignupProgress();
 
-  // Rehydrate Redux and redirect to last step (before paint)
   useLayoutEffect(() => {
     const saved = getSavedFormData();
     if (saved) {
@@ -60,9 +55,8 @@ export const SignupProgressRestore = () => {
     if (lastStep && lastStep !== pathname) {
       router.replace(lastStep);
     }
-  }, []); // Run once on mount
+  }, []);
 
-  // Save current step whenever pathname changes (after redirect / navigation)
   useEffect(() => {
     saveLastStep(pathname);
   }, [pathname, saveLastStep]);

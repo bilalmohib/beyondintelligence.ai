@@ -1,8 +1,6 @@
-// redux/signupApiSlice.ts
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API_CONFIG } from '@/lib/constants';
 
-// Signup API Types
 export type SignupRequest = {
   lob_id: string;
   home_alerts: boolean;

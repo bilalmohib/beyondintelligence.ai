@@ -3,7 +3,6 @@ import { useCallback, useLayoutEffect, useState } from 'react';
 const SIGNUP_FORM_DATA_KEY = 'satori_signup_form_data';
 const SIGNUP_LAST_STEP_KEY = 'satori_signup_last_step';
 
-// Map pathname to the key used in Redux formData (and in localStorage)
 export const SIGNUP_PATHNAME_TO_KEY: Record<string, string> = {
   '/signup/steps/parent-information': 'parentInformation',
   '/signup/steps/child-information': 'childInformation',
@@ -17,10 +16,6 @@ export const SIGNUP_PATHNAME_TO_KEY: Record<string, string> = {
 
 export type SignupFormDataPersisted = Record<string, unknown>;
 
-/**
- * Hook to persist and restore signup form progress (form data + last step) in localStorage.
- * Used so that when the user leaves and returns, they are taken back to the last step with data restored.
- */
 export const useSignupProgress = () => {
   const [lastStep, setLastStep] = useState<string | null>(null);
   const [formData, setFormData] = useState<SignupFormDataPersisted | null>(null);
@@ -53,10 +48,6 @@ export const useSignupProgress = () => {
     setLastStep(pathname);
   }, []);
 
-  /**
-   * Merge current step's draft values into saved form data and persist.
-   * Call when user leaves a step (e.g. unmount or beforeunload).
-   */
   const saveStepDraft = useCallback((pathname: string, values: unknown) => {
     if (typeof window === 'undefined' || !values) return;
     const key = SIGNUP_PATHNAME_TO_KEY[pathname];
@@ -67,9 +58,6 @@ export const useSignupProgress = () => {
     setFormData(updated);
   }, [getSavedFormData]);
 
-  /**
-   * Clear progress (form data + last step). Call when signup is completed.
-   */
   const clearProgress = useCallback(() => {
     if (typeof window === 'undefined') return;
     localStorage.removeItem(SIGNUP_FORM_DATA_KEY);
