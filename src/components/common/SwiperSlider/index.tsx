@@ -3,18 +3,31 @@
 import 'swiper/css';
 import 'swiper/css/navigation';
 import Image from 'next/image';
+import { PlusIcon } from 'lucide-react';
+import { useDispatch } from 'react-redux';
 import { Navigation } from 'swiper/modules';
+import { Button } from '@/components/ui/button';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Container from '@/components/common/Container';
 import { Heading4 } from '@/components/common/Typography';
+import { openModal } from '@/redux/slices/modalSlice';
+import type { AppDispatch } from '@/redux/store';
+
+export interface SlideModalContent {
+    title: string;
+    description: string;
+    bottomText: string;
+}
 
 interface SlideData {
     image: string;
     text: string;
+    modalContent?: SlideModalContent;
 }
 
 interface SwiperSliderProps {
     slides?: SlideData[];
+    isModalActive?: boolean;
 }
 
 const defaultSlides: SlideData[] = [
@@ -32,7 +45,20 @@ const defaultSlides: SlideData[] = [
     }
 ];
 
-const SwiperSlider = ({ slides = defaultSlides }: SwiperSliderProps) => {
+const SwiperSlider = ({ slides = defaultSlides, isModalActive = false }: SwiperSliderProps) => {
+    const dispatch = useDispatch<AppDispatch>();
+
+    const handleOpenModal = (slide: SlideData) => {
+        if (slide.modalContent) {
+            dispatch(
+                openModal({
+                    ...slide.modalContent,
+                    image: slide.image,
+                })
+            );
+        }
+    };
+
     return (
         <div className="relative">
             <Container className="pr-0! mr-0! xxlg:px-0! max-w-[1400px]! xxlg:max-w-[1350px]! xxlg:mx-auto!">
@@ -71,9 +97,22 @@ const SwiperSlider = ({ slides = defaultSlides }: SwiperSliderProps) => {
                                 />
                                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
                                 <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 lg:p-12.5">
-                                    <Heading4 className="text-white">
-                                        {slide.text}
-                                    </Heading4>
+                                    <div className='flex flex-row justify-between items-center'>
+                                        <Heading4 className="text-white">
+                                            {slide.text}
+                                        </Heading4>
+                                        {isModalActive && slide.modalContent && (
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                className="text-white! hover:text-white! rounded-full! w-15 h-15 bg-primary! border-primary!"
+                                                onClick={() => handleOpenModal(slide)}
+                                                aria-label="Open details"
+                                            >
+                                                <PlusIcon className="size-6" />
+                                            </Button>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </SwiperSlide>
