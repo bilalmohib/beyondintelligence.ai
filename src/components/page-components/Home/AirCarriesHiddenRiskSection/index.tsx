@@ -7,7 +7,6 @@ const AirCarriesHiddenRiskSection = () => {
         <section className="w-full min-h-screen">
             <div className="relative min-h-screen w-full bg-image-air-carries-hidden-risk-section bg-cover bg-no-repeat bg-position-[20%_0%] md:bg-position-[25%_5%] lg:bg-position-[30%_21%]">
                 <div className="absolute inset-0 bg-black/5" />
-                {/* Blur shadow: gradient stays low – only lower portion, never touches faces */}
                 <div
                     className="absolute inset-0 pointer-events-none"
                     style={{
