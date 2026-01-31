@@ -45,7 +45,6 @@ const SignupStepYourExperienceAsAParentPage = () => {
     mode: "onChange",
   });
 
-  // Sync form with Redux state when navigating back to this step
   useFormSyncWithRedux<YourExperienceAsAParentFormData>(savedData, reset, defaultValues);
 
   useEffect(() => {

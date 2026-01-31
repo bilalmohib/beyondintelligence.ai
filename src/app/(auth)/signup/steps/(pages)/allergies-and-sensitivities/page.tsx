@@ -59,7 +59,6 @@ const SignupStepAllergiesAndSensitivitiesPage = () => {
     mode: "onChange",
   });
 
-  // Sync form with Redux state when navigating back to this step
   useFormSyncWithRedux<AllergiesAndSensitivitiesFormData>(savedData, reset, defaultValues);
 
   useEffect(() => {

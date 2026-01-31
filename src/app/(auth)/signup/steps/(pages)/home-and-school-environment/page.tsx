@@ -18,7 +18,6 @@ import { useFormSyncWithRedux } from "@/hooks/useFormSyncWithRedux";
 import { selectSignupData } from "@/redux/slices/signupSlice";
 import type { RootState } from "@/redux/store";
 
-// Address validation that works for US and international addresses
 const addressSchema = z
   .string()
   .min(10, "Please enter a complete address")
@@ -81,7 +80,6 @@ const SignupStepHomeAndSchoolEnvironmentPage = () => {
     mode: "onChange",
   });
 
-  // Sync form with Redux state when navigating back to this step
   useFormSyncWithRedux<HomeAndSchoolEnvironmentFormData>(savedData, reset, defaultValues);
 
   useEffect(() => {

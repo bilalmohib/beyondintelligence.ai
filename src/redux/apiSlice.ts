@@ -1,4 +1,3 @@
-// redux/apiSlice.ts
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export type TPlan = {
@@ -49,7 +48,7 @@ export type SiteInfo = {
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api', // Proxy endpoint
+    baseUrl: '/api',
   }),
   endpoints: (builder) => ({
     getSiteInfo: builder.query<SiteInfo, void>({
@@ -69,7 +68,6 @@ export const apiSlice = createApi({
         const params = new URLSearchParams();
         if (limit) params.append('limit', limit.toString());
         if (page) params.append('page', page.toString());
-        // Include description and excerpt fields in the response
         params.append('fields', 'id,title,slug,category_slug,created,description,excerpt,thumbnail,image,reading_time,category,category_name');
         return `/blogs?${params.toString()}`;
       },

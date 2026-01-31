@@ -59,7 +59,6 @@ const SignupStepIllnessAndRecoveryTendenciesPage = () => {
     mode: "onChange",
   });
 
-  // Sync form with Redux state when navigating back to this step
   useFormSyncWithRedux<IllnessAndRecoveryTendenciesFormData>(savedData, reset, defaultValues);
 
   useEffect(() => {
