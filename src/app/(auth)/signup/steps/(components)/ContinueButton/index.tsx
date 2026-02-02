@@ -103,7 +103,10 @@ const ContinueButton = () => {
 
         let errorMessage = 'Something went wrong. Please try again.';
         
-        if (error?.data?.message) {
+        if (error?.data?.detail) {
+          const d = error.data.detail;
+          errorMessage = typeof d === 'string' ? d : (Array.isArray(d) && d[0]?.msg) ? d[0].msg : errorMessage;
+        } else if (error?.data?.message) {
           errorMessage = error.data.message;
         } else if (error?.data?.error) {
           errorMessage = error.data.error;
