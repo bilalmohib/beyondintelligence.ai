@@ -3,12 +3,12 @@ export const AUTH_ROUTES = [
     "/register"
 ];
 
-const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? '';
-
+// Client always uses same-origin proxy to avoid mixed content (HTTPS→HTTP) and CORS.
+// The /api/v1/signup route proxies to the backend using API_BASE_URL (server-side).
 export const API_CONFIG = {
-    BASE_URL: baseUrl,
+    BASE_URL: '',
     PORT: 80,
     ENDPOINTS: {
-        SIGNUP: baseUrl ? '/v1/signup' : '/api/v1/signup',
+        SIGNUP: '/api/v1/signup',
     },
 } as const;
