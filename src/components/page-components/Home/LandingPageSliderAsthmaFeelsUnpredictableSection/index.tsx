@@ -1,6 +1,7 @@
 import Container from "@/components/common/Container";
 import { Heading2 } from "@/components/common/Typography";
 import SwiperSlider from "@/components/common/SwiperSlider";
+import { asthmaFeelsUnpredictableSliderSectionData } from "@/components/page-components/Home/LandingPageSliderAsthmaFeelsUnpredictableSection/data";
 
 const LandingPageSliderAsthmaFeelsUnpredictableSection = () => {
     return (
@@ -11,7 +12,7 @@ const LandingPageSliderAsthmaFeelsUnpredictableSection = () => {
                     even when you do everything right.
                 </Heading2>
             </Container>
-            <SwiperSlider />
+            <SwiperSlider imageHeight={559} slides={asthmaFeelsUnpredictableSliderSectionData} />
         </div>
     );
 };
