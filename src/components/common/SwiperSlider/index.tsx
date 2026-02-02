@@ -4,14 +4,11 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import Image from 'next/image';
 import { PlusIcon } from 'lucide-react';
-import { useDispatch } from 'react-redux';
 import { Navigation } from 'swiper/modules';
 import { Button } from '@/components/ui/button';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Container from '@/components/common/Container';
 import { Heading4 } from '@/components/common/Typography';
-import { openModal } from '@/redux/slices/modalSlice';
-import type { AppDispatch } from '@/redux/store';
 
 export interface SlideModalContent {
     title: string;
@@ -19,52 +16,20 @@ export interface SlideModalContent {
     bottomText: string;
 }
 
-interface BaseSlideData {
+export interface SlideData {
     image: string;
     text: string;
     modalContent?: object;
 }
 
-interface SwiperSliderProps<T extends BaseSlideData = BaseSlideData> {
+interface SwiperSliderProps<T extends SlideData = SlideData> {
     slides?: T[];
+    imageHeight?: number | 'auto';
     isModalActive?: boolean;
     onSlideSelect?: (slide: T) => void;
 }
 
-const defaultSlides: BaseSlideData[] = [
-    {
-        image: '/assets/pages/landing/images/LandingPageSliderAsthmaFeelsUnpredictableSection/photo_001.jpg',
-        text: 'Their breathing changed so suddenly.',
-    },
-    {
-        image: '/assets/pages/landing/images/LandingPageSliderAsthmaFeelsUnpredictableSection/photo_002.jpg',
-        text: 'He was fine this morning.',
-    },
-    {
-        image: '/assets/pages/landing/images/LandingPageSliderAsthmaFeelsUnpredictableSection/photo_003.jpg',
-        text: 'It just came out of nowhere.',
-    }
-];
-
-const SwiperSlider = <T extends BaseSlideData = BaseSlideData>({ slides = defaultSlides as T[], isModalActive = false, onSlideSelect }: SwiperSliderProps<T>) => {
-    const dispatch = useDispatch<AppDispatch>();
-
-    const handleOpenModal = (slide: T) => {
-        if (slide.modalContent) {
-            if (onSlideSelect) {
-                onSlideSelect(slide);
-            } else {
-                const modalContent = slide.modalContent as unknown as Record<string, unknown>;
-                dispatch(
-                    openModal({
-                        ...modalContent,
-                        image: modalContent.image ?? slide.image,
-                    } as Parameters<typeof openModal>[0])
-                );
-            }
-        }
-    };
-
+const SwiperSlider = <T extends SlideData = SlideData>({ slides, imageHeight, isModalActive, onSlideSelect }: SwiperSliderProps<T>) => {
     return (
         <div className="relative">
             <Container className="pr-0! mr-0! xxlg:px-0! max-w-[1400px]! xxlg:max-w-[1350px]! xxlg:mx-auto!">
@@ -92,9 +57,12 @@ const SwiperSlider = <T extends BaseSlideData = BaseSlideData>({ slides = defaul
                         },
                     }}
                 >
-                    {slides.map((slide, index) => (
+                    {slides?.map((slide, index) => (
                         <SwiperSlide key={index}>
-                            <div className="relative w-full aspect-4/3 rounded-[20px] overflow-hidden">
+                            <div
+                                className={`relative w-full rounded-[20px] overflow-hidden ${imageHeight === undefined ? 'aspect-4/3' : imageHeight === 'auto' ? 'aspect-auto' : ''}`}
+                                style={typeof imageHeight === 'number' ? { height: `${imageHeight}px` } : undefined}
+                            >
                                 <Image
                                     src={slide.image}
                                     alt={slide.text}
@@ -103,7 +71,7 @@ const SwiperSlider = <T extends BaseSlideData = BaseSlideData>({ slides = defaul
                                 />
                                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
                                 <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 lg:p-12.5">
-                                    <div className='flex flex-row justify-between items-center'>
+                                    <div className='flex flex-row justify-between items-center gap-8'>
                                         <Heading4 className="text-white">
                                             {slide.text}
                                         </Heading4>
@@ -112,7 +80,7 @@ const SwiperSlider = <T extends BaseSlideData = BaseSlideData>({ slides = defaul
                                                 type="button"
                                                 variant="outline"
                                                 className="text-white! hover:text-white! rounded-full! w-15 h-15 bg-primary! border-primary!"
-                                                onClick={() => handleOpenModal(slide)}
+                                                onClick={() => onSlideSelect?.(slide)}
                                                 aria-label="Open details"
                                             >
                                                 <PlusIcon className="size-6" />
