@@ -1,4 +1,5 @@
 import LandingPageHeroSection from "@/components/page-components/Home/LandingPageHeroSection";
+import LandingPageMeetSatoriSection from "@/components/page-components/Home/LandingPageMeetSatoriSection";
 import AirCarriesHiddenRiskSection from "@/components/page-components/Home/LandingPageAirCarriesHiddenRiskSection";
 import LandingPageAirChangesConstantlySection from "@/components/page-components/Home/LandingPageAirChangesConstantlySection";
 import LandingPageChildsLifeBiggerTransitionScroll from "@/components/page-components/Home/LandingPageChildsLifeBiggerTransitionScroll";
@@ -17,6 +18,8 @@ function Home() {
       <AirCarriesHiddenRiskSection />
 
       <LandingPageAirChangesConstantlySection />
+
+      <LandingPageMeetSatoriSection />
     </div>
   );
 }
