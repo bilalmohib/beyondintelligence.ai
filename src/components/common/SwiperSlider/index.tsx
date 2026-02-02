@@ -5,10 +5,12 @@ import 'swiper/css/navigation';
 import Image from 'next/image';
 import { PlusIcon } from 'lucide-react';
 import { Navigation } from 'swiper/modules';
+import { useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import type { Swiper as SwiperType } from 'swiper';
 import Container from '@/components/common/Container';
-import { Heading4 } from '@/components/common/Typography';
+import { Heading4, Paragraph } from '@/components/common/Typography';
 
 export interface SlideModalContent {
     title: string;
@@ -16,20 +18,50 @@ export interface SlideModalContent {
     bottomText: string;
 }
 
-export interface SlideData {
-    image: string;
+// Either image or video is required
+export type SlideData = {
     text: string;
+    description?: string;
     modalContent?: object;
-}
+} & (
+    | { image: string; video?: never }
+    | { video: string; image?: never }
+    | { image: string; video: string }
+);
 
 interface SwiperSliderProps<T extends SlideData = SlideData> {
     slides?: T[];
     imageHeight?: number | 'auto';
     isModalActive?: boolean;
     onSlideSelect?: (slide: T) => void;
+    fullWidth?: boolean;
 }
 
-const SwiperSlider = <T extends SlideData = SlideData>({ slides, imageHeight, isModalActive, onSlideSelect }: SwiperSliderProps<T>) => {
+const SwiperSlider = <T extends SlideData = SlideData>({ slides, imageHeight, isModalActive, onSlideSelect, fullWidth = false }: SwiperSliderProps<T>) => {
+    const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
+    const handleSlideChange = useCallback((swiper: SwiperType) => {
+        const activeIndex = swiper.activeIndex;
+
+        // Pause all videos and play only the active one
+        videoRefs.current.forEach((video, index) => {
+            if (video) {
+                if (index === activeIndex) {
+                    video.currentTime = 0;
+                    video.play().catch(() => {
+                        // Autoplay might be blocked by browser
+                    });
+                } else {
+                    video.pause();
+                }
+            }
+        });
+    }, []);
+
+    const setVideoRef = useCallback((el: HTMLVideoElement | null, index: number) => {
+        videoRefs.current[index] = el;
+    }, []);
+
     return (
         <div className="relative">
             <Container className="pr-0! mr-0! xxlg:px-0! max-w-[1400px]! xxlg:max-w-[1350px]! xxlg:mx-auto!">
@@ -42,7 +74,25 @@ const SwiperSlider = <T extends SlideData = SlideData>({ slides, imageHeight, is
                     }}
                     modules={[Navigation]}
                     className="pb-4!"
-                    breakpoints={{
+                    onSlideChange={handleSlideChange}
+                    onSwiper={(swiper) => {
+                        // Auto-play video on first slide if it has one
+                        setTimeout(() => handleSlideChange(swiper), 100);
+                    }}
+                    breakpoints={fullWidth ? {
+                        320: {
+                            slidesPerView: 1.05,
+                            spaceBetween: 20,
+                        },
+                        640: {
+                            slidesPerView: 1.05,
+                            spaceBetween: 30,
+                        },
+                        1024: {
+                            slidesPerView: 1.08,
+                            spaceBetween: 40,
+                        },
+                    } : {
                         320: {
                             slidesPerView: 1.1,
                             spaceBetween: 20,
@@ -63,18 +113,36 @@ const SwiperSlider = <T extends SlideData = SlideData>({ slides, imageHeight, is
                                 className={`relative w-full rounded-[20px] overflow-hidden ${imageHeight === undefined ? 'aspect-4/3' : imageHeight === 'auto' ? 'aspect-auto' : ''}`}
                                 style={typeof imageHeight === 'number' ? { height: `${imageHeight}px` } : undefined}
                             >
-                                <Image
-                                    src={slide.image}
-                                    alt={slide.text}
-                                    fill
-                                    className="object-cover"
-                                />
+                                {slide.video ? (
+                                    <video
+                                        ref={(el) => setVideoRef(el, index)}
+                                        src={slide.video}
+                                        muted
+                                        loop
+                                        playsInline
+                                        className="absolute inset-0 w-full h-full object-cover"
+                                    />
+                                ) : slide.image ? (
+                                    <Image
+                                        src={slide.image}
+                                        alt={slide.text}
+                                        fill
+                                        className="object-cover"
+                                    />
+                                ) : null}
                                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
                                 <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 lg:p-12.5">
                                     <div className='flex flex-row justify-between items-center gap-8'>
-                                        <Heading4 className="text-white">
-                                            {slide.text}
-                                        </Heading4>
+                                        <div className='flex flex-col gap-2.5'>
+                                            <Heading4 className="text-white">
+                                                {slide.text}
+                                            </Heading4>
+                                            {slide.description && (
+                                                <Paragraph className="text-white text-2xl! leading-8 !tracking-[0.48px]!">
+                                                    {slide.description}
+                                                </Paragraph>
+                                            )}
+                                        </div>
                                         {isModalActive && slide.modalContent && (
                                             <Button
                                                 type="button"
