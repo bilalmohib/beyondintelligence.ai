@@ -4,7 +4,7 @@ export interface ModalContent {
   title: string;
   description: string;
   bottomText: string;
-  image: string;
+  image: string | { src: string; alt: string };
 }
 
 interface ModalState {

@@ -19,18 +19,19 @@ export interface SlideModalContent {
     bottomText: string;
 }
 
-interface SlideData {
+interface BaseSlideData {
     image: string;
     text: string;
-    modalContent?: SlideModalContent;
+    modalContent?: object;
 }
 
-interface SwiperSliderProps {
-    slides?: SlideData[];
+interface SwiperSliderProps<T extends BaseSlideData = BaseSlideData> {
+    slides?: T[];
     isModalActive?: boolean;
+    onSlideSelect?: (slide: T) => void;
 }
 
-const defaultSlides: SlideData[] = [
+const defaultSlides: BaseSlideData[] = [
     {
         image: '/assets/pages/landing/images/LandingPageSliderAsthmaFeelsUnpredictableSection/photo_001.jpg',
         text: 'Their breathing changed so suddenly.',
@@ -45,17 +46,22 @@ const defaultSlides: SlideData[] = [
     }
 ];
 
-const SwiperSlider = ({ slides = defaultSlides, isModalActive = false }: SwiperSliderProps) => {
+const SwiperSlider = <T extends BaseSlideData = BaseSlideData>({ slides = defaultSlides as T[], isModalActive = false, onSlideSelect }: SwiperSliderProps<T>) => {
     const dispatch = useDispatch<AppDispatch>();
 
-    const handleOpenModal = (slide: SlideData) => {
+    const handleOpenModal = (slide: T) => {
         if (slide.modalContent) {
-            dispatch(
-                openModal({
-                    ...slide.modalContent,
-                    image: slide.image,
-                })
-            );
+            if (onSlideSelect) {
+                onSlideSelect(slide);
+            } else {
+                const modalContent = slide.modalContent as unknown as Record<string, unknown>;
+                dispatch(
+                    openModal({
+                        ...modalContent,
+                        image: modalContent.image ?? slide.image,
+                    } as Parameters<typeof openModal>[0])
+                );
+            }
         }
     };
 
