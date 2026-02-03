@@ -1,9 +1,10 @@
-import { Heading5, Paragraph } from "@/components/common/Typography";
+import Container from "@/components/common/Container";
 import { MeetSatoriIcon, SatoriTextIcon } from "@/components/icons";
+import { Heading5, Paragraph } from "@/components/common/Typography";
 
 const LandingPageMeetSatoriSection = () => {
     return (
-        <div className="h-screen flex items-center bg-background">
+        <Container className="h-screen flex items-center bg-background">
             <div className="w-fit h-fit mx-auto flex flex-col gap-8">
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col items-center justify-center">
@@ -20,7 +21,7 @@ const LandingPageMeetSatoriSection = () => {
                     From the Japanese satori — sudden understanding of underlying truth.
                 </Paragraph>
             </div>
-        </div>
+        </Container>
     );
 };
 
