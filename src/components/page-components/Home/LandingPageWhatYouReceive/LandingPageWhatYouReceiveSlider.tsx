@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
 import Container from "@/components/common/Container";
-import { Paragraph } from "@/components/common/Typography";
 import { SlideData } from "@/components/common/SwiperSlider";
+import { Heading5, Paragraph } from "@/components/common/Typography";
 
 interface LandingPageWhatYouReceiveSliderProps {
   slides: SlideData[];
@@ -54,11 +54,11 @@ const LandingPageWhatYouReceiveSlider = ({
   );
 
   return (
-    <div className="relative">
+    <div className="relative pt-5">
       <Container className="pr-0! mr-0! xxlg:px-0! max-w-[1400px]! xxlg:max-w-[1350px]! xxlg:mx-auto!">
         <Swiper
           slidesPerView={"auto"}
-          spaceBetween={24}
+          spaceBetween={40}
           navigation={{
             nextEl: ".swiper-button-next-custom",
             prevEl: ".swiper-button-prev-custom",
@@ -90,18 +90,19 @@ const LandingPageWhatYouReceiveSlider = ({
               <div className="flex flex-col gap-6">
                 {/* Image Card */}
                 <div
-                  className={`relative w-full rounded-[20px] overflow-hidden bg-[#C8BFFF]/30 ${
-                    imageHeight === undefined
-                      ? "aspect-[3/4]"
-                      : imageHeight === "auto"
-                      ? "aspect-auto"
-                      : ""
-                  }`}
-                  style={
-                    typeof imageHeight === "number"
-                      ? { height: `${imageHeight}px` }
-                      : undefined
-                  }
+                  className="relative w-full rounded-[20px] overflow-hidden bg-white-smoke flex items-center justify-center"
+                  style={{
+                    height:
+                      typeof imageHeight === "number"
+                        ? `${imageHeight}px`
+                        : undefined,
+                    aspectRatio:
+                      imageHeight === undefined
+                        ? "3/4"
+                        : imageHeight === "auto"
+                        ? "auto"
+                        : undefined,
+                  }}
                 >
                   {slide.video ? (
                     <video
@@ -110,15 +111,18 @@ const LandingPageWhatYouReceiveSlider = ({
                       muted
                       loop
                       playsInline
-                      className="absolute inset-0 w-full h-full object-contain p-4"
+                      className="w-auto h-[95%] max-w-[90%] object-contain"
                     />
                   ) : slide.image ? (
-                    <Image
-                      src={slide.image}
-                      alt={slide.text}
-                      fill
-                      className="object-contain p-4"
-                    />
+                    <div className="relative w-[348px] h-[95%] pt-5">
+                      <Image
+                        src={slide.image}
+                        alt={slide.text}
+                        width={348}
+                        height={800}
+                        className="w-[348px] h-full object-contain"
+                      />
+                    </div>
                   ) : null}
                   {isModalActive && slide.modalContent && (
                     <Button
@@ -135,11 +139,11 @@ const LandingPageWhatYouReceiveSlider = ({
 
                 {/* Text Content Below Card */}
                 <div className="flex flex-col gap-3 pr-4">
-                  <h3 className="text-white font-bold text-xl md:text-2xl leading-tight">
+                  <Heading5 className="text-white text-2xl leading-tight">
                     {slide.text}
-                  </h3>
+                  </Heading5>
                   {slide.description && (
-                    <Paragraph className="text-white/90 text-base! md:text-lg! leading-relaxed!">
+                    <Paragraph className="text-white! leading-7!">
                       {slide.description}
                     </Paragraph>
                   )}
