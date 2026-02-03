@@ -28,7 +28,7 @@ const LandingPageHowItWorksListItem = ({
           {title}
         </Heading4>
         <Paragraph className="text-white! leading-7!">{description}</Paragraph>
-      </div>
+      </div>     
     </div>
   );
 };

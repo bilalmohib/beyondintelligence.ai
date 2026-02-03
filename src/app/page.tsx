@@ -1,6 +1,7 @@
 import LandingPageHeroSection from "@/components/page-components/Home/LandingPageHeroSection";
-import LandingPageMeetSatoriSection from "@/components/page-components/Home/LandingPageMeetSatoriSection";
+import LandingPageWhatYouReceive from "@/components/page-components/Home/LandingPageWhatYouReceive";
 import LandingPageHowItWorksSection from "@/components/page-components/Home/LandingPageHowItWorksSection";
+import LandingPageMeetSatoriSection from "@/components/page-components/Home/LandingPageMeetSatoriSection";
 import AirCarriesHiddenRiskSection from "@/components/page-components/Home/LandingPageAirCarriesHiddenRiskSection";
 import LandingPageAirChangesConstantlySection from "@/components/page-components/Home/LandingPageAirChangesConstantlySection";
 import LandingPageChildsLifeBiggerTransitionScroll from "@/components/page-components/Home/LandingPageChildsLifeBiggerTransitionScroll";
@@ -25,6 +26,8 @@ function Home() {
       <LandingPageProtectiveIntelligenceThatUnderstandsSection />
 
       <LandingPageHowItWorksSection />
+
+      <LandingPageWhatYouReceive />
     </div>
   );
 }

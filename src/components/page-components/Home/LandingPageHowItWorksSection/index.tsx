@@ -1,7 +1,8 @@
+import { Button } from "@/components/ui/button";
 import Container from "@/components/common/Container";
-import { Heading2 } from "@/components/common/Typography";
-import LandingPageHowItWorksListSection from "./LandingPageHowItWorksListSection";
+import { Heading2, Paragraph } from "@/components/common/Typography";
 import { landingPageHowItWorksSectionData } from "@/components/page-components/Home/LandingPageHowItWorksSection/data";
+import LandingPageHowItWorksListSection from "@/components/page-components/Home/LandingPageHowItWorksSection/LandingPageHowItWorksListSection";
 
 const LandingPageHowItWorksSection = () => {
   return (
@@ -11,7 +12,18 @@ const LandingPageHowItWorksSection = () => {
       </Heading2>
 
       <div>
-      <LandingPageHowItWorksListSection data={landingPageHowItWorksSectionData} />
+        <LandingPageHowItWorksListSection
+          data={landingPageHowItWorksSectionData}
+        />
+      </div>
+
+      <div className="flex flex-col justify-center items-center gap-3">
+        <Paragraph className="text-center! leading-5! text-xs! text-white!">
+          No credit card required.
+          <br />
+          Get immediate protection.
+        </Paragraph>
+        <Button className="px-5! py-3.5!">Start Free 14-Day Trial</Button>
       </div>
     </Container>
   );
