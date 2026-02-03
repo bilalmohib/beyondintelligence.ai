@@ -1,5 +1,7 @@
 import Container from "@/components/common/Container";
 import { Heading2 } from "@/components/common/Typography";
+import LandingPageHowItWorksListSection from "./LandingPageHowItWorksListSection";
+import { landingPageHowItWorksSectionData } from "@/components/page-components/Home/LandingPageHowItWorksSection/data";
 
 const LandingPageHowItWorksSection = () => {
   return (
@@ -9,7 +11,7 @@ const LandingPageHowItWorksSection = () => {
       </Heading2>
 
       <div>
-        
+      <LandingPageHowItWorksListSection data={landingPageHowItWorksSectionData} />
       </div>
     </Container>
   );
