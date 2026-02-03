@@ -1,5 +1,6 @@
 import LandingPageHeroSection from "@/components/page-components/Home/LandingPageHeroSection";
 import LandingPageMeetSatoriSection from "@/components/page-components/Home/LandingPageMeetSatoriSection";
+import LandingPageHowItWorksSection from "@/components/page-components/Home/LandingPageHowItWorksSection";
 import AirCarriesHiddenRiskSection from "@/components/page-components/Home/LandingPageAirCarriesHiddenRiskSection";
 import LandingPageAirChangesConstantlySection from "@/components/page-components/Home/LandingPageAirChangesConstantlySection";
 import LandingPageChildsLifeBiggerTransitionScroll from "@/components/page-components/Home/LandingPageChildsLifeBiggerTransitionScroll";
@@ -7,7 +8,6 @@ import LandingPageSliderAsthmaFeelsUnpredictableSection from "@/components/page-
 import LandingPageProtectiveIntelligenceThatUnderstandsSection from "@/components/page-components/Home/LandingPageProtectiveIntelligenceThatUnderstandsSection";
 
 function Home() {
-
   return (
     <div className="block">
       <LandingPageHeroSection />
@@ -23,6 +23,8 @@ function Home() {
       <LandingPageMeetSatoriSection />
 
       <LandingPageProtectiveIntelligenceThatUnderstandsSection />
+
+      <LandingPageHowItWorksSection />
     </div>
   );
 }
