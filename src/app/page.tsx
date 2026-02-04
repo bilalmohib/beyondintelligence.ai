@@ -7,6 +7,7 @@ import LandingPageHowItWorksSection from "@/components/page-components/Home/Land
 import LandingPageMeetSatoriSection from "@/components/page-components/Home/LandingPageMeetSatoriSection";
 import LandingPageHowSatoriCompares from "@/components/page-components/Home/LandingPageHowSatoriCompares";
 import LandingPageSatoriBlogsSection from "@/components/page-components/Home/LandingPageSatoriBlogsSection";
+import LandingPageCallToActionSection from "@/components/page-components/Home/LandingPageCallToActionSection";
 import AirCarriesHiddenRiskSection from "@/components/page-components/Home/LandingPageAirCarriesHiddenRiskSection";
 import LandingPageAirChangesConstantlySection from "@/components/page-components/Home/LandingPageAirChangesConstantlySection";
 import LandingPageScientificallyGroundedSection from "@/components/page-components/Home/LandingPageScientificallyGroundedSection";
@@ -45,6 +46,8 @@ function Home() {
       <LandingPageHowSatoriCompares />
 
       <FAQs faqsList={faqsListSatoriLandingPage} />
+
+      <LandingPageCallToActionSection />
     </div>
   );
 }

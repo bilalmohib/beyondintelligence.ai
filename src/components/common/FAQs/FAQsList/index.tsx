@@ -29,10 +29,7 @@ const FAQsList = ({ className, faqsList }: FAQsListProps) => {
       <div className={cn("w-full flex flex-col gap-0", className)}>
         <div className="w-full">
           {faqsList.map((faq, index) => (
-            <div
-              key={index}
-              className="border-b border-[#4B4B4B33] border-solid py-[17px]"
-            >
+            <div key={index} className="py-[17px]">
               <Heading5 className="text-white! leading-8! -tracking-[0.48px]!">
                 {faq.question}
               </Heading5>
@@ -51,7 +48,7 @@ const FAQsList = ({ className, faqsList }: FAQsListProps) => {
             <AccordionItem
               key={index}
               value={`item-${index + 1}`}
-              className="border-b border-[#4B4B4B33] border-solid"
+              className="border-0"
             >
               <AccordionTrigger className="group flex items-center justify-between py-[17px] hover:no-underline [&>svg]:hidden">
                 <Heading5 className="text-white! leading-8! -tracking-[0.48px]!">
