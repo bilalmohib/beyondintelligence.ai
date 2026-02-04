@@ -1,10 +1,15 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import Container from "@/components/common/Container";
 
-const SwiperSliderControls = () => {
+interface SwiperSliderControlsProps {
+  className?: string;
+}
+
+const SwiperSliderControls = ({ className }: SwiperSliderControlsProps) => {
   return (
-    <Container className="flex gap-4 justify-end mt-8">
+    <Container className={cn("flex gap-4 justify-between md:justify-end", className)}>
       <button
         type="button"
         className="cursor-pointer swiper-button-prev-custom w-12 h-12 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors"

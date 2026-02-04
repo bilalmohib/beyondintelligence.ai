@@ -17,7 +17,7 @@ function Home() {
 
       <LandingPageSliderAsthmaFeelsUnpredictableSection />
 
-      <LandingPageChildsLifeBiggerTransitionScroll />
+      {/* <LandingPageChildsLifeBiggerTransitionScroll />
 
       <AirCarriesHiddenRiskSection />
 
@@ -33,7 +33,7 @@ function Home() {
 
       <LandingPageSatoriBlogsSection />
 
-      <LandingPageScientificallyGroundedSection />
+      <LandingPageScientificallyGroundedSection /> */}
     </div>
   );
 }
