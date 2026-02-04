@@ -2,6 +2,7 @@ import LandingPageHeroSection from "@/components/page-components/Home/LandingPag
 import LandingPageWhatYouReceive from "@/components/page-components/Home/LandingPageWhatYouReceive";
 import LandingPageHowItWorksSection from "@/components/page-components/Home/LandingPageHowItWorksSection";
 import LandingPageMeetSatoriSection from "@/components/page-components/Home/LandingPageMeetSatoriSection";
+import LandingPageHowSatoriCompares from "@/components/page-components/Home/LandingPageHowSatoriCompares";
 import LandingPageSatoriBlogsSection from "@/components/page-components/Home/LandingPageSatoriBlogsSection";
 import AirCarriesHiddenRiskSection from "@/components/page-components/Home/LandingPageAirCarriesHiddenRiskSection";
 import LandingPageAirChangesConstantlySection from "@/components/page-components/Home/LandingPageAirChangesConstantlySection";
@@ -37,6 +38,8 @@ function Home() {
       <LandingPageScientificallyGroundedSection />
 
       <LandingPageInspiredByTheVoicesOfParentsSection />
+
+      <LandingPageHowSatoriCompares />
     </div>
   );
 }
