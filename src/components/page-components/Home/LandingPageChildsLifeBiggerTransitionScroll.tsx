@@ -83,7 +83,8 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
   }, [clearOverflowRelockTimeout]);
 
   useEffect(() => {
-    if (isComponentInView && transitionState !== "exiting") {
+    /* Only hide overflow when in "first" state - allows scrollbar when on second screen */
+    if (isComponentInView && transitionState === "first") {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
     } else {
@@ -122,9 +123,10 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
       // and trap the user (can't scroll up/down).
       clearOverflowRelockTimeout();
       overflowRelockTimeout.current = window.setTimeout(() => {
+        /* Only relock when in "first" state - keep scrollbar visible on second screen */
         const shouldLock =
           isComponentInViewRef.current &&
-          transitionStateRef.current !== "exiting";
+          transitionStateRef.current === "first";
         if (!shouldLock) return;
         document.body.style.overflow = "hidden";
         document.documentElement.style.overflow = "hidden";
