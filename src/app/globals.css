@@ -295,23 +295,23 @@ html {
   }
 }
 
-/* ::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #0B0C26;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #6366F2;
+  background: #6366F2;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #6366F1;
-} */
+}
 
 .focus\:ring-magic:focus {
   outline: none;

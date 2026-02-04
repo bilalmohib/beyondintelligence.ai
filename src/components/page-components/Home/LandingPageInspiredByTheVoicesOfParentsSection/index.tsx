@@ -5,7 +5,7 @@ import { landingPageInspiredByTheVoicesOfParentsSectionData } from "@/components
 
 const LandingPageInspiredByTheVoicesOfParentsSection = () => {
   return (
-    <div className="flex flex-col gap-13.5 bg-background py-30">
+    <div className="flex flex-col gap-13.5 bg-background pt-30">
       <Container className="w-full">
         <Heading2 className="text-white leading-[120%]! tracking-[-2%]!">
           Inspired by the Voices <br />

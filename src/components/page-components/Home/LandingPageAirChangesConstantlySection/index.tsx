@@ -5,7 +5,7 @@ import { landingPageAirChangesConstantlySectionData } from "@/components/page-co
 
 const LandingPageAirChangesConstantlySection = () => {
     return (
-        <div className="py-30 flex flex-col gap-13.5 bg-background">
+        <div className="pt-30 flex flex-col gap-13.5 bg-background">
             <Container className="w-full">
                 <Heading2 className="text-white leading-[120%]! tracking-[-2%]!">
                     The air changes constantly and that’s <br />
