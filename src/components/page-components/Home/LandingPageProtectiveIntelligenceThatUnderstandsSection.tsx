@@ -5,7 +5,7 @@ import { Heading2, Heading3, Paragraph } from "@/components/common/Typography";
 const LandingPageProtectiveIntelligenceThatUnderstandsSection = () => {
   return (
     <div className="bg-primary">
-      <Container className="min-h-screen pt-24 px-15 flex flex-col gap-16">
+      <Container className="min-h-fit pt-24 border border-red-600 border-solid px-15 flex flex-col gap-16">
         <Heading2 className="text-white! text-center! leading-13.75! -tracking-[0.92px]!">
           A protective intelligence that understands <br />
           what leads to asthma symptoms – and warns you <br />
@@ -14,7 +14,7 @@ const LandingPageProtectiveIntelligenceThatUnderstandsSection = () => {
 
         <div className="grid grid-cols-2 gap-16">
           <div className="flex flex-col justify-center items-center">
-            <div className="h-fit flex flex-col gap-8">
+            <div className="h-fit flex flex-col gap-8 border border-green-600 border-solid">
               <Heading3 className="text-white! text-left! leading-10! -tracking-[0.64px]!">
                 How Satori Appears in Your Life
               </Heading3>
@@ -30,7 +30,7 @@ const LandingPageProtectiveIntelligenceThatUnderstandsSection = () => {
               </div>
             </div>
           </div>
-          <div>
+          <div className="border border-blue-600 border-solid ">
             <Image
               src="/assets/pages/landing/images/LandingPageProtectiveIntelligenceThatUnderstandsSection/howSatoriAppears.svg"
               alt="How Satori Appears in Your Life"
