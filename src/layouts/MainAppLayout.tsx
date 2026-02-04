@@ -7,11 +7,13 @@ import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import ScrollRestoration from "@/components/common/ScrollRestoration";
+import { NavbarProvider, useNavbarContext } from "@/contexts/NavbarContext";
 
 const SCROLL_STOP_DELAY = 200;
 
-const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
+const MainAppLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+  const hideNavbarSectionInView = useNavbarContext()?.hideNavbarSectionInView ?? false;
   const [isScrolled, setIsScrolled] = useState(false);
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const scrollTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(
@@ -40,6 +42,7 @@ const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
         clearTimeout(scrollTimeoutRef.current);
       }
       scrollTimeoutRef.current = setTimeout(() => {
+        // Show navbar when scrolling stops
         setIsNavbarVisible(true);
         scrollTimeoutRef.current = null;
       }, SCROLL_STOP_DELAY);
@@ -78,7 +81,7 @@ const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
         <div
           className={cn(
             "transition-all duration-300 ease-in-out",
-            isNavbarVisible
+            isNavbarVisible && !hideNavbarSectionInView
               ? "opacity-100 translate-y-0"
               : "opacity-0 -translate-y-full pointer-events-none"
           )}
@@ -93,5 +96,11 @@ const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
     </div>
   );
 };
+
+const MainAppLayout = ({ children }: { children: React.ReactNode }) => (
+  <NavbarProvider>
+    <MainAppLayoutContent>{children}</MainAppLayoutContent>
+  </NavbarProvider>
+);
 
 export default MainAppLayout;

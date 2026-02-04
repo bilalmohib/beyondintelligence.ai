@@ -17,7 +17,7 @@ import SwiperSliderOverlay from "@/components/common/SwiperSlider/SwiperSliderOv
 
 interface SwiperSliderBodyProps<T extends SlideData = SlideData> {
   slides?: T[];
-  imageHeight?: number | "auto";
+  imageHeight?: number | "auto" | "100vh";
   isModalActive?: boolean;
   onSlideSelect?: (slide: T) => void;
   fullWidth?: boolean;
@@ -127,6 +127,8 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
                   ? "aspect-4/3"
                   : imageHeight === "auto"
                   ? "aspect-auto"
+                  : imageHeight === "100vh"
+                  ? "h-screen"
                   : ""
               }
               

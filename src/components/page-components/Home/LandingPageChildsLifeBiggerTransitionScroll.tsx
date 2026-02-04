@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavbarContext } from "@/contexts/NavbarContext";
 import Container from "@/components/common/Container";
 import { Heading2 } from "@/components/common/Typography";
 
@@ -26,6 +27,7 @@ type TransitionState = "first" | "second" | "exiting";
 type EntryDirection = "from_above" | "from_below" | null;
 
 const LandingPageChildsLifeBiggerTransitionScroll = () => {
+  const { setHideNavbarSectionInView } = useNavbarContext() ?? {};
   const [transitionState, setTransitionState] =
     useState<TransitionState>("first");
   const [isComponentInView, setIsComponentInView] = useState(false);
@@ -54,6 +56,11 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
     transitionStateRef.current = transitionState;
     isComponentInViewRef.current = isComponentInView;
   }, [transitionState, isComponentInView]);
+
+  useEffect(() => {
+    setHideNavbarSectionInView?.(isComponentInView);
+    return () => setHideNavbarSectionInView?.(false);
+  }, [isComponentInView, setHideNavbarSectionInView]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
