@@ -1,3 +1,6 @@
+import { faqsListSatoriLandingPage } from "@/components/page-components/Home/data";
+
+import FAQs from "@/components/common/FAQs";
 import LandingPageHeroSection from "@/components/page-components/Home/LandingPageHeroSection";
 import LandingPageWhatYouReceive from "@/components/page-components/Home/LandingPageWhatYouReceive";
 import LandingPageHowItWorksSection from "@/components/page-components/Home/LandingPageHowItWorksSection";
@@ -40,6 +43,8 @@ function Home() {
       <LandingPageInspiredByTheVoicesOfParentsSection />
 
       <LandingPageHowSatoriCompares />
+
+      <FAQs faqsList={faqsListSatoriLandingPage} />
     </div>
   );
 }
