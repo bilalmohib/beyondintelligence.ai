@@ -25,9 +25,6 @@ const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
 
   const noLayoutRoutes = [
     "/landing-transitions1",
-    "/landing-transitions2",
-    "/landing-transition1",
-    "/landing-transition2",
   ];
 
   useLayoutEffect(() => {
