@@ -15,7 +15,7 @@ const LandingPageWhatYouReceive = () => {
         </Heading2>
         <LandingPageWhatYouReceiveSlider
           slides={landingPageWhatYouReceiveSliderSectionData}
-          imageHeight="auto"
+          imageHeight={420}
         />
         <div className="flex flex-col justify-center items-center gap-3"> 
           <Paragraph className="text-center! leading-5! text-xs! text-white!">

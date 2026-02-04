@@ -20,7 +20,8 @@ export interface SlideModalContent {
 
 // Either image or video is required
 export type SlideData = {
-    text: string;
+    title: string;
+    subTitle?: string;
     description?: string;
     modalContent?: object;
 } & (
@@ -125,7 +126,7 @@ const SwiperSlider = <T extends SlideData = SlideData>({ slides, imageHeight, is
                                 ) : slide.image ? (
                                     <Image
                                         src={slide.image}
-                                        alt={slide.text}
+                                        alt={slide.title || 'Slide image'}
                                         fill
                                         className="object-cover"
                                     />
@@ -135,7 +136,7 @@ const SwiperSlider = <T extends SlideData = SlideData>({ slides, imageHeight, is
                                     <div className='flex flex-row justify-between items-center gap-8'>
                                         <div className='flex flex-col gap-2.5'>
                                             <Heading4 className="text-white">
-                                                {slide.text}
+                                                {slide.title}
                                             </Heading4>
                                             {slide.description && (
                                                 <Paragraph className="text-white text-2xl! leading-8 !tracking-[0.48px]!">

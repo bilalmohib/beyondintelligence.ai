@@ -90,17 +90,11 @@ const LandingPageWhatYouReceiveSlider = ({
               <div className="flex flex-col gap-6">
                 {/* Image Card */}
                 <div
-                  className="relative w-full rounded-[20px] overflow-hidden bg-white-smoke flex items-center justify-center"
+                  className="relative w-full rounded-[20px] overflow-hidden bg-white-smoke flex items-center justify-center pt-3"
                   style={{
                     height:
                       typeof imageHeight === "number"
                         ? `${imageHeight}px`
-                        : undefined,
-                    aspectRatio:
-                      imageHeight === undefined
-                        ? "3/4"
-                        : imageHeight === "auto"
-                        ? "auto"
                         : undefined,
                   }}
                 >
@@ -111,18 +105,17 @@ const LandingPageWhatYouReceiveSlider = ({
                       muted
                       loop
                       playsInline
-                      className="w-auto h-[95%] max-w-[90%] object-contain"
+                      className="w-auto h-auto max-w-[90%] object-contain"
                     />
                   ) : slide.image ? (
-                    <div className="relative w-[348px] h-[95%] pt-5">
-                      <Image
-                        src={slide.image}
-                        alt={slide.text}
-                        width={348}
-                        height={800}
-                        className="w-[348px] h-full object-contain"
-                      />
-                    </div>
+                    <Image
+                      src={slide.image}
+                      alt={slide.title}
+                      width={348}
+                      height={100}
+                      style={{ width: 348, height: "auto" }}
+                      className="object-contain pt-5"
+                    />
                   ) : null}
                   {isModalActive && slide.modalContent && (
                     <Button
@@ -140,7 +133,7 @@ const LandingPageWhatYouReceiveSlider = ({
                 {/* Text Content Below Card */}
                 <div className="flex flex-col gap-3 pr-4">
                   <Heading5 className="text-white text-2xl leading-tight">
-                    {slide.text}
+                    {slide.title}
                   </Heading5>
                   {slide.description && (
                     <Paragraph className="text-white! leading-7!">
@@ -152,45 +145,44 @@ const LandingPageWhatYouReceiveSlider = ({
             </SwiperSlide>
           ))}
         </Swiper>
-      </Container>
-
-      <Container className="flex gap-4 justify-end mt-8">
-        <button className="cursor-pointer swiper-button-prev-custom w-12 h-12 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="text-white"
-          >
-            <path
-              d="M15 18L9 12L15 6"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-        <button className="cursor-pointer swiper-button-next-custom w-12 h-12 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="text-white"
-          >
-            <path
-              d="M9 18L15 12L9 6"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
+        <div className="flex gap-4 justify-end mt-4 pr-4">
+          <button className="cursor-pointer swiper-button-prev-custom w-12 h-12 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-white"
+            >
+              <path
+                d="M15 18L9 12L15 6"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+          <button className="cursor-pointer swiper-button-next-custom w-12 h-12 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-white"
+            >
+              <path
+                d="M9 18L15 12L9 6"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
       </Container>
     </div>
   );
