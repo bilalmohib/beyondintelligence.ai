@@ -16,7 +16,7 @@ const FAQs = ({ className, faqsList }: FAQsProps) => {
           <div className="w-full sm:w-[45%] md:w-[40%] mllg:w-[35%] mlg:w-[30%] lg:w-[45%] llg:w-[45%] xl:w-[40%]">
             <FAQsHeader />
           </div>
-          <div className="w-full sm:w-[55%] md:w-[60%] mllg:w-[65%] mlg:w-[70%] lg:w-[55%] llg:w-[55%] xl:w-[60%] -mt-5">
+          <div className="w-full sm:w-[55%] md:w-[60%] mllg:w-[65%] mlg:w-[70%] lg:w-[55%] llg:w-[55%] xl:w-[60%] -mt-3.5">
             <FAQsList faqsList={faqsList} />
           </div>
         </div>

@@ -8,7 +8,7 @@ import Footer from "@/components/common/Footer";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import ScrollRestoration from "@/components/common/ScrollRestoration";
 
-const SCROLL_STOP_DELAY = 1000;
+const SCROLL_STOP_DELAY = 200;
 
 const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
