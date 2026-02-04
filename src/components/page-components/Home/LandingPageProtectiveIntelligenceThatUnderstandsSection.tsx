@@ -5,7 +5,7 @@ import { Heading2, Heading3, Paragraph } from "@/components/common/Typography";
 const LandingPageProtectiveIntelligenceThatUnderstandsSection = () => {
   return (
     <div className="bg-primary">
-      <Container className="min-h-screen pt-24 px-15 flex flex-col gap-16">
+      <Container className="min-h-fit pt-24 px-15 flex flex-col gap-16">
         <Heading2 className="text-white! text-center! leading-13.75! -tracking-[0.92px]!">
           A protective intelligence that understands <br />
           what leads to asthma symptoms – and warns you <br />

@@ -1,7 +1,7 @@
 export const landingPageSatoriBlogsSliderSectionData = [
     {
         image: "/assets/pages/landing/images/LandingPageSatoriBlogsSection/LandingPageSatoriBlogsSlider/image1.jpg",
-        title: " Intelligence That Understands Why Symptoms Happen",
+        title: "Intelligence That Understands Why Symptoms Happen",
         subTitle: "Satori understands cause and effect as it unfolds around your child.",
         description: "Rather than relying on generalized rules or isolated triggers, Satori combines your child’s information with real-time changes in the air, weather, and daily environment to understand when breathing risk is increasing for this child, in this  place, at this moment. This grounded, cause-and-effect approach allows risk to be identified earlier — before symptoms begin, not after."
     },
