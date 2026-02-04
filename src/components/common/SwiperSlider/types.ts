@@ -23,7 +23,7 @@ export type SlideData = {
 
 export interface SwiperSliderProps<T extends SlideData = SlideData> {
   slides?: T[];
-  imageHeight?: number | "auto";
+  imageHeight?: number | "auto" | "100vh";
   isModalActive?: boolean;
   onSlideSelect?: (slide: T) => void;
   fullWidth?: boolean;

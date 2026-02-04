@@ -12,7 +12,7 @@ const LandingPageAirChangesConstantlySection = () => {
                     why asthma feels unpredictable.
                 </Heading2>
             </Container>
-            <SwiperSlider slides={landingPageAirChangesConstantlySectionData} fullWidth />
+            <SwiperSlider slides={landingPageAirChangesConstantlySectionData} fullWidth imageHeight="100vh" />
         </div>
     );
 };

@@ -3,7 +3,16 @@ import { Heading3, Paragraph } from "@/components/common/Typography";
 
 const SubscriptionOfferBannerForSignup = () => {
   return (
-    <div className="bg-primary p-16 rounded-[20px] flex flex-row justify-between items-center">
+    <div className="relative bg-primary p-16 rounded-[20px] flex flex-row justify-between items-center">
+      {/* Arrow pointing up at top right */}
+      <div
+        className="absolute -top-4 right-24 w-0 h-0"
+        style={{
+          borderLeft: "16px solid transparent",
+          borderRight: "16px solid transparent",
+          borderBottom: "16px solid hsl(var(--primary))",
+        }}
+      />
       <div>
         <Heading3 className="text-white! leading-10! -tracking-[0.64px]!">
           All this protection for less than $0.66/day.
