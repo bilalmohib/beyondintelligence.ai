@@ -36,26 +36,28 @@ function Navbar({ className, isNavTransparent }: NavbarProps) {
             <div className="flex flex-row gap-6">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="flex items-center justify-center p-2 rounded-md text-white hover:text-primary hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary transition-all duration-200"
+                className="flex items-center justify-center p-2 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-inset focus:shadow-[0_1px_2px_0_rgba(16,24,40,0.08)] transition-all duration-200"
               >
                 <span className="sr-only">Open main menu</span>
                 <div className="relative w-9 h-6">
                   {isMobileMenuOpen ? (
                     <X className="block scale-140 h-7.5 w-7.5 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in duration-200" />
                   ) : (
-                    <svg
-                      width="37"
-                      height="25"
-                      viewBox="0 0 37 25"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in duration-200"
-                    >
-                      <path
-                        d="M0.125 24.75H36.875V20.6667H0.125V24.75ZM0.125 14.5417H36.875V10.4583H0.125V14.5417ZM0.125 0.25V4.33333H36.875V0.25H0.125Z"
-                        fill="white"
-                      />
-                    </svg>
+                    <div className="rounded-md bg-white/5 shadow-[0_1px_2px_0_rgba(16,24,40,0.08)]">
+                      <svg
+                        width="37"
+                        height="25"
+                        viewBox="0 0 37 25"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in duration-200"
+                      >
+                        <path
+                          d="M0.125 24.75H36.875V20.6667H0.125V24.75ZM0.125 14.5417H36.875V10.4583H0.125V14.5417ZM0.125 0.25V4.33333H36.875V0.25H0.125Z"
+                          fill="white"
+                        />
+                      </svg>
+                    </div>
                   )}
                 </div>
               </button>

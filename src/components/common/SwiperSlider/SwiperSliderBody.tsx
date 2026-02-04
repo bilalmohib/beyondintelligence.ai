@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
 import Container from "@/components/common/Container";
+import { useWindowSize } from "@/utils/detect-dimensions";
 import { Heading4, Paragraph } from "@/components/common/Typography";
 import type { SlideData } from "@/components/common/SwiperSlider/types";
 import SwiperSliderOverlay from "@/components/common/SwiperSlider/SwiperSliderOverlay";
@@ -45,6 +46,8 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
   onOverlayClose,
   dominantColors,
 }: SwiperSliderBodyProps<T>) => {
+  const { width } = useWindowSize();
+
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   const handleSlideChange = useCallback((swiper: SwiperType) => {
@@ -70,7 +73,7 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
   );
 
   return (
-    <Container className="pr-0! mr-0! xxlg:px-0! max-w-[1400px]! xxlg:max-w-[1350px]! xxlg:mx-auto!">
+    <Container className="md:pr-0! md:mr-0! xxlg:px-0! max-w-[1400px]! xxlg:max-w-[1350px]! xxlg:mx-auto!">
       <Swiper
         slidesPerView={"auto"}
         spaceBetween={40}
@@ -125,10 +128,16 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
                   : imageHeight === "auto"
                   ? "aspect-auto"
                   : ""
-              }`}
+              }
+              
+              `}
               style={
                 typeof imageHeight === "number"
-                  ? { height: `${imageHeight}px` }
+                  ? {
+                      height: `${
+                        width && width < 768 ? imageHeight * 0.65 : imageHeight
+                      }px`,
+                    }
                   : undefined
               }
             >

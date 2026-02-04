@@ -44,7 +44,7 @@ const SwiperSlider = <T extends SlideData = SlideData>({
   }, [slides]);
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <SwiperSliderBody
         slides={slides}
         imageHeight={imageHeight}
@@ -60,7 +60,7 @@ const SwiperSlider = <T extends SlideData = SlideData>({
         onOverlayClose={() => setActiveOverlayIndex(null)}
         dominantColors={dominantColors}
       />
-      <SwiperSliderControls />
+      <SwiperSliderControls className="mt-5 md:mt-8" />
     </div>
   );
 };
