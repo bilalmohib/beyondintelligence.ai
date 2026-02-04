@@ -15,7 +15,10 @@ const LandingPageScientificallyGroundedSection = () => {
       <SwiperSlider
         slides={landingPageScientificallyGroundedSectionData}
         fullWidth
+        imageHeight={700}
+        titleClassName="text-[32px]!"
         showGradient={false}
+        showBottomButton={true}
       />
     </div>
   );

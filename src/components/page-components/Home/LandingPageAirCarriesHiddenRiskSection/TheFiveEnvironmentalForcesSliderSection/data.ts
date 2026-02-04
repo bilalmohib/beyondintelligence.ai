@@ -1,16 +1,15 @@
+import type { SlideData } from "@/components/common/SwiperSlider";
 import { IFiveEnvironmentalForcesModalContentProps } from "@/components/page-components/Home/LandingPageAirCarriesHiddenRiskSection/FiveEnvironmentalForcesModalContent";
 
-export interface ITheFiveEnvironmentalForcesSliderSectionData {
-    image: string;
-    text: string;
+export type ITheFiveEnvironmentalForcesSliderSectionData = SlideData & {
     isModalActive?: boolean;
     modalContent?: IFiveEnvironmentalForcesModalContentProps
-}
+};
 
 export const theFiveEnvironmentalForcesSliderSectionData: ITheFiveEnvironmentalForcesSliderSectionData[] = [
     {
         image: '/assets/pages/landing/images/AirCarriesHiddenSection/TheFiveEnvironmentalForcesSliderSection/photo_004.jpg',
-        text: 'When pollution rises before you can see it.',
+        title: 'When pollution rises before you can see it.',
         isModalActive: true,
         modalContent: {
             title: "Dirty Air Events: Invisible Particles, Immediate Impact",
@@ -24,7 +23,7 @@ export const theFiveEnvironmentalForcesSliderSectionData: ITheFiveEnvironmentalF
     },
     {
         image: '/assets/pages/landing/images/AirCarriesHiddenSection/TheFiveEnvironmentalForcesSliderSection/photo_005.png',
-        text: 'When the afternoon turns harsh on young lungs.',
+        title: 'When the afternoon turns harsh on young lungs.',
         isModalActive: true,
         modalContent: {
             title: "Toxic Afternoon Atmosphere: The 3–7 PM Air Shift",
@@ -38,7 +37,7 @@ export const theFiveEnvironmentalForcesSliderSectionData: ITheFiveEnvironmentalF
     },
     {
         image: '/assets/pages/landing/images/AirCarriesHiddenSection/TheFiveEnvironmentalForcesSliderSection/photo_006.png',
-        text: 'When invisible exhaust builds as the day begins.',
+        title: 'When invisible exhaust builds as the day begins.',
         isModalActive: true,
         modalContent: {
             title: "Traffic & Urban Exposure: Morning Air That Works Against Children",
@@ -52,7 +51,7 @@ export const theFiveEnvironmentalForcesSliderSectionData: ITheFiveEnvironmentalF
     },
     {
         image: '/assets/pages/landing/images/AirCarriesHiddenSection/TheFiveEnvironmentalForcesSliderSection/photo_007.png',
-        text: "When the night traps what the day leaves behind.",
+        title: "When the night traps what the day leaves behind.",
         isModalActive: true,
         modalContent: {
             title: "Nighttime Danger Windows: Why Attacks Happen While Children Sleep",
@@ -66,7 +65,7 @@ export const theFiveEnvironmentalForcesSliderSectionData: ITheFiveEnvironmentalF
     },
     {
         image: '/assets/pages/landing/images/AirCarriesHiddenSection/TheFiveEnvironmentalForcesSliderSection/photo_008.jpg',
-        text: "When the weather shifts faster than young lungs can adapt.",
+        title: "When the weather shifts faster than young lungs can adapt.",
         isModalActive: true,
         modalContent: {
             title: "Weather & Climate Instability: The Breath Behind the Breeze",
