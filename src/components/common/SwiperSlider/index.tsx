@@ -8,6 +8,7 @@ import type {
 import { getDominantColor } from "@/components/common/SwiperSlider/utils";
 import SwiperSliderBody from "@/components/common/SwiperSlider/SwiperSliderBody";
 import SwiperSliderControls from "@/components/common/SwiperSlider/SwiperSliderControls";
+import SwiperTextSliderBody from "@/components/common/SwiperSlider/SwiperTextSliderBody";
 
 export type {
   SlideData,
@@ -24,6 +25,7 @@ const SwiperSlider = <T extends SlideData = SlideData>({
   titleClassName = "",
   descriptionClassName = "",
   showBottomButton = false,
+  textSlider = false,
 }: SwiperSliderProps<T>) => {
   const [activeOverlayIndex, setActiveOverlayIndex] = useState<number | null>(
     null
@@ -42,6 +44,16 @@ const SwiperSlider = <T extends SlideData = SlideData>({
       }
     });
   }, [slides]);
+
+  if (textSlider) {
+    return (
+      <SwiperTextSliderBody
+        slides={slides}
+        titleClassName={titleClassName}
+        descriptionClassName={descriptionClassName}
+      />
+    );
+  }
 
   return (
     <div className="relative w-full">

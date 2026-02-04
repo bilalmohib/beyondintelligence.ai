@@ -7,6 +7,7 @@ import AirCarriesHiddenRiskSection from "@/components/page-components/Home/Landi
 import LandingPageAirChangesConstantlySection from "@/components/page-components/Home/LandingPageAirChangesConstantlySection";
 import LandingPageScientificallyGroundedSection from "@/components/page-components/Home/LandingPageScientificallyGroundedSection";
 import LandingPageChildsLifeBiggerTransitionScroll from "@/components/page-components/Home/LandingPageChildsLifeBiggerTransitionScroll";
+import LandingPageInspiredByTheVoicesOfParentsSection from "@/components/page-components/Home/LandingPageInspiredByTheVoicesOfParentsSection";
 import LandingPageSliderAsthmaFeelsUnpredictableSection from "@/components/page-components/Home/LandingPageSliderAsthmaFeelsUnpredictableSection";
 import LandingPageProtectiveIntelligenceThatUnderstandsSection from "@/components/page-components/Home/LandingPageProtectiveIntelligenceThatUnderstandsSection";
 
@@ -17,7 +18,7 @@ function Home() {
 
       <LandingPageSliderAsthmaFeelsUnpredictableSection />
 
-      {/* <LandingPageChildsLifeBiggerTransitionScroll />
+      <LandingPageChildsLifeBiggerTransitionScroll />
 
       <AirCarriesHiddenRiskSection />
 
@@ -33,7 +34,9 @@ function Home() {
 
       <LandingPageSatoriBlogsSection />
 
-      <LandingPageScientificallyGroundedSection /> */}
+      <LandingPageScientificallyGroundedSection />
+
+      <LandingPageInspiredByTheVoicesOfParentsSection />
     </div>
   );
 }

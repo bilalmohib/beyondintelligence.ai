@@ -9,7 +9,7 @@ export interface SlideButtonOverlay {
   paragraphs: string[];
 }
 
-// Either image or video is required
+// Image and video are optional (e.g. for quote-only slides)
 export type SlideData = {
   title: string;
   subTitle?: string;
@@ -17,11 +17,9 @@ export type SlideData = {
   modalContent?: object;
   learnMoreRedirectUrl?: string;
   overlay?: SlideButtonOverlay;
-} & (
-  | { image: string; video?: never }
-  | { video: string; image?: never }
-  | { image: string; video: string }
-);
+  image?: string;
+  video?: string;
+};
 
 export interface SwiperSliderProps<T extends SlideData = SlideData> {
   slides?: T[];
@@ -33,4 +31,5 @@ export interface SwiperSliderProps<T extends SlideData = SlideData> {
   titleClassName?: string;
   descriptionClassName?: string;
   showBottomButton?: boolean;
+  textSlider?: boolean;
 }
