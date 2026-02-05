@@ -1,3 +1,5 @@
+"use client";
+
 import "swiper/css";
 import "swiper/css/navigation";
 import Image from "next/image";
@@ -8,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
 import Container from "@/components/common/Container";
+import { useWindowSize } from "@/utils/detect-dimensions";
 import { SlideData } from "@/components/common/SwiperSlider";
 import { Heading5, Paragraph } from "@/components/common/Typography";
 
@@ -26,6 +29,16 @@ const LandingPageWhatYouReceiveSlider = ({
   onSlideSelect,
   fullWidth = false,
 }: LandingPageWhatYouReceiveSliderProps) => {
+  const { width } = useWindowSize();
+
+  const isMobile = width && width < 768;
+  const isTablet = width && width < 992;
+  const isDesktop = width && width >= 992;
+  const isLargeDesktop = width && width >= 1200;
+  const isXLargeDesktop = width && width >= 1400;
+  const isXXLargeDesktop = width && width >= 1600;
+  const isXXXLargeDesktop = width && width >= 1800;
+
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   const handleSlideChange = useCallback((swiper: SwiperType) => {
@@ -55,16 +68,25 @@ const LandingPageWhatYouReceiveSlider = ({
 
   return (
     <div className="relative pt-5">
-      <Container className="pr-0! mr-0! xxlg:px-0! max-w-[1400px]! xxlg:max-w-[1350px]! xxlg:mx-auto!">
         <Swiper
           slidesPerView={"auto"}
-          spaceBetween={40}
+          spaceBetween={
+            isMobile
+              ? 20
+              : isTablet
+              ? 30
+              : isDesktop
+              ? 40
+              : isLargeDesktop
+              ? 40
+              : 40
+          }
           navigation={{
             nextEl: ".swiper-button-next-custom",
             prevEl: ".swiper-button-prev-custom",
           }}
           modules={[Navigation]}
-          className="pb-4!"
+          className="mlg:pb-4"
           onSlideChange={handleSlideChange}
           onSwiper={(swiper) => {
             // Auto-play video on first slide if it has one
@@ -72,7 +94,7 @@ const LandingPageWhatYouReceiveSlider = ({
           }}
           breakpoints={{
             320: {
-              slidesPerView: 1.05,
+              slidesPerView: 1,
               spaceBetween: 16,
             },
             640: {
@@ -114,7 +136,7 @@ const LandingPageWhatYouReceiveSlider = ({
                       width={348}
                       height={100}
                       style={{ width: 348, height: "auto" }}
-                      className="object-contain pt-5"
+                      className="object-contain"
                     />
                   ) : null}
                   {isModalActive && slide.modalContent && (
@@ -131,12 +153,12 @@ const LandingPageWhatYouReceiveSlider = ({
                 </div>
 
                 {/* Text Content Below Card */}
-                <div className="flex flex-col gap-3 pr-4">
-                  <Heading5 className="text-white text-2xl leading-tight">
+                <div className="flex flex-col gap-3 mlg:pr-4">
+                  <Heading5 className="text-white text-xl! md:text-2xl! leading-tight">
                     {slide.title}
                   </Heading5>
                   {slide.description && (
-                    <Paragraph className="text-white! leading-7!">
+                    <Paragraph className="text-white! leading-normal! md:leading-7!">
                       {slide.description}
                     </Paragraph>
                   )}
@@ -145,8 +167,8 @@ const LandingPageWhatYouReceiveSlider = ({
             </SwiperSlide>
           ))}
         </Swiper>
-        <div className="flex gap-4 justify-end mt-4 pr-4">
-          <button className="cursor-pointer swiper-button-prev-custom w-12 h-12 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors">
+        <div className="flex gap-4 justify-between ssmd:justify-end mt-0 md:mt-4 mlg:pr-4">
+          <button className="cursor-pointer swiper-button-prev-custom lg:w-12 lg:h-12 w-10 h-10 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors">
             <svg
               width="24"
               height="24"
@@ -164,7 +186,7 @@ const LandingPageWhatYouReceiveSlider = ({
               />
             </svg>
           </button>
-          <button className="cursor-pointer swiper-button-next-custom w-12 h-12 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors">
+          <button className="cursor-pointer swiper-button-next-custom lg:w-12 lg:h-12 w-10 h-10 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors">
             <svg
               width="24"
               height="24"
@@ -183,7 +205,6 @@ const LandingPageWhatYouReceiveSlider = ({
             </svg>
           </button>
         </div>
-      </Container>
     </div>
   );
 };
