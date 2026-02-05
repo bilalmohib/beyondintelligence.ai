@@ -27,7 +27,7 @@ function Home() {
 
       <AirCarriesHiddenRiskSection />
 
-      {/* <LandingPageAirChangesConstantlySection /> */}
+      <LandingPageAirChangesConstantlySection />
 
       {/* <LandingPageMeetSatoriSection />
 

@@ -91,7 +91,7 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
           fullWidth
             ? {
                 320: {
-                  slidesPerView: 1.05,
+                  slidesPerView: 1,
                   spaceBetween: 20,
                 },
                 640: {
@@ -105,7 +105,7 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
               }
             : {
                 320: {
-                  slidesPerView: 1.1,
+                  slidesPerView: 1,
                   spaceBetween: 20,
                 },
                 640: {
@@ -128,7 +128,7 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
                   : imageHeight === "auto"
                   ? "aspect-auto"
                   : imageHeight === "100vh"
-                  ? "h-screen"
+                  ? "h-[40vh] sm:h-[50vh] md:h-[70vh] lg:h-screen"
                   : ""
               }
               
@@ -137,7 +137,7 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
                 typeof imageHeight === "number"
                   ? {
                       height: `${
-                        width && width < 768 ? imageHeight * 0.65 : imageHeight
+                        width && width < 768 ? imageHeight * 0.8 : imageHeight
                       }px`,
                     }
                   : undefined
@@ -172,7 +172,7 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
                       </Heading4>
                       {slide.description && (
                         <Paragraph
-                          className={`text-white text-2xl! leading-8 !tracking-[0.48px]! ${descriptionClassName}`}
+                          className={`text-white text-base! sm:text-lg! md:text-xl! lg:text-2xl! leading-8 !tracking-[0.48px]! ${descriptionClassName}`}
                         >
                           {slide.description}
                         </Paragraph>
