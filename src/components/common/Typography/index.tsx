@@ -57,7 +57,7 @@ export const Heading3 = ({
 }: TypographyProps) => {
   return (
     <h3
-      className={`font-inter font-bold text-3xl lg:text-[32px] leading-[142%] text-heading ${className}`}
+      className={`font-inter font-bold text-2xl mllg:text-3xl lg:text-[32px] leading-[142%] text-heading ${className}`}
       dangerouslySetInnerHTML={dangerouslySetInnerHTML}
       style={style}
     >
