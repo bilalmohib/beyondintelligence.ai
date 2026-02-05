@@ -42,7 +42,7 @@ const CustomModal = ({ children }: CustomModalProps) => {
             <button
               type="button"
               onClick={() => dispatch(closeModal())}
-              className="absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-[#1A1C4E] bg-white/95 text-[#1A1C4E] shadow-md transition-opacity hover:opacity-90 md:right-4 md:top-4 md:border-white md:bg-transparent md:text-white"
+              className="absolute right-3 top-3 z-10 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-[#1A1C4E] bg-white/95 text-[#1A1C4E] shadow-md transition-opacity hover:opacity-90 md:right-4 md:top-4 md:border-white md:bg-transparent md:text-white"
               aria-label="Close modal"
             >
               <X className="h-5 w-5 shrink-0" />
