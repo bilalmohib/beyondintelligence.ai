@@ -29,11 +29,11 @@ function Home() {
 
       <LandingPageAirChangesConstantlySection />
 
-      {/* <LandingPageMeetSatoriSection />
+      <LandingPageMeetSatoriSection />
 
       <LandingPageProtectiveIntelligenceThatUnderstandsSection />
 
-      <LandingPageHowItWorksSection />
+      {/* <LandingPageHowItWorksSection />
 
       <LandingPageWhatYouReceive />
 
