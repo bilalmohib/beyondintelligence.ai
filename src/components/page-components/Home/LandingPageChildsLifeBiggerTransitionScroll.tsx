@@ -12,19 +12,48 @@ const SHADOW_LAYERS = [
   { width: "70%", height: "35%", blur: 120, opacity: 0.25 },
 ] as const;
 
+const SHADOW_LAYERS_MOBILE = [
+  { width: "50%", height: "25%", blur: 40, opacity: 0.6 },
+  { width: "60%", height: "30%", blur: 50, opacity: 0.4 },
+  { width: "70%", height: "35%", blur: 60, opacity: 0.25 },
+] as const;
+
 const BLUE_SHADOW_COLOR = "#7CCEFF";
-const IMAGE_CONTAINER_WIDTH = 911.91;
 const ANIMATION_DURATION_MS = 800;
 const SCROLL_THRESHOLD = 150;
 const TRANSITION_COOLDOWN_MS = 900;
-const APPROACH_ZONE_PX = 600;
+const APPROACH_ZONE_PX_DESKTOP = 600;
+const APPROACH_ZONE_PX_TABLET = 400;
+const APPROACH_ZONE_PX_MOBILE = 250;
 // Only "capture" scroll when this component is basically at the viewport edge.
-const ENTRY_SNAP_OFFSET_PX = 80;
+const ENTRY_SNAP_OFFSET_PX_DESKTOP = 80;
+const ENTRY_SNAP_OFFSET_PX_TABLET = 60;
+const ENTRY_SNAP_OFFSET_PX_MOBILE = 40;
 // Fast + smooth snap duration (for "buttery" entry).
 const ENTRY_SNAP_SCROLL_MS = 260;
 
+const BREAKPOINT_LG = 1024;
+const BREAKPOINT_MD = 768;
+
 type TransitionState = "first" | "second" | "exiting";
 type EntryDirection = "from_above" | "from_below" | null;
+
+const getResponsiveScrollValues = (width: number) => {
+  const isMobile = width < BREAKPOINT_MD;
+  const isTablet = width >= BREAKPOINT_MD && width < BREAKPOINT_LG;
+  return {
+    entrySnapOffset: isMobile
+      ? ENTRY_SNAP_OFFSET_PX_MOBILE
+      : isTablet
+      ? ENTRY_SNAP_OFFSET_PX_TABLET
+      : ENTRY_SNAP_OFFSET_PX_DESKTOP,
+    approachZone: isMobile
+      ? APPROACH_ZONE_PX_MOBILE
+      : isTablet
+      ? APPROACH_ZONE_PX_TABLET
+      : APPROACH_ZONE_PX_DESKTOP,
+  };
+};
 
 const LandingPageChildsLifeBiggerTransitionScroll = () => {
   const { setHideNavbarSectionInView } = useNavbarContext() ?? {};
@@ -32,6 +61,8 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
     useState<TransitionState>("first");
   const [isComponentInView, setIsComponentInView] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const accumulatedDelta = useRef(0);
   const lastDeltaSign = useRef<-1 | 0 | 1>(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -58,9 +89,24 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
   }, [transitionState, isComponentInView]);
 
   useEffect(() => {
+    const checkViewport = () => {
+      setIsMobileOrTablet(window.innerWidth < BREAKPOINT_LG);
+      setIsTouchDevice(window.matchMedia("(pointer: coarse)").matches);
+    };
+    checkViewport();
+    window.addEventListener("resize", checkViewport);
+    return () => window.removeEventListener("resize", checkViewport);
+  }, []);
+
+  useEffect(() => {
     setHideNavbarSectionInView?.(isComponentInView);
     return () => setHideNavbarSectionInView?.(false);
   }, [isComponentInView, setHideNavbarSectionInView]);
+
+  const isTouchDeviceRef = useRef(false);
+  useEffect(() => {
+    isTouchDeviceRef.current = isTouchDevice;
+  }, [isTouchDevice]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -77,10 +123,13 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
               nextEntryDirection.current =
                 rect.bottom < 0 ? "from_below" : "from_above";
             }
+          } else if (isTouchDeviceRef.current) {
+            // On touch devices, user scrolls normally - mark as in view for navbar hide
+            setIsComponentInView(true);
           }
         });
       },
-      { threshold: 0 },
+      { threshold: 0 }
     );
     const el = containerRef.current;
     if (el) observer.observe(el);
@@ -91,7 +140,8 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
 
   useEffect(() => {
     /* Only hide overflow when in "first" state - allows scrollbar when on second screen */
-    if (isComponentInView && transitionState === "first") {
+    /* On touch devices, never lock overflow - let user scroll normally through both sections */
+    if (!isTouchDevice && isComponentInView && transitionState === "first") {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
     } else {
@@ -102,12 +152,12 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
     };
-  }, [isComponentInView, transitionState]);
+  }, [isComponentInView, transitionState, isTouchDevice]);
 
   useEffect(() => {
     const snapToSection = (
       section: "first" | "second",
-      behavior: ScrollBehavior = "auto",
+      behavior: ScrollBehavior = "auto"
     ) => {
       const el =
         section === "first" ? section1Ref.current : section2Ref.current;
@@ -131,7 +181,9 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
       clearOverflowRelockTimeout();
       overflowRelockTimeout.current = window.setTimeout(() => {
         /* Only relock when in "first" state - keep scrollbar visible on second screen */
+        /* Never relock on touch devices - they scroll normally */
         const shouldLock =
+          !isTouchDeviceRef.current &&
           isComponentInViewRef.current &&
           transitionStateRef.current === "first";
         if (!shouldLock) return;
@@ -155,12 +207,16 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
         return;
       }
 
+      const { entrySnapOffset, approachZone } = getResponsiveScrollValues(
+        window.innerWidth
+      );
+
       if (!isComponentInView) {
         // Scrolling UP into this component (coming from below): snap when its bottom is near viewport bottom.
         if (e.deltaY < 0) {
           const shouldSnapFromBelow =
-            rect.bottom >= vh - ENTRY_SNAP_OFFSET_PX &&
-            rect.bottom <= vh + APPROACH_ZONE_PX &&
+            rect.bottom >= vh - entrySnapOffset &&
+            rect.bottom <= vh + approachZone &&
             rect.top < vh;
 
           if (shouldSnapFromBelow) {
@@ -191,7 +247,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
         if (e.deltaY > 0) {
           const shouldSnapFromAbove =
             rect.top >= 0 &&
-            rect.top <= vh - ENTRY_SNAP_OFFSET_PX &&
+            rect.top <= vh - entrySnapOffset &&
             rect.bottom > 0;
 
           if (shouldSnapFromAbove) {
@@ -317,7 +373,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
     width: string,
     height: string,
     blur: number,
-    baseOpacity: number,
+    baseOpacity: number
   ) => ({
     position: "absolute" as const,
     width,
@@ -337,7 +393,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
     width: string,
     height: string,
     blur: number,
-    baseOpacity: number,
+    baseOpacity: number
   ) => ({
     position: "absolute" as const,
     width,
@@ -356,26 +412,22 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
     <div ref={containerRef} className="w-full relative overflow-hidden">
       <section
         ref={section1Ref}
-        className="w-full relative overflow-hidden min-h-screen max-h-screen h-screen bg-background py-6"
+        className="w-full relative overflow-hidden min-h-screen max-h-screen h-screen bg-background py-4 sm:py-5 md:py-6"
       >
         <Container className="h-full">
-          <div className="flex flex-col items-center w-full h-full px-4 gap-16">
+          <div className="flex flex-col items-center w-full h-full px-3 sm:px-4 gap-6 sm:gap-10 md:gap-12 lg:gap-16">
             <Heading2
-              className="text-white text-center leading-[120%]! relative z-20 shrink-0"
+              className="text-white text-center leading-[120%]! relative z-20 shrink-0 px-2 sm:px-0"
               style={{
                 opacity: isOnSecondScreen ? 0 : 1,
                 transition: `opacity ${ANIMATION_DURATION_MS}ms linear`,
               }}
             >
-              Your child&apos;s life is bigger than asthma. <br />
+              Your child&apos;s life is bigger than asthma.{" "}
+              <br className="hidden sm:block" />
               It&apos;s made of moments you never want to miss.
             </Heading2>
-            <div
-              className="relative w-full flex-1 min-h-0"
-              style={{
-                maxWidth: `${IMAGE_CONTAINER_WIDTH}px`,
-              }}
-            >
+            <div className="relative w-full flex-1 min-h-0 max-w-[95vw] sm:max-w-[90vw] md:max-w-[85vw] lg:max-w-[911.91px]">
               {/* Shadow 1 - Top Left */}
               <div
                 className="absolute z-0"
@@ -386,7 +438,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                   height: "60%",
                   opacity: isOnSecondScreen ? 0 : 1,
                   transition: `opacity ${ANIMATION_DURATION_MS}ms linear`,
-                  filter: "blur(92px)",
+                  filter: isMobileOrTablet ? "blur(48px)" : "blur(92px)",
                 }}
               >
                 <Image
@@ -406,7 +458,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                   height: "50%",
                   opacity: isOnSecondScreen ? 0 : 1,
                   transition: `opacity ${ANIMATION_DURATION_MS}ms linear`,
-                  filter: "blur(92px)",
+                  filter: isMobileOrTablet ? "blur(48px)" : "blur(92px)",
                 }}
               >
                 <Image
@@ -417,18 +469,20 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                 />
               </div>
               {/* CSS Shadow layers for center glow */}
-              {SHADOW_LAYERS.map((layer) => (
-                <div
-                  key={`${layer.width}-${layer.height}-${layer.blur}-${layer.opacity}`}
-                  className="absolute rounded-full"
-                  style={shadowStyle(
-                    layer.width,
-                    layer.height,
-                    layer.blur,
-                    layer.opacity,
-                  )}
-                />
-              ))}
+              {(isMobileOrTablet ? SHADOW_LAYERS_MOBILE : SHADOW_LAYERS).map(
+                (layer) => (
+                  <div
+                    key={`${layer.width}-${layer.height}-${layer.blur}-${layer.opacity}`}
+                    className="absolute rounded-full"
+                    style={shadowStyle(
+                      layer.width,
+                      layer.height,
+                      layer.blur,
+                      layer.opacity
+                    )}
+                  />
+                )
+              )}
               <div className="relative z-10 w-full h-full">
                 <Image
                   src="/assets/pages/landing/images/LandingPageChildsLifeBiggerTransitionScroll/image.svg"
@@ -446,13 +500,12 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
       {/* Section 2: Second screen – blurred image behind text */}
       <section
         ref={section2Ref}
-        className="w-full relative overflow-hidden min-h-screen max-h-screen h-screen flex items-center justify-center bg-background py-30"
+        className="w-full relative overflow-hidden min-h-screen max-h-screen h-screen flex items-center justify-center bg-background py-8 sm:py-12 md:py-16 lg:py-30"
       >
         {/* Image container - same as Section 1, then blurred */}
         <div
-          className="absolute z-0 w-full h-full"
+          className="absolute z-0 w-full h-full max-w-[95vw] sm:max-w-[90vw] md:max-w-[85vw] lg:max-w-[911.91px]"
           style={{
-            maxWidth: `${IMAGE_CONTAINER_WIDTH}px`,
             left: "50%",
             top: "50%",
             transform: "translate(-50%, -50%)",
@@ -469,7 +522,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
               left: "-10%",
               width: "50%",
               height: "50%",
-              filter: "blur(92px)",
+              filter: isMobileOrTablet ? "blur(48px)" : "blur(92px)",
             }}
           >
             <Image
@@ -487,7 +540,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
               right: "-10%",
               width: "50%",
               height: "50%",
-              filter: "blur(92px)",
+              filter: isMobileOrTablet ? "blur(48px)" : "blur(92px)",
             }}
           >
             <Image
@@ -498,18 +551,20 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
             />
           </div>
           {/* CSS Shadow layers for center glow */}
-          {SHADOW_LAYERS.map((layer) => (
-            <div
-              key={`${layer.width}-${layer.height}-${layer.blur}-${layer.opacity}`}
-              className="absolute rounded-full"
-              style={shadowStyleAlwaysVisible(
-                layer.width,
-                layer.height,
-                layer.blur,
-                layer.opacity,
-              )}
-            />
-          ))}
+          {(isMobileOrTablet ? SHADOW_LAYERS_MOBILE : SHADOW_LAYERS).map(
+            (layer) => (
+              <div
+                key={`${layer.width}-${layer.height}-${layer.blur}-${layer.opacity}`}
+                className="absolute rounded-full"
+                style={shadowStyleAlwaysVisible(
+                  layer.width,
+                  layer.height,
+                  layer.blur,
+                  layer.opacity
+                )}
+              />
+            )
+          )}
           <div
             className="relative w-full h-full z-10"
             style={{
@@ -534,10 +589,12 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
             opacity: 0.6,
           }}
         />
-        <Heading2 className="text-white text-center leading-[120%]! relative z-20 px-8 max-w-[1200px]">
-          But behind your family&apos;s favorite moments, <br /> the{" "}
+        <Heading2 className="text-white text-center leading-[120%]! relative z-20 px-4 sm:px-6 md:px-8 max-w-[1200px]">
+          But behind your family&apos;s favorite moments,{" "}
+          <br className="hidden sm:block" /> the{" "}
           <span className="text-[#5754ED]">
-            air can change in ways you can&apos;t see, <br />
+            air can change in ways you can&apos;t see,{" "}
+            <br className="hidden sm:block" />
           </span>
           often long before symptoms appear.
         </Heading2>
@@ -545,36 +602,35 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
 
       {/* Overlay: during transition (first→second) – blurred image + text */}
       <div
-        className="fixed inset-0 z-30 flex items-center justify-center pointer-events-none"
+        className="fixed inset-0 z-30 flex items-center justify-center pointer-events-none pt-8 pb-8 sm:pt-12 sm:pb-12 md:pt-16 md:pb-16 lg:pt-[120px] lg:pb-[120px]"
         style={{
           backgroundColor: "#0B0C26",
           opacity: showOverlay ? 1 : 0,
           transition: `opacity ${ANIMATION_DURATION_MS}ms linear`,
-          paddingTop: "120px",
-          paddingBottom: "120px",
         }}
       >
         <div
-          className="absolute w-full h-full"
+          className="absolute w-full h-full max-w-[95vw] sm:max-w-[90vw] md:max-w-[85vw] lg:max-w-[911.91px]"
           style={{
-            maxWidth: `${IMAGE_CONTAINER_WIDTH}px`,
             left: "50%",
             top: "50%",
             transform: "translate(-50%, -50%)",
           }}
         >
-          {SHADOW_LAYERS.map((layer) => (
-            <div
-              key={`${layer.width}-${layer.height}-${layer.blur}-${layer.opacity}`}
-              className="absolute rounded-full"
-              style={shadowStyleAlwaysVisible(
-                layer.width,
-                layer.height,
-                layer.blur,
-                layer.opacity,
-              )}
-            />
-          ))}
+          {(isMobileOrTablet ? SHADOW_LAYERS_MOBILE : SHADOW_LAYERS).map(
+            (layer) => (
+              <div
+                key={`${layer.width}-${layer.height}-${layer.blur}-${layer.opacity}`}
+                className="absolute rounded-full"
+                style={shadowStyleAlwaysVisible(
+                  layer.width,
+                  layer.height,
+                  layer.blur,
+                  layer.opacity
+                )}
+              />
+            )
+          )}
           <div className="relative w-full h-full z-10">
             <Image
               src="/assets/pages/landing/images/LandingPageChildsLifeBiggerTransitionScroll/image.svg"
@@ -587,15 +643,19 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
           </div>
         </div>
         <Heading2
-          className="text-white text-center leading-[120%]! relative z-10 px-8"
+          className="text-white text-center leading-[120%]! relative z-10 px-4 sm:px-6 md:px-8 max-w-[1200px]"
           style={{
-            transform: showOverlay ? "translateY(0)" : "translateY(-150px)",
+            transform: showOverlay
+              ? "translateY(0)"
+              : isMobileOrTablet
+              ? "translateY(-80px)"
+              : "translateY(-150px)",
             opacity: showOverlay ? 1 : 0,
             transition: `transform ${ANIMATION_DURATION_MS}ms linear, opacity ${ANIMATION_DURATION_MS}ms linear`,
-            maxWidth: "1200px",
           }}
         >
-          But behind your family&apos;s favorite moments, <br /> the{" "}
+          But behind your family&apos;s favorite moments,{" "}
+          <br className="hidden sm:block" /> the{" "}
           <span className="text-[#5754ED]">
             air can change in ways you can&apos;t see, <br />
           </span>

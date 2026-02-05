@@ -164,7 +164,7 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
               )}
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 lg:p-12.5">
-                <div className="flex flex-row justify-between items-center gap-8">
+                <div className="flex flex-col ssmd:flex-row justify-end ssmd:justify-between items-end ssmd:items-center gap-3 ssmd:gap-8">
                   <div className="flex flex-col gap-8">
                     <div className="flex flex-col gap-2.5">
                       <Heading4 className={`text-white ${titleClassName}`}>
@@ -193,11 +193,11 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
                     <Button
                       type="button"
                       variant="outline"
-                      className="text-white! hover:text-white! rounded-full! w-15 h-15 bg-primary! border-primary!"
+                      className="text-white! hover:text-white! rounded-full! w-12 sm:w-14 md:w-15 h-12 sm:h-14 md:h-15 bg-primary! border-primary!"
                       onClick={() => onSlideSelect?.(slide)}
                       aria-label="Open details"
                     >
-                      <PlusIcon className="size-6" />
+                      <PlusIcon className="size-4.5 sm:size-5 md:size-6" />
                     </Button>
                   )}
                 </div>
