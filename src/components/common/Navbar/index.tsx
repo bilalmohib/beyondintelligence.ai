@@ -1,7 +1,8 @@
 "use client";
 
-import { X } from "lucide-react";
+import { X, Globe } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import Logo from "@/components/common/Navbar/Logo";
 import Container from "@/components/common/Container";
 import NavItems from "@/components/common/Navbar/NavItems";
@@ -19,7 +20,9 @@ function Navbar({ className, isNavTransparent }: NavbarProps) {
     <nav
       className={`w-full transition-all duration-200 ${
         !isNavTransparent ? "shadow-md" : ""
-      } ${isNavTransparent ? "bg-transparent" : "bg-background"} ${className}`}
+      } ${isNavTransparent && !isMobileMenuOpen ? "bg-transparent" : ""} ${
+        isMobileMenuOpen ? "bg-background" : !isNavTransparent ? "bg-background" : ""
+      } ${className}`}
     >
       <Container>
         <div className="flex justify-between items-center py-4">
@@ -31,17 +34,28 @@ function Navbar({ className, isNavTransparent }: NavbarProps) {
             <NavItems isNavTransparent={isNavTransparent} />
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile/Tablet menu button */}
           <div className="xl:hidden">
-            <div className="flex flex-row gap-6">
+            <div className="flex flex-row items-center gap-3">
+              {/* Help Center — shown when menu is open */}
+              {isMobileMenuOpen && (
+                <Button
+                  variant="outline"
+                  className="border-white/30! text-white! bg-transparent! hover:bg-white/10! rounded-lg! px-4! py-2! gap-2! text-sm! font-medium! cursor-pointer!"
+                >
+                  <Globe className="w-4 h-4" />
+                  Help Center
+                </Button>
+              )}
+
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="flex items-center justify-center p-2 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-inset focus:shadow-[0_1px_2px_0_rgba(16,24,40,0.08)] transition-all duration-200"
+                className="flex items-center justify-center p-2 rounded-md text-white focus:outline-none transition-all duration-200"
               >
                 <span className="sr-only">Open main menu</span>
                 <div className="relative w-9 h-6">
                   {isMobileMenuOpen ? (
-                    <X className="block scale-140 h-7.5 w-7.5 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in duration-200" />
+                    <X className="block h-6 w-6 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in duration-200" />
                   ) : (
                     <div className="rounded-md bg-white/5 shadow-[0_1px_2px_0_rgba(16,24,40,0.08)]">
                       <svg
@@ -66,16 +80,21 @@ function Navbar({ className, isNavTransparent }: NavbarProps) {
         </div>
       </Container>
 
-      {/* Mobile menu with smooth animation */}
+      {/* Mobile/Tablet menu */}
       <div
         className={`xl:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          isMobileMenuOpen ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
+          isMobileMenuOpen
+            ? "max-h-[calc(100vh-80px)] opacity-100"
+            : "max-h-0 opacity-0"
         }`}
       >
-        <Container>
-          <div className="bg-transparent border-b border-t border-x-0 border-b-gray-800 border-t-gray-800 border-solid">
+        <div
+          className="bg-background overflow-y-auto"
+          style={{ maxHeight: "calc(100vh - 80px)" }}
+        >
+          <Container>
             <div
-              className={`px-2 pt-2 pb-3 space-y-1 sm:px-3 transform transition-all duration-300 ease-out ${
+              className={`pb-6 pt-2 transform transition-all duration-300 ease-out ${
                 isMobileMenuOpen
                   ? "translate-y-0 opacity-100"
                   : "-translate-y-4 opacity-0"
@@ -84,14 +103,12 @@ function Navbar({ className, isNavTransparent }: NavbarProps) {
                 transitionDelay: isMobileMenuOpen ? "100ms" : "0ms",
               }}
             >
-              <div className="flex flex-col py-4">
-                <MobileNavItems
-                  onLinkClick={() => setIsMobileMenuOpen(false)}
-                />
-              </div>
+              <MobileNavItems
+                onLinkClick={() => setIsMobileMenuOpen(false)}
+              />
             </div>
-          </div>
-        </Container>
+          </Container>
+        </div>
       </div>
     </nav>
   );
