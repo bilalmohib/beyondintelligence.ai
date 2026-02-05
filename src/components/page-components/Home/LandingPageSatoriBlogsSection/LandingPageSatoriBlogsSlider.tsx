@@ -130,7 +130,7 @@ const LandingPageSatoriBlogsSlider = ({
         ))}
       </Swiper>
 
-      <div className="flex gap-4 justify-between ssmd:justify-end mt-0 md:mt-8">
+      <div className="flex gap-4 justify-between ssmd:justify-end mt-8">
         <button className="cursor-pointer swiper-button-prev-custom lg:w-12 lg:h-12 w-10 h-10 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors">
           <svg
             width="24"

@@ -23,26 +23,30 @@ const SwiperSliderOverlay = ({
 
   return (
     <div
-      className="absolute inset-0 rounded-[20px] p-[50px]"
+      className="absolute inset-0 flex flex-col rounded-[20px] p-6 pt-14 md:p-10 md:pt-14 lg:p-[50px] lg:pt-[50px]"
       style={{ backgroundColor }}
     >
       <button
         type="button"
         onClick={onClose}
-        className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-white text-white cursor-pointer"
+        className="absolute right-4 top-4 z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white text-white cursor-pointer"
         aria-label="Close"
       >
         <X className="h-5 w-5" />
       </button>
-      <div className="flex flex-col justify-center items-center h-full">
-        <div className="flex flex-col gap-8 h-fit">
-          <Heading3 className="text-white">{overlay.title}</Heading3>
-          <div className="flex flex-col gap-4">
-            {overlay.paragraphs.map((p, i) => (
-              <Paragraph key={i} className="text-white">
-                {p}
-              </Paragraph>
-            ))}
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <div className="flex flex-col justify-center items-center min-h-full py-4">
+          <div className="flex flex-col gap-8 w-full">
+            <Heading3 className="text-white text-xl! md:text-2xl! lg:text-3xl! leading-tight!">
+              {overlay.title}
+            </Heading3>
+            <div className="flex flex-col gap-4">
+              {overlay.paragraphs.map((p, i) => (
+                <Paragraph key={i} className="text-white">
+                  {p}
+                </Paragraph>
+              ))}
+            </div>
           </div>
         </div>
       </div>

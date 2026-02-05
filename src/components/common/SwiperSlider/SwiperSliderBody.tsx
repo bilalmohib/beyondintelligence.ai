@@ -182,7 +182,7 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
                       <Button
                         type="button"
                         variant="outline"
-                        className="text-white! bg-transparent! w-fit px-5! py-3.5!"
+                        className="text-white! bg-transparent! w-fit px-4! md:px-5! py-2.5! md:py-3.5! text-sm! md:text-base!"
                         onClick={() => onOverlayOpen(index)}
                       >
                         Learn More

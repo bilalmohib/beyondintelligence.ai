@@ -39,10 +39,11 @@ function Home() {
 
       <LandingPageSatoriBlogsSection />
 
-      {/*<LandingPageScientificallyGroundedSection />
+      <LandingPageScientificallyGroundedSection />
 
       <LandingPageInspiredByTheVoicesOfParentsSection />
 
+      {/*
       <LandingPageHowSatoriCompares />
 
       <FAQs faqsList={faqsListSatoriLandingPage} />
