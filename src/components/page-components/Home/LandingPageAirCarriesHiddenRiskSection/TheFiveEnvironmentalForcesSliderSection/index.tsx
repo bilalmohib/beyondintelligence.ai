@@ -40,7 +40,7 @@ const TheFiveEnvironmentalForcesSliderSection = () => {
     <div className="bg-[#1A1C4E] pb-8 sm:pb-12 md:pb-20 lg:pb-30">
       <Container className="pt-4 sm:pt-6 md:pt-0.5 pb-0">
         <Heading2 className="text-white! leading-[120%]! text-left">
-          The five environmental forces <br className="hidden sm:block" />{" "}
+          The five environmental forces <br className="hidden mllg:block" />{" "}
           behind most asthma attacks.
         </Heading2>
       </Container>

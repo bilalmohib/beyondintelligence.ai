@@ -23,17 +23,10 @@ const CustomModal = ({ children }: CustomModalProps) => {
   return (
     <DialogPrimitive.Root open={isOpen} onOpenChange={handleOpenChange}>
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
 
         <DialogPrimitive.Content
-          className="fixed z-50 overflow-hidden outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
-          style={{
-            top: '70px',
-            left: '30px',
-            right: '30px',
-            bottom: '69px',
-            borderRadius: '20px',
-          }}
+          className="fixed inset-0 z-50 overflow-hidden outline-none rounded-[20px] md:inset-auto md:top-[70px] md:left-[30px] md:right-[30px] md:bottom-[69px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
         >
           <VisuallyHidden.Root asChild>
             <DialogPrimitive.Title>
@@ -49,10 +42,10 @@ const CustomModal = ({ children }: CustomModalProps) => {
             <button
               type="button"
               onClick={() => dispatch(closeModal())}
-              className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-transparent shadow-md transition-opacity hover:opacity-90 border border-white cursor-pointer"
+              className="absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-[#1A1C4E] bg-white/95 text-[#1A1C4E] shadow-md transition-opacity hover:opacity-90 md:right-4 md:top-4 md:border-white md:bg-transparent md:text-white"
               aria-label="Close modal"
             >
-              <X className="h-5 w-5 text-white" />
+              <X className="h-5 w-5 shrink-0" />
             </button>
           </DialogPrimitive.Close>
         </DialogPrimitive.Content>

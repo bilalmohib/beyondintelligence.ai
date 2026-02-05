@@ -18,8 +18,8 @@ const LandingPageAirCarriesHiddenRiskSection = () => {
         <Container className="relative min-h-[50vh] sm:min-h-[60vh] md:min-h-[80vh] lg:min-h-screen py-8 sm:py-12 md:py-20 lg:py-30">
           <div className="flex min-h-[50vh] sm:min-h-[60vh] md:min-h-[80vh] pt-4 sm:pt-6 md:pt-0 lg:min-h-screen w-full items-start justify-center sm:justify-end">
             <Heading2 className="text-white leading-[120%]! text-center sm:text-right max-w-full sm:max-w-[85%] md:max-w-[75%] lg:max-w-none px-4 sm:px-0">
-              The Air Carries Hidden <br className="hidden md:block" /> Risks —
-              And They Shape Your <br className="hidden md:block" /> Child’s
+              The Air Carries Hidden <br className="hidden mllg:block" /> Risks
+              — And They Shape Your <br className="hidden mllg:block" /> Child’s
               Asthma.
             </Heading2>
           </div>
