@@ -33,9 +33,9 @@ function Home() {
 
       <LandingPageProtectiveIntelligenceThatUnderstandsSection />
 
-      {/* <LandingPageHowItWorksSection />
+      <LandingPageHowItWorksSection />
 
-      <LandingPageWhatYouReceive />
+      {/* <LandingPageWhatYouReceive />
 
       <LandingPageSatoriBlogsSection />
 

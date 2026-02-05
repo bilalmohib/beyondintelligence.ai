@@ -25,7 +25,7 @@ const FiveEnvironmentalForcesModalContent = ({ title, description, bottomText, i
                     <Paragraph className="text-secondary-gray! text-base! leading-6! tracking-[0.48px]! sm:text-lg! sm:leading-7! md:text-xl! md:leading-8! lg:text-2xl! lg:leading-8!">
                         {description}
                     </Paragraph>
-                    <Paragraph className="text-base! leading-6! tracking-[0.48px]! text-input-text! sm:text-lg! sm:leading-7! md:text-xl! md:leading-8! lg:text-2xl! lg:leading-8!">
+                    <Paragraph className="text-base! font-bold! leading-6! tracking-[0.48px]! text-input-text! sm:text-lg! sm:leading-7! md:text-xl! md:leading-8! lg:text-2xl! lg:leading-8!">
                         {bottomText}
                     </Paragraph>
                 </div>
