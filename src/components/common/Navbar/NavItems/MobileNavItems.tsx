@@ -1,11 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { ChevronRight, ChevronUp } from "lucide-react";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { Paragraph } from "@/components/common/Typography";
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { menuItems } from "@/components/common/Navbar/NavItems/data";
+import {
+  menuItems,
+  productCategories,
+} from "@/components/common/Navbar/NavItems/data";
 
 interface MobileNavItemsProps {
   onLinkClick: () => void;
@@ -13,6 +16,10 @@ interface MobileNavItemsProps {
 
 function MobileNavItems({ onLinkClick }: MobileNavItemsProps) {
   const pathname = usePathname();
+  const [openItem, setOpenItem] = useState<string | null>(null);
+  const [openCategory, setOpenCategory] = useState<string | null>(
+    "For Organizations"
+  );
 
   const isActive = (href: string) => {
     if (!pathname) return false;
@@ -20,106 +27,122 @@ function MobileNavItems({ onLinkClick }: MobileNavItemsProps) {
     return pathname.startsWith(href);
   };
 
-  const isParentActive = (item: (typeof menuItems)[0]) => {
-    if (item.hasDropdown && item.items) {
-      return item.items.some((subItem) => isActive(subItem.href));
-    }
-    return isActive(item.href);
+  const toggleItem = (title: string) => {
+    setOpenItem(openItem === title ? null : title);
+  };
+
+  const toggleCategory = (title: string) => {
+    setOpenCategory(openCategory === title ? null : title);
   };
 
   return (
     <nav aria-label="Mobile navigation" className="w-full">
-      <AccordionPrimitive.Root type="single" collapsible className="w-full">
-        <ul className="flex flex-col">
-          {menuItems.map((item) => {
-            const parentActive = isParentActive(item);
+      <ul className="flex flex-col gap-2">
+        {menuItems.map((item) => {
+          const isOpen = openItem === item.title;
 
-            return (
-              <li key={item.title} className="list-none">
-                {item.hasDropdown ? (
-                  <AccordionPrimitive.Item
-                    value={item.title}
-                    className="group border-b last:border-b-0"
+          return (
+            <li key={item.title} className="list-none">
+              {item.hasDropdown ? (
+                <div className="flex flex-col gap-2">
+                  {/* Products trigger */}
+                  <button
+                    onClick={() => toggleItem(item.title)}
+                    className={cn(
+                      "flex w-full items-center justify-between rounded-xl px-5 py-4 text-left transition-all cursor-pointer",
+                      isOpen ? "bg-white/5" : "bg-white/5"
+                    )}
                   >
-                    <AccordionPrimitive.Header className="flex">
-                      <AccordionPrimitive.Trigger
-                        className={`flex w-full items-center justify-between rounded-lg px-3 py-3 text-base font-medium tracking-[0.02em] outline-none transition-all hover:text-primary focus-visible:ring-[3px] focus-visible:ring-ring/50 data-[state=open]:bg-background data-[state=open]:border data-[state=open]:border-border data-[state=open]:shadow-sm`}
-                      >
-                        <Paragraph
-                          className={`text-left ${
-                            parentActive
-                              ? "text-primary!"
-                              : "text-white! group-data-[state=open]:text-primary!"
-                          }`}
-                        >
-                          {item.title}
-                        </Paragraph>
-                        <ChevronDown
-                          className={`ml-2 h-6 w-6 shrink-0 transition-transform group-data-[state=open]:rotate-180 ${
-                            parentActive
-                              ? "text-primary!"
-                              : "text-white! group-data-[state=open]:text-primary!"
-                          }`}
-                          aria-hidden="true"
-                        />
-                      </AccordionPrimitive.Trigger>
-                    </AccordionPrimitive.Header>
-                    <AccordionPrimitive.Content className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden">
-                      <div className="mx-1 rounded-lg border border-border bg-background shadow-sm">
-                        <ul className="pl-4 pr-1 pb-2 pt-2 space-y-1">
-                          {item.items?.map((subItem) => (
-                            <li key={subItem.title} className="list-none">
-                              <Link
-                                href={subItem.href}
-                                onClick={onLinkClick}
-                                aria-current={
-                                  isActive(subItem.href) ? "page" : undefined
-                                }
-                                className={`block rounded-md px-2 py-2 text-sm tracking-[0.02em] transition-colors outline-none border focus-visible:ring-[3px] focus-visible:ring-ring/50 ${
-                                  isActive(subItem.href)
-                                    ? "bg-background! font-medium border-border"
-                                    : "hover:bg-background/60! border-transparent!"
-                                }`}
-                              >
-                                <Paragraph
-                                  className={`text-left ${
-                                    isActive(subItem.href)
-                                      ? "text-primary!"
-                                      : "text-white! hover:text-primary!"
-                                  }`}
-                                >
-                                  {subItem.title}
-                                </Paragraph>
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </AccordionPrimitive.Content>
-                  </AccordionPrimitive.Item>
-                ) : (
-                  <Link
-                    href={item.href}
-                    onClick={onLinkClick}
-                    aria-current={isActive(item.href) ? "page" : undefined}
-                    className={`block w-full rounded-md px-3 py-3 text-base font-medium tracking-[0.02em] transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50`}
-                  >
-                    <Paragraph
-                      className={`text-left ${
-                        isActive(item.href)
-                          ? "text-primary!"
-                          : "text-white hover:text-primary!"
-                      }`}
-                    >
+                    <span className="text-white font-medium text-base">
                       {item.title}
-                    </Paragraph>
-                  </Link>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      </AccordionPrimitive.Root>
+                    </span>
+                    {isOpen ? (
+                      <ChevronUp className="w-5 h-5 text-white/50 shrink-0" />
+                    ) : (
+                      <ChevronRight className="w-5 h-5 text-white/50 shrink-0" />
+                    )}
+                  </button>
+
+                  {/* Expanded: Categories + Products */}
+                  {isOpen && (
+                    <div className="flex flex-col gap-2 pl-2">
+                      {productCategories.map((category) => {
+                        const isCatOpen =
+                          openCategory === category.title;
+
+                        return (
+                          <div key={category.title} className="flex flex-col gap-2">
+                            {/* Category trigger */}
+                            <button
+                              onClick={() => toggleCategory(category.title)}
+                              className="flex w-full items-center justify-between rounded-xl bg-white/5 px-5 py-4 text-left transition-all cursor-pointer"
+                            >
+                              <span
+                                className={cn(
+                                  "font-medium text-base",
+                                  isCatOpen
+                                    ? "text-primary"
+                                    : "text-white"
+                                )}
+                              >
+                                {category.title}
+                              </span>
+                              {isCatOpen ? (
+                                <ChevronUp className="w-5 h-5 text-white/50 shrink-0" />
+                              ) : (
+                                <ChevronRight className="w-5 h-5 text-white/50 shrink-0" />
+                              )}
+                            </button>
+
+                            {/* Category products */}
+                            {isCatOpen && (
+                              <div className="flex flex-col gap-2 pl-2">
+                                {category.items.map((product) => (
+                                  <Link
+                                    key={product.title}
+                                    href={product.href}
+                                    onClick={onLinkClick}
+                                    className={cn(
+                                      "flex items-center justify-between rounded-xl bg-white/5 px-5 py-4 transition-colors",
+                                      isActive(product.href)
+                                        ? "text-primary"
+                                        : "text-white hover:bg-white/8"
+                                    )}
+                                  >
+                                    <span className="text-sm leading-5">
+                                      {product.title}
+                                    </span>
+                                    <ChevronRight className="w-5 h-5 text-white/50 shrink-0 ml-3" />
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  href={item.href}
+                  onClick={onLinkClick}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                  className={cn(
+                    "flex items-center justify-between rounded-xl bg-white/5 px-5 py-4 transition-colors",
+                    isActive(item.href)
+                      ? "text-primary"
+                      : "text-white hover:bg-white/8"
+                  )}
+                >
+                  <span className="font-medium text-base">{item.title}</span>
+                  <ChevronRight className="w-5 h-5 text-white/50 shrink-0" />
+                </Link>
+              )}
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }

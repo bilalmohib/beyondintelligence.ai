@@ -1,149 +1,111 @@
 "use client";
 
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
-} from "@/components/ui/tooltip";
-import { footerItems } from "@/components/common/Footer/data";
+import { MapPin, Phone, Mail } from "lucide-react";
 import { Heading5, Paragraph } from "@/components/common/Typography";
-import SubscribeToNewsLetter from "@/components/common/Footer/SubscribeToNewsLetter";
+import {
+  footerColumns,
+  contactInfo,
+} from "@/components/common/Footer/data";
+import { IFooterSection } from "@/components/common/Footer/types";
+
+const FooterSection = ({ section }: { section: IFooterSection }) => (
+  <div className="flex flex-col gap-2.5">
+    <Heading5 className="text-white! text-base! font-bold! leading-5!">
+      {section.title}
+    </Heading5>
+    <div className="flex flex-col gap-1.5">
+      {section.items.map((item) => (
+        <div key={item.title} className="flex flex-col">
+          <Paragraph className="text-white! text-sm! font-normal! leading-5!">
+            {item.title}
+          </Paragraph>
+          {item.description && (
+            <Paragraph className="text-white/50! text-xs! italic! leading-4!">
+              {item.description}
+            </Paragraph>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
 interface FooterItemsProps {
   className?: string;
 }
 
 const FooterItems = ({ className }: FooterItemsProps) => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
-    <div className={cn("w-full", className)}>
-      <TooltipProvider delayDuration={0}>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 sm:gap-8 lg:gap-4">
-          {footerItems.map((item, index) => {
-            // Check if this is the last item and if it would be alone in its row on mobile
-            const isLastItem = index === footerItems.length - 1;
-            const isOddNumber = footerItems.length % 2 !== 0;
-            const shouldCenterOnMobile = isLastItem && isOddNumber;
-
-            return (
-              <div
-                className={cn(
-                  "flex flex-col gap-3 sm:gap-4 lg:gap-5",
-                  shouldCenterOnMobile &&
-                    "col-span-2 sm:col-span-1 mx-auto sm:mx-0"
-                )}
-                key={index}
-              >
-                <Heading5 className="leading-7.5 text-white! text-lg! text-center sm:text-left">
-                  {item.title}
-                </Heading5>
-
-                <div
-                  className={cn(
-                    "flex flex-col",
-                    item.title === "Contact Us"
-                      ? "gap-4"
-                      : "gap-2 sm:gap-2.5 lg:gap-3"
-                  )}
-                >
-                  {item.items.map((item) =>
-                    item.isExternal ? (
-                      <a
-                        href={item.link}
-                        key={item.title}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {mounted ? (
-                          <Tooltip>
-                            <TooltipTrigger className="text-center sm:text-left cursor-pointer flex flex-col gap-1.5 w-full">
-                              {item.value && (
-                                <Heading5 className="text-lg! text-white! leading-7!">
-                                  {item.title}
-                                </Heading5>
-                              )}
-                              <Paragraph className="hover:text-primary! text-white! text-base! truncate transition-colors w-full sm:max-w-[240px] lg:max-w-[340px]">
-                                {item.isIconOnly ? (
-                                  item.value &&
-                                  (typeof item.value === "function" ||
-                                    typeof item.value === "object") ? (
-                                    <item.value size={22} className="mt-1.5" />
-                                  ) : null
-                                ) : typeof item.value === "string" ? (
-                                  item.value
-                                ) : (
-                                  item.title
-                                )}
-                              </Paragraph>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <Paragraph className="text-white! text-base! px-6">
-                                {item.title}
-                              </Paragraph>
-                            </TooltipContent>
-                          </Tooltip>
-                        ) : (
-                          <Paragraph className="hover:text-primary! text-white! text-base! w-full sm:max-w-[240px] lg:max-w-[340px] truncate transition-colors">
-                            {item.title}
-                          </Paragraph>
-                        )}
-                      </a>
-                    ) : (
-                      <Link href={item.link || ""} key={item.title}>
-                        {mounted ? (
-                          <Tooltip>
-                            <TooltipTrigger className="text-center sm:text-left cursor-pointer w-full flex flex-col gap-1.5">
-                              {item.value && (
-                                <Heading5 className="text-lg! text-white! leading-7!">
-                                  {item.title}
-                                </Heading5>
-                              )}
-                              <Paragraph className="hover:text-primary! text-white! text-base! w-full sm:max-w-[240px] lg:max-w-[340px] truncate transition-colors">
-                                {item.isIconOnly ? (
-                                  item.value &&
-                                  (typeof item.value === "function" ||
-                                    typeof item.value === "object") ? (
-                                    <item.value size={22} className="mt-1.5" />
-                                  ) : null
-                                ) : typeof item.value === "string" ? (
-                                  item.value
-                                ) : (
-                                  item.title
-                                )}
-                              </Paragraph>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <Paragraph className="text-white text-base! px-6">
-                                {item.title}
-                              </Paragraph>
-                            </TooltipContent>
-                          </Tooltip>
-                        ) : (
-                          <Paragraph className="hover:text-primary text-white! text-base! w-full sm:max-w-[240px] lg:max-w-[340px] truncate transition-colors">
-                            {item.title}
-                          </Paragraph>
-                        )}
-                      </Link>
-                    )
-                  )}
-                </div>
-              </div>
-            );
-          })}
-
-          <SubscribeToNewsLetter className="col-span-3 mx-auto sm:mx-0" />
+    <div
+      className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 xl:gap-8 ${className || ""}`}
+    >
+      {/* Columns 1-3 from data */}
+      {footerColumns.map((column, colIdx) => (
+        <div key={colIdx} className="flex flex-col gap-6">
+          {column.map((section, secIdx) => (
+            <FooterSection key={secIdx} section={section} />
+          ))}
         </div>
-      </TooltipProvider>
+      ))}
+
+      {/* Column 4: Get In Touch + Map */}
+      <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-3.5">
+          <Heading5 className="text-white! text-base! font-bold! leading-5!">
+            Get In Touch
+          </Heading5>
+
+          <div className="flex flex-col gap-3">
+            {/* Address */}
+            <div className="flex items-start gap-2">
+              <MapPin className="w-4 h-4 text-white shrink-0 mt-0.5" />
+              <Paragraph className="text-white! text-sm! font-normal! leading-5!">
+                {contactInfo.address.line1}
+                <br />
+                {contactInfo.address.line2}
+              </Paragraph>
+            </div>
+
+            {/* Phone */}
+            <a
+              href={contactInfo.phoneLink}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
+              <Phone className="w-4 h-4 text-white shrink-0" />
+              <Paragraph className="text-white! text-sm! font-normal! leading-5!">
+                {contactInfo.phone}
+              </Paragraph>
+            </a>
+
+            {/* Email */}
+            <a
+              href={contactInfo.emailLink}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
+              <Mail className="w-4 h-4 text-white shrink-0" />
+              <Paragraph className="text-white! text-sm! font-normal! leading-5!">
+                {contactInfo.email}
+              </Paragraph>
+            </a>
+          </div>
+        </div>
+
+        {/* Map */}
+        <div className="w-full h-[140px] lg:h-[130px] rounded-lg overflow-hidden">
+          <iframe
+            src={contactInfo.mapEmbedUrl}
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Office Location"
+          />
+        </div>
+      </div>
     </div>
   );
 };
+
 export default FooterItems;

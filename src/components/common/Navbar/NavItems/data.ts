@@ -1,6 +1,3 @@
-import { BiSearch } from "react-icons/bi";
-import { AiOutlineRobot } from "react-icons/ai";
-
 export const menuItems = [
   {
     title: "Insight",
@@ -11,20 +8,6 @@ export const menuItems = [
     title: "Products",
     href: "/products",
     hasDropdown: true,
-    items: [
-      {
-        title: "Intelligent Agent",
-        href: "/products/intelligent-agent",
-        description: "Automate your workflows with intelligence.",
-        icon: AiOutlineRobot,
-      },
-      {
-        title: "Cognitive Search",
-        href: "/products/cognitive-search",
-        description: "Search with intelligence.",
-        icon: BiSearch,
-      },
-    ],
   },
   {
     title: "Press",
@@ -45,5 +28,42 @@ export const menuItems = [
     title: "Contact",
     href: "/contact",
     hasDropdown: false,
+  },
+];
+
+export const productCategories = [
+  {
+    title: "For Organizations",
+    items: [
+      {
+        title: "ATLAS — Capital Governance Layer (ILS / SWF / Pensions)",
+        href: "/products/atlas-capital-governance",
+      },
+      {
+        title: "ATLAS — Parametric Engine (Parametric Insurance)",
+        href: "/products/atlas-parametric-engine",
+      },
+      {
+        title: "ATLAS — Catastrophe Governance Layer (E&S / CAT)",
+        href: "/products/atlas-catastrophe-governance",
+      },
+      {
+        title: "ATLAS — Environmental Burden Score (Health Insurance)",
+        href: "/products/atlas-environmental-burden",
+      },
+      {
+        title: "Satori — Pediatric Environmental Risk Intelligence",
+        href: "/products/satori-pediatric-environmental",
+      },
+    ],
+  },
+  {
+    title: "For Individuals",
+    items: [
+      {
+        title: "Satori — For Childhood Asthma & Allergies",
+        href: "/products/satori-childhood-asthma",
+      },
+    ],
   },
 ];

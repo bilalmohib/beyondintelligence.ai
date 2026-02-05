@@ -1,10 +1,11 @@
-export interface IFooterItems {
-    title: string;
-    items: {
-      title: string;
-      link?: string;
-      value?: string | React.ElementType;
-      isIconOnly?: boolean;
-      isExternal?: boolean;
-    }[]
-  }
+export interface IFooterItem {
+  title: string;
+  description?: string;
+  link?: string;
+  isExternal?: boolean;
+}
+
+export interface IFooterSection {
+  title: string;
+  items: IFooterItem[];
+}

@@ -10,9 +10,9 @@ interface FAQsProps extends IFAQs {
 
 const FAQs = ({ className, faqsList }: FAQsProps) => {
   return (
-    <section className={cn("bg-background py-30", className)}>
+    <section className={cn("bg-background py-12 md:py-18 lg:py-30", className)}>
       <Container>
-        <div className="flex flex-col sm:flex-row justify-between gap-2 md:gap-4 xl:gap-16">
+        <div className="flex flex-col sm:flex-row justify-between gap-8 md:gap-4 xl:gap-16">
           <div className="w-full sm:w-[45%] md:w-[40%] mllg:w-[35%] mlg:w-[30%] lg:w-[45%] llg:w-[45%] xl:w-[40%]">
             <FAQsHeader />
           </div>

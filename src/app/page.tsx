@@ -43,12 +43,11 @@ function Home() {
 
       <LandingPageInspiredByTheVoicesOfParentsSection />
 
-      {/*
       <LandingPageHowSatoriCompares />
 
       <FAQs faqsList={faqsListSatoriLandingPage} />
 
-      <LandingPageCallToActionSection /> */}
+      {/*  <LandingPageCallToActionSection /> */}
     </div>
   );
 }
