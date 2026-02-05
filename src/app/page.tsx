@@ -37,10 +37,9 @@ function Home() {
 
       <LandingPageWhatYouReceive />
 
-      {/*
       <LandingPageSatoriBlogsSection />
 
-      <LandingPageScientificallyGroundedSection />
+      {/*<LandingPageScientificallyGroundedSection />
 
       <LandingPageInspiredByTheVoicesOfParentsSection />
 

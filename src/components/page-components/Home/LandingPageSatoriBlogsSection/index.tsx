@@ -8,7 +8,7 @@ const LandingPageSatoriBlogsSection = () => {
   return (
     <div className="bg-background">
       <Container>
-        <div className="flex flex-col gap-5 justify-center items-center py-55">
+        <div className="flex flex-col gap-5 justify-center items-center py-24 md:py-30 mlg:py-40 lg:py-55">
           <Heading5 className="text-white! text-center! leading-8! tracking-[0.48px]!">
             Inside
           </Heading5>
@@ -17,7 +17,7 @@ const LandingPageSatoriBlogsSection = () => {
             alt="Inside"
             width={841}
             height={100.05}
-            className="select-none"
+            className="select-none w-full md:w-[841px] h-auto md:h-[100.05px]"
           />
         </div>
         <div>

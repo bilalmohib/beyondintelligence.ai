@@ -56,84 +56,82 @@ const LandingPageSatoriBlogsSlider = ({
   );
 
   return (
-    <div className="relative pt-5">
-      <Container className="pr-0! mr-0! xxlg:px-0! max-w-[1400px]! xxlg:max-w-[1350px]! xxlg:mx-auto!">
-        <Swiper
-          slidesPerView={"auto"}
-          spaceBetween={40}
-          navigation={{
-            nextEl: ".swiper-button-next-custom",
-            prevEl: ".swiper-button-prev-custom",
-          }}
-          modules={[Navigation]}
-          className="pb-4!"
-          onSlideChange={handleSlideChange}
-          onSwiper={(swiper) => {
-            // Auto-play video on first slide if it has one
-            setTimeout(() => handleSlideChange(swiper), 100);
-          }}
-          breakpoints={{
-            320: {
-              slidesPerView: 1.05,
-              spaceBetween: 16,
-            },
-            640: {
-              slidesPerView: 1.5,
-              spaceBetween: 20,
-            },
-            1024: {
-              slidesPerView: 2,
-              spaceBetween: 24,
-            },
-          }}
-        >
-          {slides?.map((slide: SlideData, index: number) => (
-            <SwiperSlide key={index}>
-              <div className="flex flex-col gap-6">
-                <div className="relative w-full h-[443px] pt-5">
-                  <Image
-                    src={slide.image || ""}
-                    alt={slide.title}
-                    fill
-                    className="w-full h-[443px] object-cover rounded-[20px]"
-                  />
-                </div>
-                {isModalActive && slide.modalContent && (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="absolute bottom-4 right-4 text-white! hover:text-white! rounded-full! w-12 h-12 bg-primary! border-primary!"
-                    onClick={() => onSlideSelect?.(slide)}
-                    aria-label="Open details"
-                  >
-                    <PlusIcon className="size-5" />
-                  </Button>
-                )}
-
-                {/* Text Content Below Card */}
-                <div className="flex flex-col gap-3 pr-4">
-                  <Heading5 className="text-white text-2xl leading-tight">
-                    {slide.title}
-                  </Heading5>
-
-                  <Paragraph className="text-white! font-bold! leading-7!">
-                    {slide.subTitle}
-                  </Paragraph>
-
-                  {slide.description && (
-                    <Paragraph className="text-white! leading-7!">
-                      {slide.description}
-                    </Paragraph>
-                  )}
-                </div>
+    <div className="relative mlg:pt-5">
+      <Swiper
+        slidesPerView={"auto"}
+        spaceBetween={40}
+        navigation={{
+          nextEl: ".swiper-button-next-custom",
+          prevEl: ".swiper-button-prev-custom",
+        }}
+        modules={[Navigation]}
+        className="mlg:pb-4!"
+        onSlideChange={handleSlideChange}
+        onSwiper={(swiper) => {
+          // Auto-play video on first slide if it has one
+          setTimeout(() => handleSlideChange(swiper), 100);
+        }}
+        breakpoints={{
+          320: {
+            slidesPerView: 1,
+            spaceBetween: 16,
+          },
+          640: {
+            slidesPerView: 1.5,
+            spaceBetween: 20,
+          },
+          1024: {
+            slidesPerView: 2,
+            spaceBetween: 24,
+          },
+        }}
+      >
+        {slides?.map((slide: SlideData, index: number) => (
+          <SwiperSlide key={index}>
+            <div className="flex flex-col gap-6">
+              <div className="relative w-full h-[320px] md:h-[443px] pt-0 mlg:pt-5">
+                <Image
+                  src={slide.image || ""}
+                  alt={slide.title}
+                  fill
+                  className="w-full h-[320px] md:h-[443px] object-cover rounded-[20px]"
+                />
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </Container>
+              {isModalActive && slide.modalContent && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="absolute bottom-4 right-4 text-white! hover:text-white! rounded-full! w-12 h-12 bg-primary! border-primary!"
+                  onClick={() => onSlideSelect?.(slide)}
+                  aria-label="Open details"
+                >
+                  <PlusIcon className="size-5" />
+                </Button>
+              )}
 
-      <Container className="flex gap-4 justify-end mt-8">
-        <button className="cursor-pointer swiper-button-prev-custom w-12 h-12 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors">
+              {/* Text Content Below Card */}
+              <div className="flex flex-col gap-3 pr-0 md:pr-4">
+                <Heading5 className="text-white text-xl! md:text-2xl! leading-tight">
+                  {slide.title}
+                </Heading5>
+
+                <Paragraph className="text-white! font-bold! leading-normal! md:leading-7!">
+                  {slide.subTitle}
+                </Paragraph>
+
+                {slide.description && (
+                  <Paragraph className="text-white! leading-normal! md:leading-7!">
+                    {slide.description}
+                  </Paragraph>
+                )}
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      <div className="flex gap-4 justify-between ssmd:justify-end mt-0 md:mt-8">
+        <button className="cursor-pointer swiper-button-prev-custom lg:w-12 lg:h-12 w-10 h-10 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors">
           <svg
             width="24"
             height="24"
@@ -151,7 +149,7 @@ const LandingPageSatoriBlogsSlider = ({
             />
           </svg>
         </button>
-        <button className="cursor-pointer swiper-button-next-custom w-12 h-12 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors">
+        <button className="cursor-pointer swiper-button-next-custom lg:w-12 lg:h-12 w-10 h-10 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors">
           <svg
             width="24"
             height="24"
@@ -169,7 +167,7 @@ const LandingPageSatoriBlogsSlider = ({
             />
           </svg>
         </button>
-      </Container>
+      </div>
     </div>
   );
 };
