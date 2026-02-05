@@ -50,7 +50,7 @@ const FAQsList = ({ className, faqsList }: FAQsListProps) => {
               value={`item-${index + 1}`}
               className="border-0"
             >
-              <AccordionTrigger className="group flex items-center justify-between py-[17px] hover:no-underline [&>svg]:hidden">
+              <AccordionTrigger className="group flex items-center justify-between py-2 sm:py-4 md:py-6 lg:py-[17px] hover:no-underline [&>svg]:hidden">
                 <Heading5 className="text-white! leading-8! -tracking-[0.48px]!">
                   {faq.question}
                 </Heading5>

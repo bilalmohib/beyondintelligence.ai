@@ -49,10 +49,6 @@ function Button({
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
-    isRedirectToSignup?: boolean;
-    isRedirectToLogin?: boolean;
-    isRedirectToDemo?: boolean;
-    isRedirectToContact?: boolean;
     startIcon?: React.ReactElement;
     endIcon?: React.ReactElement;
   }) {

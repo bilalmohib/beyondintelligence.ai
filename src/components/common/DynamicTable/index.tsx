@@ -47,7 +47,7 @@ const DynamicTable = ({
         {/* Column Switcher */}
         <div
           className={cn(
-            "flex gap-2 pl-1 pb-4 flex-wrap",
+            "flex gap-2 pb-4 flex-wrap",
             !minimalRowSeparators && "border-b border-[#BEBEBE]"
           )}
         >
@@ -61,7 +61,6 @@ const DynamicTable = ({
                 onClick={() => {
                   setSelectedColumnIndex(columnIndex);
                 }}
-                isRedirectToSignup={header.headerButtonLink ? true : false}
                 className={cn(
                   "px-3 sssmd:px-4 py-2 rounded-md font-inter text-sm font-medium transition-colors",
                   isSelected
@@ -77,14 +76,14 @@ const DynamicTable = ({
 
         {/* Two-Column Table */}
         <table
-          className="w-full table-auto border-separate"
-          style={{ borderSpacing: "40px 0" }}
+          className="w-full table-fixed border-separate -ml-5"
+          style={{ borderSpacing: "20px 0", width: "calc(100% + 20px)" }}
         >
           <thead className="bg-transparent">
             <tr>
               <th
                 className={cn(
-                  "px-5 py-4 text-left",
+                  "py-4 text-left pl-0 pr-0 w-[50%]",
                   !minimalRowSeparators && "border border-[#BEBEBE]",
                   headerClassName
                 )}
@@ -95,7 +94,7 @@ const DynamicTable = ({
               </th>
               <th
                 className={cn(
-                  "px-5 py-4 text-left",
+                  "py-4 text-left pl-0 pr-0 w-[65%]",
                   !minimalRowSeparators && "border border-[#BEBEBE]",
                   headerClassName,
                   headerData[selectedColumnIndex]?.className || ""
@@ -105,7 +104,7 @@ const DynamicTable = ({
                   <div className="flex flex-col gap-1">
                     <Heading5
                       className={cn(
-                        "w-fit! font-inter text-xl font-bold leading-7 tracking-[-0.4px] text-primary text-left whitespace-nowrap",
+                        "font-inter text-xl font-bold leading-7 tracking-[-0.4px] text-primary text-left",
                         headerData[selectedColumnIndex]?.headerTextClassName
                       )}
                     >
@@ -131,7 +130,6 @@ const DynamicTable = ({
                           headerData[selectedColumnIndex].label
                         );
                       }}
-                      isRedirectToSignup={true}
                     >
                       Get Started
                     </Button>
@@ -154,19 +152,19 @@ const DynamicTable = ({
                 <tr key={rowIndex} className="bg-transparent">
                   <td
                     className={cn(
-                      "px-5 py-[50px] align-top",
+                      "py-[50px] align-top pl-0 pr-0",
                       !minimalRowSeparators && "border border-[#BEBEBE]",
                       showRowSeparator && "border-b border-[#7C81E8]/50",
                       cellClassName
                     )}
                   >
-                    <Paragraph className="text-white! leading-7! text-lg! whitespace-nowrap font-bold">
+                    <Paragraph className="text-white! leading-7! text-lg! font-bold">
                       {rowLabel}
                     </Paragraph>
                   </td>
                   <td
                     className={cn(
-                      "px-5 py-[50px] align-top",
+                      "py-[50px] align-top pl-0 pr-0",
                       !minimalRowSeparators && "border border-[#BEBEBE]",
                       showRowSeparator && "border-b border-[#7C81E8]/50",
                       cellClassName
@@ -249,7 +247,6 @@ const DynamicTable = ({
                           window.open(header.headerButtonLink, "_blank");
                         }
                       }}
-                      isRedirectToSignup={true}
                     >
                       Get Started
                     </Button>
