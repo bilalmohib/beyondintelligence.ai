@@ -26,7 +26,7 @@ const CustomModal = ({ children }: CustomModalProps) => {
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
 
         <DialogPrimitive.Content
-          className="fixed inset-0 z-50 overflow-hidden outline-none rounded-[20px] md:inset-auto md:top-[70px] md:left-[30px] md:right-[30px] md:bottom-[69px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+          className="fixed inset-0 z-50 flex flex-col overflow-hidden outline-none rounded-[20px] md:inset-auto md:top-[70px] md:left-[30px] md:right-[30px] md:bottom-[69px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
         >
           <VisuallyHidden.Root asChild>
             <DialogPrimitive.Title>
@@ -34,7 +34,7 @@ const CustomModal = ({ children }: CustomModalProps) => {
             </DialogPrimitive.Title>
           </VisuallyHidden.Root>
 
-          <div className="flex h-full w-full flex-col md:flex-row">
+          <div className="flex min-h-0 flex-1 flex-col overflow-y-auto md:flex-row md:overflow-visible">
             {children}
           </div>
 
