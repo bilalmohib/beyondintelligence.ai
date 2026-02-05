@@ -37,22 +37,24 @@ const TheFiveEnvironmentalForcesSliderSection = () => {
   };
 
   return (
-    <div className="bg-[#1A1C4E]">
-      <Container className="pt-0.5 pb-0">
+    <div className="bg-[#1A1C4E] pb-8 sm:pb-12 md:pb-20 lg:pb-30">
+      <Container className="pt-4 sm:pt-6 md:pt-0.5 pb-0">
         <Heading2 className="text-white! leading-[120%]! text-left">
-          The five environmental forces <br /> behind most asthma attacks.
+          The five environmental forces <br className="hidden sm:block" />{" "}
+          behind most asthma attacks.
         </Heading2>
       </Container>
 
-      <div className="h-[50px]" aria-hidden />
-      <Container className="pb-30">
-        <SwiperSlider
-          slides={theFiveEnvironmentalForcesSliderSectionData}
-          isModalActive
-          onSlideSelect={handleSlideSelect}
-          imageHeight={559}
-        />
-      </Container>
+      <div
+        className="h-[24px] sm:h-[32px] md:h-[40px] lg:h-[50px]"
+        aria-hidden
+      />
+      <SwiperSlider
+        slides={theFiveEnvironmentalForcesSliderSectionData}
+        isModalActive
+        onSlideSelect={handleSlideSelect}
+        imageHeight={559}
+      />
       <CustomModal>
         {selectedSlide?.modalContent && (
           <FiveEnvironmentalForcesModalContent

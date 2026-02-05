@@ -27,9 +27,9 @@ function Home() {
 
       <AirCarriesHiddenRiskSection />
 
-      <LandingPageAirChangesConstantlySection />
+      {/* <LandingPageAirChangesConstantlySection /> */}
 
-      <LandingPageMeetSatoriSection />
+      {/* <LandingPageMeetSatoriSection />
 
       <LandingPageProtectiveIntelligenceThatUnderstandsSection />
 
@@ -47,7 +47,7 @@ function Home() {
 
       <FAQs faqsList={faqsListSatoriLandingPage} />
 
-      <LandingPageCallToActionSection />
+      <LandingPageCallToActionSection /> */}
     </div>
   );
 }
