@@ -6,8 +6,8 @@ import LandingPageHowItWorksListSection from "@/components/page-components/Home/
 
 const LandingPageHowItWorksSection = () => {
   return (
-    <Container className="h-auto py-30 flex flex-col gap-13.5">
-      <Heading2 className="text-center! leading-13.75! -tracking-[0.92px]! text-white!">
+    <Container className="h-auto py-12 md:py-18 lg:py-30 flex flex-col gap-4 sm:gap-6 md:gap-8 lg:gap-13.5">
+      <Heading2 className="text-center! lg:leading-13.75! -tracking-[0.92px]! text-white! text-2xl! sm:text-3xl! lg:text-[46px]!">
         How Satori Works
       </Heading2>
 
