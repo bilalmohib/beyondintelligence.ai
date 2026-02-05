@@ -10,7 +10,7 @@ import { IFooterSection } from "@/components/common/Footer/types";
 
 const FooterSection = ({ section }: { section: IFooterSection }) => (
   <div className="flex flex-col gap-2.5">
-    <Heading5 className="text-white! text-sm! font-bold! leading-5!">
+    <Heading5 className="text-white! text-base! font-bold! leading-5!">
       {section.title}
     </Heading5>
     <div className="flex flex-col gap-1.5">
@@ -51,7 +51,7 @@ const FooterItems = ({ className }: FooterItemsProps) => {
       {/* Column 4: Get In Touch + Map */}
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-3.5">
-          <Heading5 className="text-white! text-sm! font-bold! leading-5!">
+          <Heading5 className="text-white! text-base! font-bold! leading-5!">
             Get In Touch
           </Heading5>
 
