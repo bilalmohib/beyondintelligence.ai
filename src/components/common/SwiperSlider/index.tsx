@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useId } from "react";
 import type {
   SlideData,
   SwiperSliderProps,
@@ -9,8 +9,6 @@ import { getDominantColor } from "@/components/common/SwiperSlider/utils";
 import SwiperSliderBody from "@/components/common/SwiperSlider/SwiperSliderBody";
 import SwiperSliderControls from "@/components/common/SwiperSlider/SwiperSliderControls";
 import SwiperTextSliderBody from "@/components/common/SwiperSlider/SwiperTextSliderBody";
-
-let sliderCounter = 0;
 
 export type {
   SlideData,
@@ -29,13 +27,12 @@ const SwiperSlider = <T extends SlideData = SlideData>({
   showBottomButton = false,
   textSlider = false,
 }: SwiperSliderProps<T>) => {
-  const instanceIdRef = useRef<number | null>(null);
-  if (instanceIdRef.current === null) {
-    instanceIdRef.current = ++sliderCounter;
-  }
-  const uniqueId = instanceIdRef.current;
-  const prevButtonId = `swiper-button-prev-${uniqueId}`;
-  const nextButtonId = `swiper-button-next-${uniqueId}`;
+  // Use useId() for SSR-safe unique IDs, then sanitize to valid CSS class name
+  const reactId = useId();
+  // Convert React ID (e.g., ":r1:") to valid CSS class name (e.g., "r1")
+  const sanitizedId = reactId.replace(/:/g, "").replace(/^r/, "id-");
+  const prevButtonId = `swiper-button-prev-${sanitizedId}`;
+  const nextButtonId = `swiper-button-next-${sanitizedId}`;
   
   const [activeOverlayIndex, setActiveOverlayIndex] = useState<number | null>(
     null

@@ -257,7 +257,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
 
         {/* SECTION 1: Clear images with heading (fades out) */}
         <section
-          className="absolute inset-0 w-full h-full py-4 sm:py-5 md:py-6 z-10"
+          className="absolute inset-0 w-full h-full pt-16 sm:pt-20 md:pt-24 lg:pt-28 pb-4 sm:pb-5 md:pb-6 z-10"
           style={{
             opacity: section1Opacity,
             pointerEvents: scrollProgress > 0.5 ? "none" : "auto",
