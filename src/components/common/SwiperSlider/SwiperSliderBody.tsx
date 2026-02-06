@@ -17,7 +17,7 @@ import SwiperSliderOverlay from "@/components/common/SwiperSlider/SwiperSliderOv
 
 interface SwiperSliderBodyProps<T extends SlideData = SlideData> {
   slides?: T[];
-  imageHeight?: number | "auto" | "100vh";
+  imageHeight?: number | "auto" | "100vh" | "80vh";
   isModalActive?: boolean;
   onSlideSelect?: (slide: T) => void;
   fullWidth?: boolean;
@@ -29,6 +29,8 @@ interface SwiperSliderBodyProps<T extends SlideData = SlideData> {
   onOverlayOpen: (index: number) => void;
   onOverlayClose: () => void;
   dominantColors: Record<string, string>;
+  prevButtonSelector: string;
+  nextButtonSelector: string;
 }
 
 const SwiperSliderBody = <T extends SlideData = SlideData>({
@@ -45,6 +47,8 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
   onOverlayOpen,
   onOverlayClose,
   dominantColors,
+  prevButtonSelector,
+  nextButtonSelector,
 }: SwiperSliderBodyProps<T>) => {
   const { width } = useWindowSize();
 
@@ -78,8 +82,8 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
         slidesPerView={"auto"}
         spaceBetween={40}
         navigation={{
-          nextEl: ".swiper-button-next-custom",
-          prevEl: ".swiper-button-prev-custom",
+          nextEl: nextButtonSelector,
+          prevEl: prevButtonSelector,
         }}
         modules={[Navigation]}
         className="pb-4!"
@@ -129,6 +133,8 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
                   ? "aspect-auto"
                   : imageHeight === "100vh"
                   ? "h-[40vh] sm:h-[50vh] md:h-[70vh] lg:h-screen"
+                  : typeof imageHeight === "string" && imageHeight === "80vh"
+                  ? "h-[32vh] sm:h-[40vh] md:h-[56vh] lg:h-[80vh]"
                   : ""
               }
               

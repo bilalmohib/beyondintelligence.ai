@@ -5,14 +5,16 @@ import Container from "@/components/common/Container";
 
 interface SwiperSliderControlsProps {
   className?: string;
+  prevButtonId: string;
+  nextButtonId: string;
 }
 
-const SwiperSliderControls = ({ className }: SwiperSliderControlsProps) => {
+const SwiperSliderControls = ({ className, prevButtonId, nextButtonId }: SwiperSliderControlsProps) => {
   return (
     <Container className={cn("flex gap-4 justify-between ssmd:justify-end", className)}>
       <button
         type="button"
-        className="cursor-pointer swiper-button-prev-custom w-10 md:w-12 h-10 md:h-12 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors"
+        className={cn("cursor-pointer", prevButtonId, "w-10 md:w-12 h-10 md:h-12 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors")}
         aria-label="Previous slide"
       >
         <svg
@@ -34,7 +36,7 @@ const SwiperSliderControls = ({ className }: SwiperSliderControlsProps) => {
       </button>
       <button
         type="button"
-        className="cursor-pointer swiper-button-next-custom w-10 md:w-12 h-10 md:h-12 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors"
+        className={cn("cursor-pointer", nextButtonId, "w-10 md:w-12 h-10 md:h-12 rounded-full border-2 border-white/30 hover:border-white/50 flex items-center justify-center transition-colors")}
         aria-label="Next slide"
       >
         <svg

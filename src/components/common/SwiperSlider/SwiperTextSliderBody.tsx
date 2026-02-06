@@ -12,18 +12,22 @@ interface SwiperTextSliderBodyProps {
   slides?: SlideData[];
   titleClassName: string;
   descriptionClassName: string;
+  prevButtonSelector: string;
+  nextButtonSelector: string;
 }
 
 const SwiperTextSliderBody = ({
   slides = [],
   titleClassName,
   descriptionClassName,
+  prevButtonSelector,
+  nextButtonSelector,
 }: SwiperTextSliderBodyProps) => {
   return (
     <div className="relative w-full flex items-center gap-2 sm:gap-3 md:gap-4 lg:gap-0 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 box-border max-w-[100vw]">
       <button
         type="button"
-        className="cursor-pointer swiper-button-prev-custom shrink-0 w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 border-white/30 hover:border-white/50 active:scale-95 flex items-center justify-center transition-all touch-manipulation"
+        className={cn("cursor-pointer", prevButtonSelector, "shrink-0 w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 border-white/30 hover:border-white/50 active:scale-95 flex items-center justify-center transition-all touch-manipulation")}
         aria-label="Previous slide"
       >
         <svg
@@ -51,8 +55,8 @@ const SwiperTextSliderBody = ({
           spaceBetween={0}
           allowTouchMove={true}
           navigation={{
-            nextEl: ".swiper-button-next-custom",
-            prevEl: ".swiper-button-prev-custom",
+            nextEl: nextButtonSelector,
+            prevEl: prevButtonSelector,
           }}
           modules={[Navigation]}
           className="overflow-hidden!"
@@ -87,7 +91,7 @@ const SwiperTextSliderBody = ({
 
       <button
         type="button"
-        className="cursor-pointer swiper-button-next-custom shrink-0 w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 border-white/30 hover:border-white/50 active:scale-95 flex items-center justify-center transition-all touch-manipulation"
+        className={cn("cursor-pointer", nextButtonSelector, "shrink-0 w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 border-white/30 hover:border-white/50 active:scale-95 flex items-center justify-center transition-all touch-manipulation")}
         aria-label="Next slide"
       >
         <svg
