@@ -23,11 +23,15 @@ const SwiperTextSliderBody = ({
   prevButtonSelector,
   nextButtonSelector,
 }: SwiperTextSliderBodyProps) => {
+  // Extract class name from selector (remove leading dot)
+  const prevButtonClass = prevButtonSelector.replace(/^\./, "");
+  const nextButtonClass = nextButtonSelector.replace(/^\./, "");
+  
   return (
     <div className="relative w-full flex items-center gap-2 sm:gap-3 md:gap-4 lg:gap-0 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 box-border max-w-[100vw]">
       <button
         type="button"
-        className={cn("cursor-pointer", prevButtonSelector, "shrink-0 w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 border-white/30 hover:border-white/50 active:scale-95 flex items-center justify-center transition-all touch-manipulation")}
+        className={cn("cursor-pointer", prevButtonClass, "shrink-0 w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 border-white/30 hover:border-white/50 active:scale-95 flex items-center justify-center transition-all touch-manipulation")}
         aria-label="Previous slide"
       >
         <svg
@@ -91,7 +95,7 @@ const SwiperTextSliderBody = ({
 
       <button
         type="button"
-        className={cn("cursor-pointer", nextButtonSelector, "shrink-0 w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 border-white/30 hover:border-white/50 active:scale-95 flex items-center justify-center transition-all touch-manipulation")}
+        className={cn("cursor-pointer", nextButtonClass, "shrink-0 w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 border-white/30 hover:border-white/50 active:scale-95 flex items-center justify-center transition-all touch-manipulation")}
         aria-label="Next slide"
       >
         <svg
