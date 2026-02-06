@@ -90,7 +90,7 @@ const MainAppLayoutContent = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
 
-      <div className="relative z-10 overflow-x-hidden!">{children}</div>
+      <div className="relative z-10" style={{ overflowX: "clip" }}>{children}</div>
 
       <Footer />
     </div>
