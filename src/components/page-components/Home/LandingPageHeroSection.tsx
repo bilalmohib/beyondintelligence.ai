@@ -35,7 +35,7 @@ const LandingPageHeroSection = () => {
   return (
     <div>
       <div className="p-2.5">
-        <div className="w-full max-h-176 h-screen md:h-screen rounded-[20px] relative overflow-hidden bg-black">
+        <div className="w-full h-screen rounded-[20px] relative overflow-hidden bg-black">
           <video
             ref={videoRef}
             autoPlay
@@ -98,9 +98,8 @@ const LandingPageHeroSection = () => {
                   We Protect Your Child <br className="hidden md:block" />
                   Before Asthma Can Hurt Them.
                 </Heading1>
-                <Paragraph className="text-white text-center md:text-left">
-                  Satori is a text-first asthma & allergy guardian —{" "}
-                  <i>no app, no passwords, no friction.</i>
+                <Paragraph className="text-white text-center md:text-left whitespace-nowrap">
+                  Satori is a text-first asthma & allergy guardian — <i>no app, no passwords, no friction.</i>
                 </Paragraph>
               </div>
               <div className="h-full w-full flex justify-center md:justify-start mllg:justify-end items-start mllg:items-end">
