@@ -11,25 +11,51 @@ const LandingPageHeroSection = () => {
 
   useEffect(() => {
     const video = videoRef.current;
-    if (video) {
-      const playVideo = () => {
-        video.play().catch((error) => {
-          console.error("Video play failed:", error);
-        });
-      };
+    if (!video) return;
 
+    video.muted = true;
+    video.defaultMuted = true;
+    video.setAttribute("muted", "true");
+    video.setAttribute("playsinline", "true");
+    video.setAttribute("webkit-playsinline", "true");
+
+    let hasPlayed = false;
+
+    const playVideo = () => {
+      if (hasPlayed || !video.paused) return;
+      
+      requestAnimationFrame(() => {
+        if (video.paused && !hasPlayed) {
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                hasPlayed = true;
+              })
+              .catch(() => {
+              });
+          }
+        }
+      });
+    };
+
+    if (video.readyState >= 3) {
       playVideo();
-
-      video.addEventListener("loadedmetadata", playVideo);
-      video.addEventListener("canplay", playVideo);
-      video.addEventListener("canplaythrough", playVideo);
-
-      return () => {
-        video.removeEventListener("loadedmetadata", playVideo);
-        video.removeEventListener("canplay", playVideo);
-        video.removeEventListener("canplaythrough", playVideo);
-      };
     }
+
+    video.addEventListener("canplaythrough", playVideo);
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden && video.paused) {
+        playVideo();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      video.removeEventListener("canplaythrough", playVideo);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   return (
@@ -43,37 +69,13 @@ const LandingPageHeroSection = () => {
             muted
             playsInline
             controls={false}
-            preload="auto"
+            preload="metadata"
+            disablePictureInPicture
+            disableRemotePlayback
+            webkit-playsinline="true"
+            x-webkit-airplay="deny"
             className="absolute inset-0 w-full h-full object-cover rounded-[20px] z-0 block"
             style={{ pointerEvents: "none", display: "block" }}
-            onError={(e) => {
-              console.error("Video error:", e);
-              const video = e.currentTarget;
-              console.error("Video error details:", {
-                error: video.error,
-                networkState: video.networkState,
-                readyState: video.readyState,
-                src: video.currentSrc,
-              });
-            }}
-            onLoadedData={() => {
-              const video = videoRef.current;
-              if (video) {
-                video.play().catch((err) => console.error("Play error:", err));
-              }
-            }}
-            onCanPlay={() => {
-              const video = videoRef.current;
-              if (video) {
-                video.play().catch((err) => console.error("Play error:", err));
-              }
-            }}
-            onCanPlayThrough={() => {
-              const video = videoRef.current;
-              if (video) {
-                video.play().catch((err) => console.error("Play error:", err));
-              }
-            }}
           >
             <source
               src="/assets/pages/landing/videos/HeroVideo001.mp4"
