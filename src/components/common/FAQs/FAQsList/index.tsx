@@ -51,7 +51,7 @@ const FAQsList = ({ className, faqsList }: FAQsListProps) => {
               className="border-0"
             >
               <AccordionTrigger className="group flex items-center justify-between py-2 sm:py-4 md:py-6 lg:py-[17px] hover:no-underline [&>svg]:hidden">
-                <Heading5 className="text-white! leading-8! -tracking-[0.48px]!">
+                <Heading5 className="text-white! leading-normal! lg:leading-8! -tracking-[0.48px]!">
                   {faq.question}
                 </Heading5>
                 <span className="flex shrink-0 items-center text-white group-data-[state=open]:hidden">
@@ -63,9 +63,10 @@ const FAQsList = ({ className, faqsList }: FAQsListProps) => {
               </AccordionTrigger>
               <AccordionContent>
                 <Paragraph
-                  className="text-base! leading-6! text-white!"
-                  dangerouslySetInnerHTML={{ __html: faq.answer }}
-                />
+                  className="text-base! leading-normal! lg:leading-6! text-white!"
+                >
+                  {faq.answer}
+                </Paragraph>
               </AccordionContent>
             </AccordionItem>
           );

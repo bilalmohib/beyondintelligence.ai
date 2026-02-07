@@ -55,7 +55,7 @@ export const theFiveEnvironmentalForcesSliderSectionData: ITheFiveEnvironmentalF
         isModalActive: true,
         modalContent: {
             title: "Nighttime Danger Windows: Why Attacks Happen While Children Sleep",
-            description: "Nighttime Danger Windows: Why Attacks Happen While Children Sleep",
+            description: "At night, cooler temperatures and still air cause pollutants to settle at breathing height. Combined with cold air and humidity shifts, young airways tighten more easily — leading to sudden coughing fits, wheezing, or breathlessness between 10 PM and 3 AM. Pediatricians often diagnose these episodes as nocturnal asthma or nighttime bronchospasm.",
             bottomText: "Night reveals what the air is quietly doing.",
             image: {
                 src: '/assets/pages/landing/images/AirCarriesHiddenSection/TheFiveEnvironmentalForcesSliderSection/photo_007.png',
