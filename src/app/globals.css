@@ -375,17 +375,58 @@ html {
     padding: 1px;
     background: var(--gradient-cta-section-border);
   }
+  /* Conic glow for sides and corners */
   .cta-section-gradient-border-wrapper::before {
     content: '';
     position: absolute;
-    inset: -6px;
-    border-radius: 26px;
-    background: var(--gradient-cta-section-border);
-    filter: blur(12px);
-    opacity: 0.8;
+    top: -8px;
+    left: -12px;
+    right: -12px;
+    bottom: -30px;
+    border-radius: 32px;
+    background: conic-gradient(
+      from 180deg at 50% 50%,
+      #14b8a6 0deg,
+      #22c55e 25deg,
+      #f59e0b 55deg,
+      #59393C 80deg,
+      #473C75 120deg,
+      #473C75 180deg,
+      #473C75 235deg,
+      #59393C 270deg,
+      #6366f1 295deg,
+      #7c3aed 315deg,
+      #a78bfa 340deg,
+      #8b5cf6 350deg,
+      #14b8a6 360deg
+    );
+    filter: blur(24px);
+    opacity: 1;
     z-index: 0;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 25%, black 65%);
-    mask-image: linear-gradient(to bottom, transparent 25%, black 65%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.2) 25%, black 50%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.2) 25%, black 50%);
+  }
+  /* Extra thick blurred gradient band at the bottom */
+  .cta-section-gradient-border-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: -16px;
+    left: -6px;
+    right: -6px;
+    height: 56px;
+    background: linear-gradient(
+      90deg,
+      #f59e0b 0%,
+      #22c55e 15%,
+      #14b8a6 32%,
+      #6366f1 58%,
+      #7c3aed 76%,
+      #a78bfa 100%
+    );
+    filter: blur(28px);
+    opacity: 1;
+    z-index: 0;
+    border-radius: 20px;
   }
   .cta-section-gradient-border-wrapper > * {
     background: #07081D;
