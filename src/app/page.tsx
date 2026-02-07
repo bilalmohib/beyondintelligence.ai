@@ -47,7 +47,7 @@ function Home() {
 
       <FAQs faqsList={faqsListSatoriLandingPage} />
 
-      {/*  <LandingPageCallToActionSection /> */}
+      <LandingPageCallToActionSection />
     </div>
   );
 }
