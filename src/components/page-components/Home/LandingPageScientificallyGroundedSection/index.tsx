@@ -15,7 +15,7 @@ const LandingPageScientificallyGroundedSection = () => {
       </Container>
       <LandingPageScientificallyGroundedSectionSlider
         slides={landingPageScientificallyGroundedSectionData}
-        imageHeight={700}
+        imageHeight="90vh"
         titleClassName="text-xl! md:text-2xl! lg:text-3xl! leading-tight!"
         showGradient={false}
         showBottomButton={true}

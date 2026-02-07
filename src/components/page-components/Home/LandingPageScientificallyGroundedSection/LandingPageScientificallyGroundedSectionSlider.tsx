@@ -6,7 +6,7 @@ import { SlideData } from "@/components/common/SwiperSlider";
 
 interface LandingPageScientificallyGroundedSectionSliderProps {
   slides: SlideData[];
-  imageHeight?: number | "auto";
+  imageHeight?: number | "auto" | "100vh" | "80vh" | "90vh";
   titleClassName?: string;
   showGradient?: boolean;
   showBottomButton?: boolean;
@@ -35,7 +35,13 @@ const LandingPageScientificallyGroundedSectionSlider = ({
         slides={slides}
         fullWidth
         imageHeight={
-          isMobile
+          imageHeight === "100vh"
+            ? "100vh"
+            : imageHeight === "80vh"
+            ? "80vh"
+            : imageHeight === "90vh"
+            ? "90vh"
+            : isMobile
             ? 520
             : isTablet
             ? 700
