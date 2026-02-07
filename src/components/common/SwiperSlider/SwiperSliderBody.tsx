@@ -17,7 +17,7 @@ import SwiperSliderOverlay from "@/components/common/SwiperSlider/SwiperSliderOv
 
 interface SwiperSliderBodyProps<T extends SlideData = SlideData> {
   slides?: T[];
-  imageHeight?: number | "auto" | "100vh" | "80vh";
+  imageHeight?: number | "auto" | "100vh" | "80vh" | "90vh";
   isModalActive?: boolean;
   onSlideSelect?: (slide: T) => void;
   fullWidth?: boolean;
@@ -130,15 +130,17 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
                 imageHeight === undefined
                   ? "aspect-4/3"
                   : imageHeight === "auto"
-                  ? "aspect-auto"
-                  : imageHeight === "100vh"
-                  ? "h-[40vh] sm:h-[50vh] md:h-[70vh] lg:h-screen"
-                  : typeof imageHeight === "string" && imageHeight === "80vh"
-                  ? "h-[32vh] sm:h-[40vh] md:h-[56vh] lg:h-[80vh]"
-                  : ""
-              }
-              
-              `}
+                    ? "aspect-auto"
+                    : imageHeight === "100vh"
+                      ? "h-[40vh] sm:h-[50vh] md:h-[70vh] lg:h-screen"
+                      : typeof imageHeight === "string"
+                        ? imageHeight === "90vh"
+                          ? "h-[36vh] sm:h-[45vh] md:h-[63vh] lg:h-[90vh]"
+                          : imageHeight === "80vh"
+                            ? "h-[32vh] sm:h-[40vh] md:h-[56vh] lg:h-[80vh]"
+                            : ""
+                        : ""
+              }`}
               style={
                 typeof imageHeight === "number"
                   ? {

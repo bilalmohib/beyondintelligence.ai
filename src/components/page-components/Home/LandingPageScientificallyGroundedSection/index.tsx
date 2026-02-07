@@ -1,6 +1,5 @@
 import Container from "@/components/common/Container";
 import { Heading2 } from "@/components/common/Typography";
-import SwiperSlider from "@/components/common/SwiperSlider";
 import { landingPageScientificallyGroundedSectionData } from "@/components/page-components/Home/LandingPageScientificallyGroundedSection/data";
 import LandingPageScientificallyGroundedSectionSlider from "@/components/page-components/Home/LandingPageScientificallyGroundedSection/LandingPageScientificallyGroundedSectionSlider";
 
@@ -15,7 +14,7 @@ const LandingPageScientificallyGroundedSection = () => {
       </Container>
       <LandingPageScientificallyGroundedSectionSlider
         slides={landingPageScientificallyGroundedSectionData}
-        imageHeight={700}
+        imageHeight="80vh"
         titleClassName="text-xl! md:text-2xl! lg:text-3xl! leading-tight!"
         showGradient={false}
         showBottomButton={true}

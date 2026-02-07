@@ -8,10 +8,7 @@ import { useRouter } from "next/navigation";
 import Container from "@/components/common/Container";
 import { Paragraph } from "@/components/common/Typography";
 import FooterItems from "@/components/common/Footer/FooterItems";
-import {
-  bottomLinks,
-  socialLinks,
-} from "@/components/common/Footer/data";
+import { bottomLinks, socialLinks } from "@/components/common/Footer/data";
 
 interface FooterProps {
   className?: string;
@@ -35,11 +32,13 @@ const FooterLogo = () => {
 const Footer = ({ className }: FooterProps) => {
   return (
     <footer
-      className={`w-full bg-lightGray2 transition-all duration-200 ${className || ""}`}
+      className={`w-full bg-lightGray2 transition-all duration-200 ${
+        className || ""
+      }`}
     >
       <Container>
         {/* Header: Logo + Help Center */}
-        <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start pt-10 lg:pt-14 pb-6 sm:pb-8 lg:pb-10">
+        <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start pt-10 md:pt-12 mlg:pt-18 lg:pt-24 xl:pt-30 pb-6 sm:pb-8 mlg:pb-12 lg:pb-15">
           <FooterLogo />
           {/* Help Center — desktop/tablet only */}
           <Button
@@ -52,7 +51,7 @@ const Footer = ({ className }: FooterProps) => {
         </div>
 
         {/* Main Content Grid */}
-        <div className="pb-8 lg:pb-12">
+        <div className="pb-8 lg:pb-14">
           <FooterItems />
         </div>
 
@@ -70,7 +69,7 @@ const Footer = ({ className }: FooterProps) => {
 
       {/* Bottom Bar */}
       <Container>
-        <div className="border-t border-white/10 py-6 lg:py-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="border-t border-[#7C81E8] py-6 lg:py-8 flex flex-col md:flex-row justify-between items-center gap-4">
           {/* Copyright */}
           <Paragraph className="text-white! text-sm! font-normal! leading-5! text-center! md:text-left!">
             Copyright 2026. Beyond Intelligence.{" "}
@@ -78,7 +77,7 @@ const Footer = ({ className }: FooterProps) => {
           </Paragraph>
 
           {/* Policy Links + Social */}
-          <div className="flex flex-wrap justify-center md:justify-end items-center gap-x-4 gap-y-2 text-sm">
+          <div className="flex flex-wrap justify-center md:justify-end items-center gap-x-6 gap-y-2 text-sm">
             {bottomLinks.map((link) => (
               <Link
                 key={link.title}
@@ -88,7 +87,7 @@ const Footer = ({ className }: FooterProps) => {
                 {link.title}
               </Link>
             ))}
-            <span className="text-white/30">|</span>
+            <span className="text-white">|</span>
             <a
               href={socialLinks.linkedin}
               target="_blank"

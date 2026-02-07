@@ -103,4 +103,62 @@ export const SatoriTextIcon = ({
   );
 };
 
-export { InfoIcon, HelpCenterIcon };
+// Footer Icons
+export const MapIcon = ({ className, width, height }: IIconProps) => {
+  return (
+    <svg
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M7.89954 6.69848C10.1642 4.43384 13.8359 4.43384 16.1005 6.69848C18.3652 8.96313 18.3652 12.6348 16.1005 14.8995L12 19L7.89954 14.8995C5.63489 12.6348 5.63489 8.96313 7.89954 6.69848ZM12 12.4558C12.9151 12.4558 13.6569 11.714 13.6569 10.799C13.6569 9.88393 12.9151 9.14214 12 9.14214C11.085 9.14214 10.3432 9.88393 10.3432 10.799C10.3432 11.714 11.085 12.4558 12 12.4558Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
+
+export const PhoneIcon = ({ className, width, height }: IIconProps) => {
+  return (
+    <svg
+      width={16}
+      height={16}
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M1 3C1 1.89543 1.89543 1 3 1H3.91442C4.488 1 4.98798 1.39037 5.1271 1.94683L5.86429 4.89562C5.98627 5.38353 5.80396 5.89703 5.40162 6.19879L4.5392 6.8456C4.44965 6.91277 4.43018 7.01112 4.45533 7.07979C5.21234 9.14632 6.85368 10.7877 8.92021 11.5447C8.98888 11.5698 9.08724 11.5504 9.1544 11.4608L9.80121 10.5984C10.103 10.196 10.6165 10.0137 11.1044 10.1357L14.0532 10.8729C14.6096 11.012 15 11.512 15 12.0856V13C15 14.1046 14.1046 15 13 15H11.5C5.70101 15 1 10.299 1 4.5V3Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
+
+export const MailIcon = ({ className, width, height }: IIconProps) => {
+  return (
+    <svg
+      width={14}
+      height={11}
+      viewBox="0 0 14 11"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M0 3.2794V9C0 10.1046 0.895431 11 2 11H12C13.1046 11 14 10.1046 14 9V3.2794L8.04819 6.94205C7.40538 7.33762 6.59462 7.33763 5.95181 6.94205L0 3.2794Z"
+        fill="white"
+      />
+      <path
+        d="M14 2.10522V2C14 0.89543 13.1046 0 12 0H2C0.895431 0 0 0.89543 0 2V2.10522L6.4759 6.09039C6.79731 6.28818 7.20269 6.28818 7.5241 6.09039L14 2.10522Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
