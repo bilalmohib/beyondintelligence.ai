@@ -4,7 +4,7 @@ interface IIconProps {
   height?: number;
 }
 
-const InfoIcon = ({ className }: IIconProps) => {
+export const InfoIcon = ({ className }: IIconProps) => {
   return (
     <svg
       width="11"
@@ -25,7 +25,7 @@ const InfoIcon = ({ className }: IIconProps) => {
   );
 };
 
-const HelpCenterIcon = ({ className }: IIconProps) => {
+export const HelpCenterIcon = ({ className }: IIconProps) => {
   return (
     <svg
       width={16}
