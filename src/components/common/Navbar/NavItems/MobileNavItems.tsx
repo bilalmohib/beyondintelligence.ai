@@ -9,6 +9,7 @@ import {
   menuItems,
   productCategories,
 } from "@/components/common/Navbar/NavItems/data";
+import ComingSoonModal from "@/components/common/Navbar/ComingSoonModal";
 
 interface MobileNavItemsProps {
   onLinkClick: () => void;
@@ -20,6 +21,10 @@ function MobileNavItems({ onLinkClick }: MobileNavItemsProps) {
   const [openCategory, setOpenCategory] = useState<string | null>(
     "For Organizations"
   );
+  const [comingSoonOpen, setComingSoonOpen] = useState(false);
+  const [comingSoonProductTitle, setComingSoonProductTitle] = useState<
+    string | undefined
+  >(undefined);
 
   const isActive = (href: string) => {
     if (!pathname) return false;
@@ -97,24 +102,52 @@ function MobileNavItems({ onLinkClick }: MobileNavItemsProps) {
                             {/* Category products */}
                             {isCatOpen && (
                               <div className="flex flex-col gap-2 pl-2">
-                                {category.items.map((product) => (
-                                  <Link
-                                    key={product.title}
-                                    href={product.href}
-                                    onClick={onLinkClick}
-                                    className={cn(
-                                      "flex items-center justify-between rounded-xl bg-white/5 px-5 py-4 transition-colors",
-                                      isActive(product.href)
-                                        ? "text-primary"
-                                        : "text-white hover:bg-white/8"
-                                    )}
-                                  >
-                                    <span className="text-sm leading-5">
-                                      {product.title}
-                                    </span>
-                                    <ChevronRight className="w-5 h-5 text-white/50 shrink-0 ml-3" />
-                                  </Link>
-                                ))}
+                                {category.items.map((product) => {
+                                  const isComingSoon =
+                                    "comingSoon" in product && product.comingSoon;
+                                  if (isComingSoon) {
+                                    return (
+                                      <button
+                                        key={product.title}
+                                        type="button"
+                                        onClick={() => {
+                                          setComingSoonProductTitle(
+                                            product.title
+                                          );
+                                          setComingSoonOpen(true);
+                                          onLinkClick();
+                                        }}
+                                        className={cn(
+                                          "flex w-full items-center justify-between rounded-xl bg-white/5 px-5 py-4 transition-colors text-left cursor-pointer",
+                                          "text-white hover:bg-white/8"
+                                        )}
+                                      >
+                                        <span className="text-sm leading-5">
+                                          {product.title}
+                                        </span>
+                                        <ChevronRight className="w-5 h-5 text-white/50 shrink-0 ml-3" />
+                                      </button>
+                                    );
+                                  }
+                                  return (
+                                    <Link
+                                      key={product.title}
+                                      href={product.href}
+                                      onClick={onLinkClick}
+                                      className={cn(
+                                        "flex items-center justify-between rounded-xl bg-white/5 px-5 py-4 transition-colors",
+                                        isActive(product.href)
+                                          ? "text-primary"
+                                          : "text-white hover:bg-white/8"
+                                      )}
+                                    >
+                                      <span className="text-sm leading-5">
+                                        {product.title}
+                                      </span>
+                                      <ChevronRight className="w-5 h-5 text-white/50 shrink-0 ml-3" />
+                                    </Link>
+                                  );
+                                })}
                               </div>
                             )}
                           </div>
@@ -143,6 +176,12 @@ function MobileNavItems({ onLinkClick }: MobileNavItemsProps) {
           );
         })}
       </ul>
+
+      <ComingSoonModal
+        open={comingSoonOpen}
+        onOpenChange={setComingSoonOpen}
+        productTitle={comingSoonProductTitle}
+      />
     </nav>
   );
 }

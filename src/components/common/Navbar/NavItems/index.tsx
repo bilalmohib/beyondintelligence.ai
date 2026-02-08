@@ -23,6 +23,7 @@ import {
   menuItems,
   productCategories,
 } from "@/components/common/Navbar/NavItems/data";
+import ComingSoonModal from "@/components/common/Navbar/ComingSoonModal";
 
 interface NavItemsProps {
   isNavTransparent?: boolean;
@@ -32,8 +33,17 @@ const NavItems = ({ isNavTransparent }: NavItemsProps) => {
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState(0);
   const [menuTop, setMenuTop] = useState(0);
+  const [comingSoonOpen, setComingSoonOpen] = useState(false);
+  const [comingSoonProductTitle, setComingSoonProductTitle] = useState<
+    string | undefined
+  >(undefined);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const handleComingSoonClick = (title: string) => {
+    setComingSoonProductTitle(title);
+    setComingSoonOpen(true);
+  };
 
   const handleMouseEnter = useCallback(() => {
     if (closeTimeoutRef.current) {
@@ -163,16 +173,32 @@ const NavItems = ({ isNavTransparent }: NavItemsProps) => {
 
             {/* Middle: Product items */}
             <div className="flex-1 px-5 flex flex-col gap-2.5">
-              {productCategories[activeCategory].items.map((product) => (
-                <Link
-                  key={product.title}
-                  href={product.href}
-                  className="flex items-center justify-between rounded-xl border border-white/10 bg-white/3 px-5 py-4 text-white text-sm leading-5 hover:bg-white/8 transition-colors group"
-                >
-                  <span>{product.title}</span>
-                  <ChevronRight className="w-4 h-4 text-white/30 shrink-0 ml-4 group-hover:text-white/60 transition-colors" />
-                </Link>
-              ))}
+              {productCategories[activeCategory].items.map((product) => {
+                const isComingSoon = "comingSoon" in product && product.comingSoon;
+                if (isComingSoon) {
+                  return (
+                    <button
+                      key={product.title}
+                      type="button"
+                      onClick={() => handleComingSoonClick(product.title)}
+                      className="flex items-center justify-between rounded-xl border border-white/10 bg-white/3 px-5 py-4 text-white text-sm leading-5 hover:bg-white/8 transition-colors group cursor-pointer w-full text-left"
+                    >
+                      <span>{product.title}</span>
+                      <ChevronRight className="w-4 h-4 text-white/30 shrink-0 ml-4 group-hover:text-white/60 transition-colors" />
+                    </button>
+                  );
+                }
+                return (
+                  <Link
+                    key={product.title}
+                    href={product.href}
+                    className="flex items-center justify-between rounded-xl border border-white/10 bg-white/3 px-5 py-4 text-white text-sm leading-5 hover:bg-white/8 transition-colors group"
+                  >
+                    <span>{product.title}</span>
+                    <ChevronRight className="w-4 h-4 text-white/30 shrink-0 ml-4 group-hover:text-white/60 transition-colors" />
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Right: Get In Touch + Help Center */}
@@ -229,6 +255,12 @@ const NavItems = ({ isNavTransparent }: NavItemsProps) => {
           </div>
         </div>
       </div>
+
+      <ComingSoonModal
+        open={comingSoonOpen}
+        onOpenChange={setComingSoonOpen}
+        productTitle={comingSoonProductTitle}
+      />
     </>
   );
 };
