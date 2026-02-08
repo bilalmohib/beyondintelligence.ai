@@ -24,7 +24,13 @@ const SatoriTextIconSection = () => {
   const { width: iconWidth, height: iconHeight } = getDimensions();
 
   return (
-    <div>
+    <div
+      className="satori-glow"
+      style={{
+        filter:
+          "drop-shadow(0 0 18px rgba(255,255,255,0.7)) drop-shadow(0 0 40px rgba(255,255,255,0.35)) drop-shadow(0 0 80px rgba(255,255,255,0.15))",
+      }}
+    >
       <SatoriTextIcon width={iconWidth} height={iconHeight} />
     </div>
   );
