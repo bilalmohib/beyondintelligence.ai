@@ -28,8 +28,9 @@ const SignupStepYourExperienceAsAParentPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).yourExperienceAsAParent);
 
+  const toUnderscore = (v: string) => v.toLowerCase().replace(/\s+/g, "_");
   const defaultValues = useMemo(() => ({
-    worries: savedData?.worries ?? [],
+    worries: (savedData?.worries ?? []).map(toUnderscore),
   }), [savedData]);
 
   const {
@@ -89,38 +90,14 @@ const SignupStepYourExperienceAsAParentPage = () => {
                   aria-invalid={errors.worries ? "true" : "false"}
                   aria-describedby={errors.worries ? "worries-error" : undefined}
                   data={[
-                    {
-                      label: "Nighttime Breathing",
-                      value: "nighttime breathing",
-                    },
-                    {
-                      label: "Sudden Flares",
-                      value: "sudden flares",
-                    },
-                    {
-                      label: "School Handling",
-                      value: "school handling",
-                    },
-                    {
-                      label: "Sports Activity",
-                      value: "sports activity",
-                    },
-                    {
-                      label: "Colds and Infections",
-                      value: "colds and infections",
-                    },
-                    {
-                      label: "Uncertain Triggers",
-                      value: "uncertain triggers",
-                    },
-                    {
-                      label: "Unpredictability",
-                      value: "unpredictability",
-                    },
-                    {
-                      label: "Other",
-                      value: "other",
-                    },
+                    { label: "Nighttime Breathing", value: "nighttime_breathing" },
+                    { label: "Sudden Flares", value: "sudden_flares" },
+                    { label: "School Handling", value: "school_handling" },
+                    { label: "Sports Activity", value: "sports_activity" },
+                    { label: "Colds and Infections", value: "colds_and_infections" },
+                    { label: "Uncertain Triggers", value: "uncertain_triggers" },
+                    { label: "Unpredictability", value: "unpredictability" },
+                    { label: "Other", value: "other" },
                   ]}
                   value={field.value || []}
                   onValueChange={field.onChange}

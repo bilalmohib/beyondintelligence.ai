@@ -19,7 +19,7 @@ import { selectSignupData } from "@/redux/slices/signupSlice";
 import type { RootState } from "@/redux/store";
 
 const allergiesAndSensitivitiesSchema = z.object({
-  hasAllergies: z.enum(["yes", "no", "not-sure"], {
+  hasAllergies: z.enum(["yes", "no", "not_sure"], {
     message: "Please select an option",
   }),
   allergies: z.array(z.string()).min(1, "Please select at least one option"),
@@ -33,16 +33,17 @@ const SignupStepAllergiesAndSensitivitiesPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).allergiesAndSensitivities);
 
+  const toUnderscore = (v: string) => v.toLowerCase().replace(/\s+/g, "_");
   const defaultValues = useMemo((): {
     hasAllergies?: AllergiesAndSensitivitiesFormData["hasAllergies"];
     allergies: string[];
   } => {
     const raw = savedData?.hasAllergies;
     const hasAllergies: AllergiesAndSensitivitiesFormData["hasAllergies"] | undefined =
-      raw === "yes" || raw === "no" || raw === "not-sure" ? raw : undefined;
+      raw === "yes" || raw === "no" || raw === "not_sure" || raw === "not-sure" ? (raw === "not-sure" ? "not_sure" : raw) : undefined;
     return {
       hasAllergies,
-      allergies: savedData?.allergies ?? [],
+      allergies: (savedData?.allergies ?? []).map(toUnderscore),
     };
   }, [savedData]);
 
@@ -125,7 +126,7 @@ const SignupStepAllergiesAndSensitivitiesPage = () => {
                   htmlFor="has-your-child-been-diagnosed-with-allergies-not-sure"
                   className="flex items-center gap-2 p-5 w-[171.2px] bg-white rounded-2xl cursor-pointer border-3 border-[#D1D5DB] has-data-[state=checked]:border-primary transition-all"
                 >
-                  <RadioGroupItem value="not-sure" id="has-your-child-been-diagnosed-with-allergies-not-sure" />
+                  <RadioGroupItem value="not_sure" id="has-your-child-been-diagnosed-with-allergies-not-sure" />
                   <span className="text-radio-text text-lg leading-7 font-normal">
                     Not Sure
                   </span>
@@ -180,26 +181,11 @@ const SignupStepAllergiesAndSensitivitiesPage = () => {
                   aria-invalid={errors.allergies ? "true" : "false"}
                   aria-describedby={errors.allergies ? "allergies-error" : undefined}
                   data={[
-                    {
-                      label: "Pollen",
-                      value: "pollen"
-                    },
-                    {
-                      label: "Dust Mites",
-                      value: "dust mites"
-                    },
-                    {
-                      label: "Pets",
-                      value: "pets"
-                    },
-                    {
-                      label: "Mold",
-                      value: "mold"
-                    },
-                    {
-                      label: "Other",
-                      value: "other"
-                    }
+                    { label: "Pollen", value: "pollen" },
+                    { label: "Dust Mites", value: "dust_mites" },
+                    { label: "Pets", value: "pets" },
+                    { label: "Mold", value: "mold" },
+                    { label: "Other", value: "other" },
                   ]}
                   value={field.value || []}
                   onValueChange={field.onChange}

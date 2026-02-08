@@ -26,7 +26,7 @@ const childInformationSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   age: z.number({ message: "Age is required" }).min(1, "Age is required").max(18, "Age must be 18 or less"),
-  asthmaDescription: z.enum(["mild", "moderate", "severe", "not sure"], {
+  asthmaDescription: z.enum(["mild", "moderate", "severe", "not_sure"], {
     message: "Please select an option",
   }),
 });
@@ -46,8 +46,9 @@ const SignupStepChildInformationPage = () => {
     asthmaDescription?: ChildInformationFormData["asthmaDescription"];
   } => {
     const raw = savedData?.asthmaDescription;
+    const normalized = raw === "not sure" ? "not_sure" : raw;
     const asthmaDescription: ChildInformationFormData["asthmaDescription"] | undefined =
-      raw === "mild" || raw === "moderate" || raw === "severe" || raw === "not sure" ? raw : undefined;
+      normalized === "mild" || normalized === "moderate" || normalized === "severe" || normalized === "not_sure" ? normalized : undefined;
     return {
       firstName: savedData?.firstName ?? "",
       lastName: savedData?.lastName ?? "",
@@ -244,22 +245,10 @@ const SignupStepChildInformationPage = () => {
                 aria-invalid={errors.asthmaDescription ? "true" : "false"}
                 aria-describedby={errors.asthmaDescription ? "asthma-description-error" : undefined}
                 data={[
-                  {
-                    label: "Mild",
-                    value: "mild",
-                  },
-                  {
-                    label: "Moderate",
-                    value: "moderate",
-                  },
-                  {
-                    label: "Severe",
-                    value: "severe",
-                  },
-                  {
-                    label: "Not Sure",
-                    value: "not sure",
-                  },
+                  { label: "Mild", value: "mild" },
+                  { label: "Moderate", value: "moderate" },
+                  { label: "Severe", value: "severe" },
+                  { label: "Not Sure", value: "not_sure" },
                 ]}
                 value={field.value}
                 onValueChange={field.onChange}
