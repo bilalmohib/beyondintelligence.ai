@@ -103,7 +103,9 @@ const ContinueButton = () => {
 
         let errorMessage = 'Something went wrong. Please try again.';
         
-        if (error?.data?.message) {
+        if (error?.data?.detail) {
+          errorMessage = error.data.detail;
+        } else if (error?.data?.message) {
           errorMessage = error.data.message;
         } else if (error?.data?.error) {
           errorMessage = error.data.error;

@@ -126,11 +126,11 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                   data={[
                     {
                       label: "Early Morning",
-                      value: "early morning",
+                      value: "early_morning",
                     },
                     {
                       label: "Late Morning",
-                      value: "late morning",
+                      value: "late_morning",
                     },
                     {
                       label: "Midday",
@@ -138,7 +138,7 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                     },
                     {
                       label: "Late Afternoon",
-                      value: "late afternoon",
+                      value: "late_afternoon",
                     },
                     {
                       label: "Evening",
@@ -150,7 +150,7 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                     },
                     {
                       label: "Not Sure",
-                      value: "not sure",
+                      value: "not_sure",
                     },
                   ]}
                   value={field.value || ""}
@@ -399,15 +399,11 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                   data={[
                     {
                       label: "Mostly Indoors",
-                      value: "mostly indoors",
+                      value: "mostly_indoors",
                     },
                     {
-                      label: "Mixed",
-                      value: "mixed",
-                    },
-                    {
-                      label: "Outdoors A Lot",
-                      value: "outdoors a lot",
+                      label: "Mostly Outdoors",
+                      value: "mostly_outdoors",
                     },
                   ]}
                   value={field.value || ""}
@@ -469,11 +465,11 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                   data={[
                     {
                       label: "Early Morning",
-                      value: "early morning",
+                      value: "early_morning",
                     },
                     {
                       label: "Late Morning",
-                      value: "late morning",
+                      value: "late_morning",
                     },
                     {
                       label: "Midday",
@@ -481,7 +477,7 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                     },
                     {
                       label: "Late Afternoon",
-                      value: "late afternoon",
+                      value: "late_afternoon",
                     },
                     {
                       label: "Evening",
@@ -492,8 +488,8 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                       value: "night",
                     },
                     {
-                      label: "Varies",
-                      value: "varies",
+                      label: "Not Sure",
+                      value: "not_sure",
                     },
                   ]}
                   value={field.value || ""}
@@ -624,11 +620,11 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                   data={[
                     {
                       label: "Early Morning",
-                      value: "early morning",
+                      value: "early_morning",
                     },
                     {
                       label: "Late Morning",
-                      value: "late morning",
+                      value: "late_morning",
                     },
                     {
                       label: "Midday",
@@ -636,7 +632,7 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                     },
                     {
                       label: "Late Afternoon",
-                      value: "late afternoon",
+                      value: "late_afternoon",
                     },
                     {
                       label: "Evening",

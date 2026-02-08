@@ -51,6 +51,21 @@ const toSnakeCase = (str: string): string => {
   return str.toLowerCase().replace(/\s+/g, '_');
 };
 
+type TimeOfDayEnum = SignupRequest['child_worse_when'];
+
+const VALID_TIME_OF_DAY: TimeOfDayEnum[] = [
+  'early_morning', 'late_morning', 'midday',
+  'late_afternoon', 'evening', 'night', 'not_sure',
+];
+
+const mapTimeOfDay = (value: string): TimeOfDayEnum => {
+  const normalized = toSnakeCase(value);
+  if (VALID_TIME_OF_DAY.includes(normalized as TimeOfDayEnum)) {
+    return normalized as TimeOfDayEnum;
+  }
+  return 'not_sure';
+};
+
 const extractPostalCode = (address: string): string => {
   const usZipMatch = address.match(/\b\d{5}(-\d{4})?\b/);
   if (usZipMatch) return usZipMatch[0];
@@ -76,9 +91,10 @@ const mapLifestyle = (value: string): SignupRequest['lifestyle'] => {
     'mostly_indoors': 'mostly_indoors',
     'outdoors a lot': 'mostly_outdoors',
     'mostly_outdoors': 'mostly_outdoors',
-    'mixed': 'mixed',
+    // Legacy "mixed" values default to mostly_indoors
+    'mixed': 'mostly_indoors',
   };
-  return mapping[value.toLowerCase()] || 'mixed';
+  return mapping[value.toLowerCase()] || 'mostly_indoors';
 };
 
 const mapHasAllergies = (value: string): SignupRequest['has_allergies'] => {
@@ -142,11 +158,11 @@ export const transformSignupData = (formData: SignupFormData): SignupRequest => 
     child_name: `${childInformation?.firstName || ''} ${childInformation?.lastName || ''}`.trim(),
     child_age_years: childInformation?.age || 0,
     severity: mapSeverity(childInformation?.asthmaDescription || 'not sure'),
-    child_worse_when: toSnakeCase(howTheirBreathingBehaves?.symptomsWorseTime || 'not_sure'),
+    child_worse_when: mapTimeOfDay(howTheirBreathingBehaves?.symptomsWorseTime || 'not_sure'),
     triggers: howTheirBreathingBehaves?.triggers || [],
     symptoms: howTheirBreathingBehaves?.symptoms || [],
-    lifestyle: mapLifestyle(howTheirBreathingBehaves?.timeOutdoors || 'mixed'),
-    most_active_time: toSnakeCase(howTheirBreathingBehaves?.mostActiveTime || 'not_sure'),
+    lifestyle: mapLifestyle(howTheirBreathingBehaves?.timeOutdoors || 'mostly_indoors'),
+    most_active_time: mapTimeOfDay(howTheirBreathingBehaves?.mostActiveTime || 'not_sure'),
     plays_sports: (howTheirBreathingBehaves?.playsSports || 'no') as 'yes' | 'no',
     parent_unavailable_windows: (howTheirBreathingBehaves?.awayFromChild || []).map(toSnakeCase),
     home_address: homeAndSchoolEnvironment?.homeAddress || '',
