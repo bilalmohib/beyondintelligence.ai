@@ -24,14 +24,30 @@ const SatoriTextIconSection = () => {
   const { width: iconWidth, height: iconHeight } = getDimensions();
 
   return (
-    <div
-      className="satori-glow"
-      style={{
-        filter:
-          "drop-shadow(0 0 18px rgba(255,255,255,0.7)) drop-shadow(0 0 40px rgba(255,255,255,0.35)) drop-shadow(0 0 80px rgba(255,255,255,0.15))",
-      }}
-    >
-      <SatoriTextIcon width={iconWidth} height={iconHeight} />
+    <div className="relative">
+      {/* Very faint rainbow tint — only a hint of colour at the text edges */}
+      <div
+        aria-hidden="true"
+        className="absolute pointer-events-none"
+        style={{
+          inset: "8% 4% -4% 4%",
+          background:
+            "linear-gradient(90deg, rgba(210,185,70,0.1) 0%, rgba(80,210,160,0.08) 25%, rgba(50,200,220,0.08) 45%, rgba(70,140,240,0.06) 65%, rgba(100,60,200,0.05) 90%)",
+          filter: "blur(6px)",
+        }}
+      />
+      {/* Blurred SVG copy — glow follows the exact letter shapes */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+        style={{ filter: "blur(4px)", opacity: 0.45 }}
+      >
+        <SatoriTextIcon width={iconWidth} height={iconHeight} />
+      </div>
+      {/* Crisp white text on top */}
+      <div className="relative">
+        <SatoriTextIcon width={iconWidth} height={iconHeight} />
+      </div>
     </div>
   );
 };
