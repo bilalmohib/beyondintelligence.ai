@@ -6,12 +6,12 @@ const LandingPageCallToActionSection = () => {
   return (
     <Container>
       <div className="cta-section-gradient-border-wrapper">
-        <div className="py-30 px-2.5 rounded-[20px] flex flex-col justify-center items-center gap-10">
+        <div className="py-12 sm:py-18 md:py-24 lg:py-30 px-6 sm:px-8 md:px-10 lg:px-2.5 rounded-[20px] flex flex-col justify-center items-center gap-10">
           <div className="flex flex-col gap-3">
-            <Heading2 className="text-white! leading-13.75! -tracking-[0.92px]!">
+            <Heading2 className="text-white! leading-normal mlg:leading-13.75! -tracking-[0.92px]!">
               Your child deserves to breathe safely
             </Heading2>
-            <Heading5 className="text-white! leading-8! -tracking-[0.48px]!">
+            <Heading5 className="text-white! leading-normal mlg:leading-8! -tracking-[0.48px]!">
               Satori makes what's invisible in the air visible — before it harms
               your child.
             </Heading5>

@@ -44,7 +44,9 @@ const SignupStartPage = () => {
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
           <Paragraph className="text-white">
-            {isSignupComplete ? "Redirecting to your account..." : "Taking you back to where you left off..."}
+            {isSignupComplete
+              ? "Redirecting to your account..."
+              : "Taking you back to where you left off..."}
           </Paragraph>
         </div>
       </div>
@@ -53,9 +55,9 @@ const SignupStartPage = () => {
 
   return (
     <div>
-      <div className="bg-image-signup-start rounded-[20px] bg-cover bg-center bg-no-repeat h-102.75 bg-primary">
+      <div className="bg-image-signup-start rounded-lg md:rounded-[20px] bg-cover bg-center bg-no-repeat h-96 md:h-102.75 bg-primary">
         <Container className="flex flex-col items-left justify-center h-full">
-          <div className="flex flex-col gap-3 h-fit">
+          <div className="flex flex-col gap-2 md:gap-3 h-fit">
             <Heading1 className="text-white">
               Create your child's Satori account
             </Heading1>
@@ -68,8 +70,8 @@ const SignupStartPage = () => {
           </div>
         </Container>
       </div>
-      <div className="py-24 px-12.5 flex flex-row justify-center items-center max-w-[900px] mx-auto">
-        <div className="bg-background-secondary p-8 rounded-[20px] flex flex-col gap-8">
+      <div className="py-16 md:py-24 px-8 md:px-12.5 flex flex-row justify-center items-center max-w-[900px] mx-auto">
+        <div className="bg-background-secondary p-6 md:p-8 rounded-lg md:rounded-[20px] flex flex-col gap-6 md:gap-8">
           <Paragraph className="text-white">
             The questions below are designed with great intention so Satori can
             learn your child's unique breathing patterns and daily environment.
