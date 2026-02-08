@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
 import Link from "next/link";
+import { useEffect } from "react";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/common/Container";
-import { Heading1, Paragraph } from "@/components/common/Typography";
-import { useSignupCompletion } from "@/hooks/useSignupCompletion";
 import { useSignupProgress } from "@/hooks/useSignupProgress";
-import { Loader2 } from "lucide-react";
+import { useSignupCompletion } from "@/hooks/useSignupCompletion";
+import { Heading1, Paragraph } from "@/components/common/Typography";
 
 const SignupStartPage = () => {
   const router = useRouter();
