@@ -1,7 +1,8 @@
 export const menuItems = [
   {
     title: "Insight",
-    href: "/insights",
+    href: "https://www.beyondintelligence.ai/blog/",
+    isExternal: true,
     hasDropdown: false,
   },
   {
@@ -11,22 +12,26 @@ export const menuItems = [
   },
   {
     title: "Press",
-    href: "/press",
+    href: "https://www.beyondintelligence.ai/press",
+    isExternal: true,
     hasDropdown: false,
   },
   {
     title: "Keynote",
-    href: "/keynote",
+    href: "https://www.beyondintelligence.ai/keynote",
+    isExternal: true,
     hasDropdown: false,
   },
   {
     title: "About",
-    href: "/about",
+    href: "https://www.beyondintelligence.ai/about",
+    isExternal: true,
     hasDropdown: false,
   },
   {
     title: "Contact",
-    href: "/contact",
+    href: "https://www.beyondintelligence.ai/contact/",
+    isExternal: true,
     hasDropdown: false,
   },
 ];
@@ -38,22 +43,27 @@ export const productCategories = [
       {
         title: "ATLAS — Capital Governance Layer (ILS / SWF / Pensions)",
         href: "/products/atlas-capital-governance",
+        comingSoon: true,
       },
       {
         title: "ATLAS — Parametric Engine (Parametric Insurance)",
         href: "/products/atlas-parametric-engine",
+        comingSoon: true,
       },
       {
         title: "ATLAS — Catastrophe Governance Layer (E&S / CAT)",
         href: "/products/atlas-catastrophe-governance",
+        comingSoon: true,
       },
       {
         title: "ATLAS — Environmental Burden Score (Health Insurance)",
         href: "/products/atlas-environmental-burden",
+        comingSoon: true,
       },
       {
         title: "Satori — Pediatric Environmental Risk Intelligence",
         href: "/products/satori-pediatric-environmental",
+        comingSoon: true,
       },
     ],
   },
@@ -62,7 +72,7 @@ export const productCategories = [
     items: [
       {
         title: "Satori — For Childhood Asthma & Allergies",
-        href: "/products/satori-childhood-asthma",
+        href: "/",
       },
     ],
   },
