@@ -43,11 +43,6 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
   const { saveStepDraft } = useSignupProgress();
   const savedData = useSelector((state: RootState) => selectSignupData(state).howTheirBreathingBehaves);
 
-  const toUnderscore = (v: string) => v.toLowerCase().replace(/\s+/g, "_").replace(/-/g, "_");
-  const migrateTime = (v: string | undefined) => (v === "varies" ? "not_sure" : v ? toUnderscore(v) : undefined);
-  const migrateArr = (arr: string[] | undefined) =>
-    (arr ?? []).map((x) => (x === "varies" ? "not_sure" : toUnderscore(x)));
-
   const defaultValues = useMemo((): {
     symptomsWorseTime?: string;
     triggers: string[];
@@ -61,13 +56,13 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
     const playsSports: HowTheirBreathingBehavesFormData["playsSports"] | undefined =
       raw === "yes" || raw === "no" ? raw : undefined;
     return {
-      symptomsWorseTime: migrateTime(savedData?.symptomsWorseTime),
-      triggers: migrateArr(savedData?.triggers),
-      symptoms: migrateArr(savedData?.symptoms),
-      timeOutdoors: savedData?.timeOutdoors ? toUnderscore(savedData.timeOutdoors) : undefined,
-      mostActiveTime: migrateTime(savedData?.mostActiveTime),
+      symptomsWorseTime: savedData?.symptomsWorseTime ?? undefined,
+      triggers: savedData?.triggers ?? [],
+      symptoms: savedData?.symptoms ?? [],
+      timeOutdoors: savedData?.timeOutdoors ?? undefined,
+      mostActiveTime: savedData?.mostActiveTime ?? undefined,
       playsSports,
-      awayFromChild: migrateArr(savedData?.awayFromChild),
+      awayFromChild: savedData?.awayFromChild ?? [],
     };
   }, [savedData]);
 
@@ -129,13 +124,34 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                   aria-invalid={errors.symptomsWorseTime ? "true" : "false"}
                   aria-describedby={errors.symptomsWorseTime ? "symptoms-worse-time-error" : undefined}
                   data={[
-                    { label: "Early Morning", value: "early_morning" },
-                    { label: "Late Morning", value: "late_morning" },
-                    { label: "Midday", value: "midday" },
-                    { label: "Late Afternoon", value: "late_afternoon" },
-                    { label: "Evening", value: "evening" },
-                    { label: "Night", value: "night" },
-                    { label: "Not Sure", value: "not_sure" },
+                    {
+                      label: "Early Morning",
+                      value: "early_morning",
+                    },
+                    {
+                      label: "Late Morning",
+                      value: "late_morning",
+                    },
+                    {
+                      label: "Midday",
+                      value: "midday",
+                    },
+                    {
+                      label: "Late Afternoon",
+                      value: "late_afternoon",
+                    },
+                    {
+                      label: "Evening",
+                      value: "evening",
+                    },
+                    {
+                      label: "Night",
+                      value: "night",
+                    },
+                    {
+                      label: "Not Sure",
+                      value: "not_sure",
+                    },
                   ]}
                   value={field.value || ""}
                   onValueChange={field.onChange}
@@ -193,17 +209,50 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                   aria-invalid={errors.triggers ? "true" : "false"}
                   aria-describedby={errors.triggers ? "triggers-error" : undefined}
                   data={[
-                    { label: "Exercise", value: "exercise" },
-                    { label: "Cold Air", value: "cold_air" },
-                    { label: "Dust", value: "dust" },
-                    { label: "Pollen", value: "pollen" },
-                    { label: "Mold", value: "mold" },
-                    { label: "Pets", value: "pets" },
-                    { label: "Smoke", value: "smoke" },
-                    { label: "Strong Smells", value: "strong_smells" },
-                    { label: "Infections", value: "infections" },
-                    { label: "Weather Changes", value: "weather_changes" },
-                    { label: "Not Sure", value: "not_sure" },
+                    {
+                      label: "Exercise",
+                      value: "exercise",
+                    },
+                    {
+                      label: "Cold Air",
+                      value: "cold air",
+                    },
+                    {
+                      label: "Dust",
+                      value: "dust",
+                    },
+                    {
+                      label: "Pollen",
+                      value: "pollen",
+                    },
+                    {
+                      label: "Mold",
+                      value: "mold",
+                    },
+                    {
+                      label: "Pets",
+                      value: "pets",
+                    },
+                    {
+                      label: "Smoke",
+                      value: "smoke",
+                    },
+                    {
+                      label: "Strong Smells",
+                      value: "strong smells",
+                    },
+                    {
+                      label: "Infections",
+                      value: "infections",
+                    },
+                    {
+                      label: "Weather Changes",
+                      value: "weather changes",
+                    },
+                    {
+                      label: "Not Sure",
+                      value: "not sure",
+                    },
                   ]}
                   value={field.value || []}
                   onValueChange={field.onChange}
@@ -263,13 +312,34 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                   aria-invalid={errors.symptoms ? "true" : "false"}
                   aria-describedby={errors.symptoms ? "symptoms-error" : undefined}
                   data={[
-                    { label: "Cough", value: "cough" },
-                    { label: "Wheeze", value: "wheeze" },
-                    { label: "Shortness of Breath", value: "shortness_of_breath" },
-                    { label: "Chest Tightness", value: "chest_tightness" },
-                    { label: "Nighttime Cough", value: "nighttime_cough" },
-                    { label: "Fast Breathing", value: "fast_breathing" },
-                    { label: "Not Sure", value: "not_sure" },
+                    {
+                      label: "Cough",
+                      value: "cough",
+                    },
+                    {
+                      label: "Wheeze",
+                      value: "wheeze",
+                    },
+                    {
+                      label: "Shortness of Breath",
+                      value: "shortness of breath",
+                    },
+                    {
+                      label: "Chest Tightness",
+                      value: "chest tightness",
+                    },
+                    {
+                      label: "Nighttime Cough",
+                      value: "nighttime cough",
+                    },
+                    {
+                      label: "Fast Breathing",
+                      value: "fast breathing",
+                    },
+                    {
+                      label: "Not Sure",
+                      value: "not sure",
+                    },
                   ]}
                   value={field.value || []}
                   onValueChange={field.onChange}
@@ -327,9 +397,14 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                   aria-invalid={errors.timeOutdoors ? "true" : "false"}
                   aria-describedby={errors.timeOutdoors ? "time-outdoors-error" : undefined}
                   data={[
-                    { label: "Mostly Indoors", value: "mostly_indoors" },
-                    { label: "Mixed", value: "mixed" },
-                    { label: "Outdoors A Lot", value: "mostly_outdoors" },
+                    {
+                      label: "Mostly Indoors",
+                      value: "mostly_indoors",
+                    },
+                    {
+                      label: "Mostly Outdoors",
+                      value: "mostly_outdoors",
+                    },
                   ]}
                   value={field.value || ""}
                   onValueChange={field.onChange}
@@ -388,13 +463,34 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                   aria-invalid={errors.mostActiveTime ? "true" : "false"}
                   aria-describedby={errors.mostActiveTime ? "most-active-time-error" : undefined}
                   data={[
-                    { label: "Early Morning", value: "early_morning" },
-                    { label: "Late Morning", value: "late_morning" },
-                    { label: "Midday", value: "midday" },
-                    { label: "Late Afternoon", value: "late_afternoon" },
-                    { label: "Evening", value: "evening" },
-                    { label: "Night", value: "night" },
-                    { label: "Not Sure", value: "not_sure" },
+                    {
+                      label: "Early Morning",
+                      value: "early_morning",
+                    },
+                    {
+                      label: "Late Morning",
+                      value: "late_morning",
+                    },
+                    {
+                      label: "Midday",
+                      value: "midday",
+                    },
+                    {
+                      label: "Late Afternoon",
+                      value: "late_afternoon",
+                    },
+                    {
+                      label: "Evening",
+                      value: "evening",
+                    },
+                    {
+                      label: "Night",
+                      value: "night",
+                    },
+                    {
+                      label: "Not Sure",
+                      value: "not_sure",
+                    },
                   ]}
                   value={field.value || ""}
                   onValueChange={field.onChange}
@@ -522,13 +618,34 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
                   aria-invalid={errors.awayFromChild ? "true" : "false"}
                   aria-describedby={errors.awayFromChild ? "away-from-child-error" : undefined}
                   data={[
-                    { label: "Early Morning", value: "early_morning" },
-                    { label: "Late Morning", value: "late_morning" },
-                    { label: "Midday", value: "midday" },
-                    { label: "Late Afternoon", value: "late_afternoon" },
-                    { label: "Evening", value: "evening" },
-                    { label: "Night", value: "night" },
-                    { label: "Not Sure", value: "not_sure" },
+                    {
+                      label: "Early Morning",
+                      value: "early_morning",
+                    },
+                    {
+                      label: "Late Morning",
+                      value: "late_morning",
+                    },
+                    {
+                      label: "Midday",
+                      value: "midday",
+                    },
+                    {
+                      label: "Late Afternoon",
+                      value: "late_afternoon",
+                    },
+                    {
+                      label: "Evening",
+                      value: "evening",
+                    },
+                    {
+                      label: "Night",
+                      value: "night",
+                    },
+                    {
+                      label: "Varies",
+                      value: "varies",
+                    },
                   ]}
                   value={field.value || []}
                   onValueChange={field.onChange}

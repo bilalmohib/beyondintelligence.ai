@@ -51,6 +51,21 @@ const toSnakeCase = (str: string): string => {
   return str.toLowerCase().replace(/\s+/g, '_');
 };
 
+type TimeOfDayEnum = SignupRequest['child_worse_when'];
+
+const VALID_TIME_OF_DAY: TimeOfDayEnum[] = [
+  'early_morning', 'late_morning', 'midday',
+  'late_afternoon', 'evening', 'night', 'not_sure',
+];
+
+const mapTimeOfDay = (value: string): TimeOfDayEnum => {
+  const normalized = toSnakeCase(value);
+  if (VALID_TIME_OF_DAY.includes(normalized as TimeOfDayEnum)) {
+    return normalized as TimeOfDayEnum;
+  }
+  return 'not_sure';
+};
+
 const extractPostalCode = (address: string): string => {
   const usZipMatch = address.match(/\b\d{5}(-\d{4})?\b/);
   if (usZipMatch) return usZipMatch[0];
@@ -59,37 +74,38 @@ const extractPostalCode = (address: string): string => {
   return '';
 };
 
-const VALID_MOST_ACTIVE_TIME = ['early_morning', 'late_morning', 'midday', 'late_afternoon', 'evening', 'night', 'not_sure'] as const;
-
 const mapSeverity = (value: string): SignupRequest['severity'] => {
-  const v = value.toLowerCase().replace(/\s+/g, '_');
-  if (v === 'mild' || v === 'moderate' || v === 'severe' || v === 'not_sure') return v;
-  return 'not_sure';
+  const mapping: Record<string, SignupRequest['severity']> = {
+    'mild': 'mild',
+    'moderate': 'moderate',
+    'severe': 'severe',
+    'not sure': 'not_sure',
+    'not_sure': 'not_sure',
+  };
+  return mapping[value.toLowerCase()] || 'not_sure';
 };
 
 const mapLifestyle = (value: string): SignupRequest['lifestyle'] => {
-  const v = value.toLowerCase().replace(/\s+/g, '_');
-  if (v === 'mostly_indoors' || v === 'mostly_outdoors' || v === 'mixed') return v;
-  if (v === 'outdoors_a_lot') return 'mostly_outdoors';
-  return 'mixed';
+  const mapping: Record<string, SignupRequest['lifestyle']> = {
+    'mostly indoors': 'mostly_indoors',
+    'mostly_indoors': 'mostly_indoors',
+    'outdoors a lot': 'mostly_outdoors',
+    'mostly_outdoors': 'mostly_outdoors',
+    // Legacy "mixed" values default to mostly_indoors
+    'mixed': 'mostly_indoors',
+  };
+  return mapping[value.toLowerCase()] || 'mostly_indoors';
 };
 
 const mapHasAllergies = (value: string): SignupRequest['has_allergies'] => {
-  const v = value.toLowerCase().replace(/-/g, '_').replace(/\s+/g, '_');
-  if (v === 'yes' || v === 'no' || v === 'not_sure') return v;
-  return 'not_sure';
-};
-
-const mapMostActiveTime = (value: string): string => {
-  const v = value.toLowerCase().replace(/\s+/g, '_');
-  if (VALID_MOST_ACTIVE_TIME.includes(v as typeof VALID_MOST_ACTIVE_TIME[number])) return v;
-  return 'not_sure'; // "varies" or any invalid value -> not_sure
-};
-
-const mapTimeWindow = (value: string): string => {
-  const v = value.toLowerCase().replace(/\s+/g, '_');
-  if (VALID_MOST_ACTIVE_TIME.includes(v as typeof VALID_MOST_ACTIVE_TIME[number])) return v;
-  return 'not_sure';
+  const mapping: Record<string, SignupRequest['has_allergies']> = {
+    'yes': 'yes',
+    'no': 'no',
+    'not-sure': 'not_sure',
+    'not sure': 'not_sure',
+    'not_sure': 'not_sure',
+  };
+  return mapping[value.toLowerCase()] || 'not_sure';
 };
 
 const mapPetsAtHome = (hasPets: string): SignupRequest['pets_at_home'] => {
@@ -142,19 +158,19 @@ export const transformSignupData = (formData: SignupFormData): SignupRequest => 
     child_name: `${childInformation?.firstName || ''} ${childInformation?.lastName || ''}`.trim(),
     child_age_years: childInformation?.age || 0,
     severity: mapSeverity(childInformation?.asthmaDescription || 'not sure'),
-    child_worse_when: toSnakeCase(howTheirBreathingBehaves?.symptomsWorseTime || 'not_sure'),
-    triggers: (howTheirBreathingBehaves?.triggers || []).map(toSnakeCase),
-    symptoms: (howTheirBreathingBehaves?.symptoms || []).map(toSnakeCase),
-    lifestyle: mapLifestyle(howTheirBreathingBehaves?.timeOutdoors || 'mixed'),
-    most_active_time: mapMostActiveTime(howTheirBreathingBehaves?.mostActiveTime || 'not_sure'),
+    child_worse_when: mapTimeOfDay(howTheirBreathingBehaves?.symptomsWorseTime || 'not_sure'),
+    triggers: howTheirBreathingBehaves?.triggers || [],
+    symptoms: howTheirBreathingBehaves?.symptoms || [],
+    lifestyle: mapLifestyle(howTheirBreathingBehaves?.timeOutdoors || 'mostly_indoors'),
+    most_active_time: mapTimeOfDay(howTheirBreathingBehaves?.mostActiveTime || 'not_sure'),
     plays_sports: (howTheirBreathingBehaves?.playsSports || 'no') as 'yes' | 'no',
-    parent_unavailable_windows: (howTheirBreathingBehaves?.awayFromChild || []).map(mapTimeWindow),
+    parent_unavailable_windows: (howTheirBreathingBehaves?.awayFromChild || []).map(toSnakeCase),
     home_address: homeAndSchoolEnvironment?.homeAddress || '',
     school_address: homeAndSchoolEnvironment?.schoolAddress || '',
     postal_code: extractPostalCode(homeAndSchoolEnvironment?.homeAddress || ''),
     has_purifier: toBool(homeAndSchoolEnvironment?.usesAirPurifier),
     has_allergies: mapHasAllergies(allergiesAndSensitivities?.hasAllergies || 'not_sure'),
-    allergies: (allergiesAndSensitivities?.allergies || []).map(toSnakeCase),
+    allergies: allergiesAndSensitivities?.allergies || [],
     pets_at_home: mapPetsAtHome(indoorAir?.hasPets || 'no'),
     home_humidity: homeHumidity,
     home_humidity_feel: humidityFeel,
@@ -162,7 +178,7 @@ export const transformSignupData = (formData: SignupFormData): SignupRequest => 
     has_gas_stove: toBool(indoorAir?.usesGasStove) || toBool(illnessAndRecoveryTendencies?.usesGasStove),
     illness_prone: toBool(illnessAndRecoveryTendencies?.catchesColdsOften),
     recent_illness: false,
-    parent_worries: (yourExperienceAsAParent?.worries || []).map(toSnakeCase),
+    parent_worries: yourExperienceAsAParent?.worries || [],
   };
 
   return signupRequest;
