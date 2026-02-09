@@ -171,20 +171,23 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Knowing whether mornings, afternoons, or evenings are harder for
-                your child lets Satori align environmental intelligence with
-                your child's physiological windows, timing alerts around the
-                moments when they need it most
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about symptom timing"
+              showClose
+            >
+              Knowing whether mornings, afternoons, or evenings are harder for
+              your child lets Satori align environmental intelligence with
+              your child's physiological windows, timing alerts around the
+              moments when they need it most
             </TooltipContent>
           </Tooltip>
         </div>
@@ -273,21 +276,24 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Satori uses an internal <b>causal model</b> of how pollution,
-                weather, allergens, and meteorology interact with specific
-                triggers. When Satori understands your child's triggers, it can
-                detect the exact environmental patterns that activate them and
-                offer targeted, high-impact guidance instead of generic advice.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about triggers"
+              showClose
+            >
+              Satori uses an internal <b>causal model</b> of how pollution,
+              weather, allergens, and meteorology interact with specific
+              triggers. When Satori understands your child's triggers, it can
+              detect the exact environmental patterns that activate them and
+              offer targeted, high-impact guidance instead of generic advice.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -359,20 +365,23 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                A child who coughs at night and a child who wheezes during
-                sports often need different environmental guidance. This helps
-                Satori tailor its explanations and suggestions so they match
-                what you actually observe.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about symptoms"
+              showClose
+            >
+              A child who coughs at night and a child who wheezes during
+              sports often need different environmental guidance. This helps
+              Satori tailor its explanations and suggestions so they match
+              what you actually observe.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -425,20 +434,23 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Kids who spend many hours outside are "inside the air" Satori
-                interprets, while indoor-heavy routines shift focus to dust,
-                humidity, and household triggers. This determines how Satori
-                balances outdoor vs. indoor guidance.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about outdoor time"
+              showClose
+            >
+              Kids who spend many hours outside are "inside the air" Satori
+              interprets, while indoor-heavy routines shift focus to dust,
+              humidity, and household triggers. This determines how Satori
+              balances outdoor vs. indoor guidance.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -510,20 +522,23 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                If their most intense activity coincides with ozone, cold-dry
-                air, or pollution peaks, Satori can recommend small timing
-                shifts that reduce stress on their breathing without limiting
-                the joy of movement.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about activity times"
+              showClose
+            >
+              If their most intense activity coincides with ozone, cold-dry
+              air, or pollution peaks, Satori can recommend small timing
+              shifts that reduce stress on their breathing without limiting
+              the joy of movement.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -581,19 +596,22 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Sports are wonderful — but exercise plus harsh air can amplify
-                irritation. This lets Satori protect your child without asking
-                you to remove them from activities they love.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about sports and exercise"
+              showClose
+            >
+              Sports are wonderful — but exercise plus harsh air can amplify
+              irritation. This lets Satori protect your child without asking
+              you to remove them from activities they love.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -665,20 +683,23 @@ const SignupStepHowTheirBreathingBehavesPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Knowing when you're typically away lets Satori time its most
-                protective guidance around the hours when your child may be more
-                exposed — and you're less able to observe them directly. This
-                creates a safety net that works even when you can't be there.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about when you're away"
+              showClose
+            >
+              Knowing when you're typically away lets Satori time its most
+              protective guidance around the hours when your child may be more
+              exposed — and you're less able to observe them directly. This
+              creates a safety net that works even when you can't be there.
             </TooltipContent>
           </Tooltip>
         </div>

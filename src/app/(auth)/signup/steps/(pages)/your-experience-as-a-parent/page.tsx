@@ -117,17 +117,20 @@ const SignupStepYourExperienceAsAParentPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Asthma and allergies affect the whole family, not just your child. Knowing what keeps you up at night lets Satori tailor each communication so that it feels less clinical and more like a caring guardian standing beside you — helping you feel steadier, more confident, and far less alone.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about your worries"
+              showClose
+            >
+              Asthma and allergies affect the whole family, not just your child. Knowing what keeps you up at night lets Satori tailor each communication so that it feels less clinical and more like a caring guardian standing beside you — helping you feel steadier, more confident, and far less alone.
             </TooltipContent>
           </Tooltip>
         </div>

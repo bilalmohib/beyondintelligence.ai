@@ -252,23 +252,24 @@ const SignupStepParentInformationPage = () => {
             always as your child's partner in protection.
           </Paragraph>
           <Tooltip>
-            <div className="flex flex-row justify-center items-center gap-1.5">
-              <div>
-                <TooltipTrigger asChild className="cursor-pointer">
-                  <InfoIcon className="text-white!" />
-                </TooltipTrigger>
-              </div>
-              <Paragraph className="text-white! text-xs! font-semibold">
-                See why this matters?
-              </Paragraph>
-            </div>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Using your name ensures Satori speaks directly to you as the
-                parent, especially during moments when guidance needs to feel
-                steady, personal, and relevant to your family — not generic or
-                broadcast to others.
-              </p>
+            <TooltipTrigger asChild>
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about your name"
+              showClose
+            >
+              Using your name ensures Satori speaks directly to you as the
+              parent, especially during moments when guidance needs to feel
+              steady, personal, and relevant to your family — not generic or
+              broadcast to others.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -302,25 +303,26 @@ const SignupStepParentInformationPage = () => {
             — like seasonal guides and important updates.
           </Paragraph>
           <Tooltip>
-            <div className="flex flex-row justify-center items-center gap-1.5">
-              <div>
-                <TooltipTrigger asChild className="cursor-pointer">
-                  <InfoIcon className="text-white!" />
-                </TooltipTrigger>
-              </div>
-              <Paragraph className="text-white! text-xs! font-semibold">
-                See why this matters?
-              </Paragraph>
-            </div>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Some of the most meaningful support for families — seasonal
-                asthma–allergy planning, environmental insight summaries, safety
-                updates, and improvements to your child's personalized model —
-                simply cannot fit in a text message. Email provides a reliable
-                way for Satori to help you stay one step ahead throughout the
-                year. Your email is never sold or shared.
-              </p>
+            <TooltipTrigger asChild>
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about your email"
+              showClose
+            >
+              Some of the most meaningful support for families — seasonal
+              asthma–allergy planning, environmental insight summaries, safety
+              updates, and improvements to your child&apos;s personalized model —
+              simply cannot fit in a text message. Email provides a reliable
+              way for Satori to help you stay one step ahead throughout the
+              year. Your email is never sold or shared.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -385,24 +387,25 @@ const SignupStepParentInformationPage = () => {
             protect your child in real time.
           </Paragraph>
           <Tooltip>
-            <div className="flex flex-row justify-center items-center gap-1.5">
-              <div>
-                <TooltipTrigger asChild className="cursor-pointer">
-                  <InfoIcon className="text-white!" />
-                </TooltipTrigger>
-              </div>
-              <Paragraph className="text-white! text-xs! font-semibold">
-                See why this matters?
-              </Paragraph>
-            </div>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Satori is a no-app, text-first, voice-ready asthma–allergy
-                guardian. Your phone becomes your identity, security key, and
-                conversation link. This is what enables instant guidance —
-                without apps, passwords, or friction — especially during moments
-                when the environment shifts quickly.
-              </p>
+            <TooltipTrigger asChild>
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about your phone"
+              showClose
+            >
+              Satori is a no-app, text-first, voice-ready asthma–allergy
+              guardian. Your phone becomes your identity, security key, and
+              conversation link. This is what enables instant guidance —
+              without apps, passwords, or friction — especially during moments
+              when the environment shifts quickly.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -447,24 +450,25 @@ const SignupStepParentInformationPage = () => {
             meteorological conditions may affect your child's breathing.
           </Paragraph>
           <Tooltip>
-            <div className="flex flex-row justify-center items-center gap-1.5">
-              <div>
-                <TooltipTrigger asChild className="cursor-pointer">
-                  <InfoIcon className="text-white!" />
-                </TooltipTrigger>
-              </div>
-              <Paragraph className="text-white! text-xs! font-semibold">
-                See why this matters?
-              </Paragraph>
-            </div>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Satori monitors real-time environmental, weather, and
-                atmospheric patterns — including pollution spikes, heat-ozone
-                surges, cold-dry air, and air-trapping events. SMS consent
-                allows Satori to reach you instantly so you can make small but
-                powerful adjustments at the exact moments they matter most.
-              </p>
+            <TooltipTrigger asChild>
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about SMS consent"
+              showClose
+            >
+              Satori monitors real-time environmental, weather, and
+              atmospheric patterns — including pollution spikes, heat-ozone
+              surges, cold-dry air, and air-trapping events. SMS consent
+              allows Satori to reach you instantly so you can make small but
+              powerful adjustments at the exact moments they matter most.
             </TooltipContent>
           </Tooltip>
         </div>

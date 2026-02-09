@@ -153,23 +153,24 @@ const SignupStepChildInformationPage = () => {
             Your child is a living, breathing person — not a data point.
           </Paragraph>
           <Tooltip>
-            <div className="flex flex-row justify-center items-center gap-1.5">
-              <div>
-                <TooltipTrigger asChild className="cursor-pointer">
-                  <InfoIcon className="text-white!" />
-                </TooltipTrigger>
-              </div>
-              <Paragraph className="text-white! text-xs! font-semibold">
-                See why this matters?
-              </Paragraph>
-            </div>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Using your child's name helps Satori frame guidance around their
-                world — their routines, their patterns, their risks — making
-                alerts feel intuitive and actionable in the moments you need
-                them.
-              </p>
+            <TooltipTrigger asChild>
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about your child's name"
+              showClose
+            >
+              Using your child&apos;s name helps Satori frame guidance around their
+              world — their routines, their patterns, their risks — making
+              alerts feel intuitive and actionable in the moments you need
+              them.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -204,23 +205,24 @@ const SignupStepChildInformationPage = () => {
             activity, and environmental shifts.
           </Paragraph>
           <Tooltip>
-            <div className="flex flex-row justify-center items-center gap-1.5">
-              <div>
-                <TooltipTrigger asChild className="cursor-pointer">
-                  <InfoIcon className="text-white!" />
-                </TooltipTrigger>
-              </div>
-              <Paragraph className="text-white! text-xs! font-semibold">
-                See why this matters?
-              </Paragraph>
-            </div>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                A 4-year-old and a 14-year-old interact with the{" "}
-                <b>same environment</b> very differently. Age allows Satori to
-                tailor its guidance and calibrate protection based on lung
-                development, daily activity, and vulnerability windows.
-              </p>
+            <TooltipTrigger asChild>
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about your child's age"
+              showClose
+            >
+              A 4-year-old and a 14-year-old interact with the{" "}
+              <b>same environment</b> very differently. Age allows Satori to
+              tailor its guidance and calibrate protection based on lung
+              development, daily activity, and vulnerability windows.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -267,23 +269,24 @@ const SignupStepChildInformationPage = () => {
             breathing feels day to day.{" "}
           </Paragraph>
           <Tooltip>
-            <div className="flex flex-row justify-center items-center gap-1.5">
-              <div>
-                <TooltipTrigger asChild className="cursor-pointer">
-                  <InfoIcon className="text-white!" />
-                </TooltipTrigger>
-              </div>
-              <Paragraph className="text-white! text-xs! font-semibold">
-                See why this matters?
-              </Paragraph>
-            </div>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                This is not a medical diagnosis — it's your lived assessment.
-                Satori uses this as a <b>sensitivity signal</b>, adjusting the
-                tone and level of protection so the guidance matches the reality
-                you navigate each day.
-              </p>
+            <TooltipTrigger asChild>
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about asthma severity"
+              showClose
+            >
+              This is not a medical diagnosis — it&apos;s your lived assessment.
+              Satori uses this as a <b>sensitivity signal</b>, adjusting the
+              tone and level of protection so the guidance matches the reality
+              you navigate each day.
             </TooltipContent>
           </Tooltip>
         </div>

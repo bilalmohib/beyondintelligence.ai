@@ -136,17 +136,20 @@ const SignupStepIllnessAndRecoveryTendenciesPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                If your child gets sick frequently, Satori treats their lungs as more likely to be in a "sensitive state" throughout the year. This influences how protective guidance is timed around difficult weather or air events.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about frequent colds"
+              showClose
+            >
+              If your child gets sick frequently, Satori treats their lungs as more likely to be in a "sensitive state" throughout the year. This influences how protective guidance is timed around difficult weather or air events.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -203,17 +206,20 @@ const SignupStepIllnessAndRecoveryTendenciesPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Gas stoves produce NO₂ and particulates. If Satori knows you use one, it can recommend helpful moments to ventilate or keep your child out of the kitchen during certain times — especially when indoor and outdoor conditions combine to create extra stress.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about gas stoves"
+              showClose
+            >
+              Gas stoves produce NO₂ and particulates. If Satori knows you use one, it can recommend helpful moments to ventilate or keep your child out of the kitchen during certain times — especially when indoor and outdoor conditions combine to create extra stress.
             </TooltipContent>
           </Tooltip>
         </div>

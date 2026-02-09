@@ -146,17 +146,20 @@ const SignupStepAllergiesAndSensitivitiesPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                This helps Satori decide whether to treat allergens — like pollen, dust mites, mold, or pet dander — as major co-drivers of your child's breathing patterns or to keep focus primarily on environmental triggers like cold air and pollution.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about allergies"
+              showClose
+            >
+              This helps Satori decide whether to treat allergens — like pollen, dust mites, mold, or pet dander — as major co-drivers of your child's breathing patterns or to keep focus primarily on environmental triggers like cold air and pollution.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -205,17 +208,20 @@ const SignupStepAllergiesAndSensitivitiesPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Satori uses real-time environmental factors that influence allergens (vegetation phase, wind, humidity, recent rain, mold potential) and combines them with your child's known sensitivities to offer earlier and more accurate warnings — reducing total airway load.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about specific allergens"
+              showClose
+            >
+              Satori uses real-time environmental factors that influence allergens (vegetation phase, wind, humidity, recent rain, mold potential) and combines them with your child's known sensitivities to offer earlier and more accurate warnings — reducing total airway load.
             </TooltipContent>
           </Tooltip>
         </div>
