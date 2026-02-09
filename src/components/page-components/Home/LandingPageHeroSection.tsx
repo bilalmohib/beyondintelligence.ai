@@ -1,88 +1,88 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/common/Container";
 import { Heading1, Paragraph } from "@/components/common/Typography";
 
+const VIDEO_DESKTOP = "/assets/pages/landing/videos/HeroVideo001.mp4";
+const VIDEO_MOBILE = "/assets/pages/landing/videos/HeroVideo001-mobile.mp4";
+const VIDEO_POSTER = "/assets/pages/landing/videos/HeroVideo001-poster.jpg";
+const MOBILE_BREAKPOINT = 768;
+
 const LandingPageHeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoSrc, setVideoSrc] = useState<string>("");
+
+  // Pick the right video source based on screen width (runs once on mount)
+  useEffect(() => {
+    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    setVideoSrc(isMobile ? VIDEO_MOBILE : VIDEO_DESKTOP);
+  }, []);
+
+  // Autoplay logic — Apple-style: simple, minimal, reliable
+  const ensurePlayback = useCallback(() => {
+    const video = videoRef.current;
+    if (!video || !video.paused) return;
+    video.play().catch(() => {});
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !videoSrc) return;
 
+    // Ensure muted (required for autoplay on every browser)
     video.muted = true;
-    video.defaultMuted = true;
-    video.setAttribute("muted", "true");
-    video.setAttribute("playsinline", "true");
-    video.setAttribute("webkit-playsinline", "true");
 
-    let hasPlayed = false;
+    // Try play when video has enough data
+    const onCanPlay = () => ensurePlayback();
+    video.addEventListener("canplay", onCanPlay);
+    video.addEventListener("loadeddata", onCanPlay);
 
-    const playVideo = () => {
-      if (hasPlayed || !video.paused) return;
-      
-      requestAnimationFrame(() => {
-        if (video.paused && !hasPlayed) {
-          const playPromise = video.play();
-          if (playPromise !== undefined) {
-            playPromise
-              .then(() => {
-                hasPlayed = true;
-              })
-              .catch(() => {
-              });
-          }
-        }
-      });
+    // Try immediately if already ready
+    if (video.readyState >= 2) ensurePlayback();
+
+    // Fallback: first user interaction (covers older Android Chrome)
+    const onTouch = () => {
+      ensurePlayback();
+      document.removeEventListener("touchstart", onTouch);
     };
+    document.addEventListener("touchstart", onTouch, { passive: true });
 
-    if (video.readyState >= 3) {
-      playVideo();
-    }
-
-    video.addEventListener("canplaythrough", playVideo);
-
-    const handleVisibilityChange = () => {
-      if (!document.hidden && video.paused) {
-        playVideo();
-      }
+    // Resume after tab switch
+    const onVisibility = () => {
+      if (!document.hidden) ensurePlayback();
     };
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
-      video.removeEventListener("canplaythrough", playVideo);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      video.removeEventListener("canplay", onCanPlay);
+      video.removeEventListener("loadeddata", onCanPlay);
+      document.removeEventListener("touchstart", onTouch);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, []);
+  }, [videoSrc, ensurePlayback]);
 
   return (
     <div>
       <div className="p-2.5">
         <div className="w-full h-screen rounded-[20px] relative overflow-hidden bg-black">
-          <video
-            ref={videoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            controls={false}
-            preload="metadata"
-            disablePictureInPicture
-            disableRemotePlayback
-            webkit-playsinline="true"
-            x-webkit-airplay="deny"
-            className="absolute inset-0 w-full h-full object-cover rounded-[20px] z-0 block"
-            style={{ pointerEvents: "none", display: "block" }}
-          >
-            <source
-              src="/assets/pages/landing/videos/HeroVideo001.mp4"
-              type="video/mp4"
+          {videoSrc && (
+            <video
+              ref={videoRef}
+              key={videoSrc}
+              src={videoSrc}
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster={VIDEO_POSTER}
+              preload="auto"
+              className="absolute inset-0 w-full h-full object-cover rounded-[20px] z-0 block"
+              style={{ pointerEvents: "none" }}
             />
-            Your browser does not support the video tag.
-          </video>
+          )}
 
           <Container className="absolute bottom-0 left-0 right-0 pb-24 md:pb-12.5 flex justify-end items-end h-full pt-30 md:pt-0 md:h-fit">
             <div className="grid grid-cols-1 mllg:grid-cols-2 gap-10 mllg:gap-0 w-full justify-between">

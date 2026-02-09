@@ -21,10 +21,27 @@ const SHADOW_LAYERS_MOBILE = [
 const BLUE_SHADOW_COLOR = "#7CCEFF";
 const BREAKPOINT_LG = 1024;
 
+const IMG_DIR =
+  "/assets/pages/landing/images/LandingPageChildsLifeBiggerTransitionScroll";
+const IMAGES = {
+  desktop: {
+    collage: `${IMG_DIR}/image.svg`,
+    shadow1: `${IMG_DIR}/shadow1Mix.svg`,
+    shadow2: `${IMG_DIR}/shadow2Orange.svg`,
+  },
+  mobile: {
+    collage: `${IMG_DIR}/image-mobile.webp`,
+    shadow1: `${IMG_DIR}/shadow1Mix-mobile.webp`,
+    shadow2: `${IMG_DIR}/shadow2Orange-mobile.webp`,
+  },
+} as const;
+
 const LandingPageChildsLifeBiggerTransitionScroll = () => {
   const { setHideNavbarSectionInView } = useNavbarContext() ?? {};
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+
+  const imgs = isMobileOrTablet ? IMAGES.mobile : IMAGES.desktop;
   const containerRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
 
@@ -193,7 +210,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
               }}
             >
               <Image
-                src="/assets/pages/landing/images/LandingPageChildsLifeBiggerTransitionScroll/shadow1Mix.svg"
+                src={imgs.shadow1}
                 alt="shadow 1 mix"
                 fill
                 className="object-contain"
@@ -211,7 +228,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
               }}
             >
               <Image
-                src="/assets/pages/landing/images/LandingPageChildsLifeBiggerTransitionScroll/shadow2Orange.svg"
+                src={imgs.shadow2}
                 alt="shadow 2 orange"
                 fill
                 className="object-contain"
@@ -235,7 +252,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="relative w-full h-full max-w-[95vw] sm:max-w-[90vw] md:max-w-[85vw] lg:max-w-[911.91px]">
                 <Image
-                  src="/assets/pages/landing/images/LandingPageChildsLifeBiggerTransitionScroll/image.svg"
+                  src={imgs.collage}
                   alt="Child's Life is Bigger than Asthma"
                   fill
                   className="object-contain"
@@ -293,7 +310,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                   }}
                 >
                   <Image
-                    src="/assets/pages/landing/images/LandingPageChildsLifeBiggerTransitionScroll/shadow1Mix.svg"
+                    src={imgs.shadow1}
                     alt="shadow 1 mix"
                     fill
                     className="object-contain"
@@ -311,7 +328,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                   }}
                 >
                   <Image
-                    src="/assets/pages/landing/images/LandingPageChildsLifeBiggerTransitionScroll/shadow2Orange.svg"
+                    src={imgs.shadow2}
                     alt="shadow 2 orange"
                     fill
                     className="object-contain"
@@ -334,7 +351,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                 )}
                 <div className="relative z-10 w-full h-full">
                   <Image
-                    src="/assets/pages/landing/images/LandingPageChildsLifeBiggerTransitionScroll/image.svg"
+                    src={imgs.collage}
                     alt="Child's Life is Bigger than Asthma"
                     fill
                     className="object-contain"
