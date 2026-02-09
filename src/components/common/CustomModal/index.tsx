@@ -1,11 +1,15 @@
-'use client';
+"use client";
 
-import { X } from 'lucide-react';
-import { useDispatch, useSelector } from 'react-redux';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
-import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
-import { closeModal, selectModalContent, selectModalIsOpen } from '@/redux/slices/modalSlice';
-import type { AppDispatch, RootState } from '@/redux/store';
+import { X } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import {
+  closeModal,
+  selectModalContent,
+  selectModalIsOpen,
+} from "@/redux/slices/modalSlice";
+import type { AppDispatch, RootState } from "@/redux/store";
 
 interface CustomModalProps {
   children?: React.ReactNode;
@@ -25,12 +29,10 @@ const CustomModal = ({ children }: CustomModalProps) => {
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
 
-        <DialogPrimitive.Content
-          className="fixed inset-0 z-50 flex flex-col overflow-hidden outline-none rounded-[20px] md:inset-auto md:top-[70px] md:left-[30px] md:right-[30px] md:bottom-[69px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
-        >
+        <DialogPrimitive.Content className="fixed inset-0 z-50 flex flex-col overflow-hidden outline-none rounded-[20px] md:inset-auto top-8 bottom-8 left-5 right-5 md:top-[70px] md:left-[30px] md:right-[30px] md:bottom-[69px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0">
           <VisuallyHidden.Root asChild>
             <DialogPrimitive.Title>
-              {content?.title || 'Modal'}
+              {content?.title || "Modal"}
             </DialogPrimitive.Title>
           </VisuallyHidden.Root>
 
