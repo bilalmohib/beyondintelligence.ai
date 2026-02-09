@@ -7,18 +7,22 @@ import Container from "@/components/common/Container";
 import { Heading2 } from "@/components/common/Typography";
 
 const SHADOW_LAYERS = [
-  { width: "50%", height: "25%", blur: 80, opacity: 0.6 },
-  { width: "60%", height: "30%", blur: 100, opacity: 0.4 },
-  { width: "70%", height: "35%", blur: 120, opacity: 0.25 },
+  { width: "55%", height: "30%", blur: 70, opacity: 1 },
+  { width: "65%", height: "35%", blur: 90, opacity: 0.85 },
+  { width: "75%", height: "40%", blur: 110, opacity: 0.65 },
 ] as const;
 
 const SHADOW_LAYERS_MOBILE = [
-  { width: "50%", height: "25%", blur: 40, opacity: 0.6 },
-  { width: "60%", height: "30%", blur: 50, opacity: 0.4 },
-  { width: "70%", height: "35%", blur: 60, opacity: 0.25 },
+  { width: "55%", height: "30%", blur: 35, opacity: 1 },
+  { width: "65%", height: "35%", blur: 45, opacity: 0.85 },
+  { width: "75%", height: "40%", blur: 55, opacity: 0.65 },
 ] as const;
 
-const BLUE_SHADOW_COLOR = "#7CCEFF";
+const BLUE_SHADOW_COLOR = "#4AEAEF";
+const BASE_GLOW_OPACITY_MULTIPLIER = 0.5;
+const BASE_SHADOW_IMAGE_OPACITY = 0.6;
+const BASE_SHADOW_BLUR_MULTIPLIER = 0.9;
+const BASE_DARK_OVERLAY_OPACITY = 0.7;
 const BREAKPOINT_LG = 1024;
 
 const IMG_DIR =
@@ -36,219 +40,182 @@ const IMAGES = {
   },
 } as const;
 
+/* ------------------------------------------------------------------ */
+/*  Lerp helper – clamp progress within a sub-range to 0..1           */
+/* ------------------------------------------------------------------ */
+const remap = (v: number, lo: number, hi: number) =>
+  Math.max(0, Math.min(1, (v - lo) / (hi - lo)));
+
 const LandingPageChildsLifeBiggerTransitionScroll = () => {
   const { setHideNavbarSectionInView } = useNavbarContext() ?? {};
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
 
-  const imgs = isMobileOrTablet ? IMAGES.mobile : IMAGES.desktop;
+  /* ---- refs for direct DOM manipulation (no React re-render) ---- */
   const containerRef = useRef<HTMLDivElement>(null);
+  const section1Ref = useRef<HTMLElement>(null);
+  const section2Ref = useRef<HTMLDivElement>(null);
+  const heading1Ref = useRef<HTMLDivElement>(null);
+  const imageWrapRef = useRef<HTMLDivElement>(null);
+  const blurOverlayRef = useRef<HTMLDivElement>(null);
+  const baseLayerRef = useRef<HTMLDivElement>(null);
+  const shadowGlowRefs = useRef<HTMLDivElement[]>([]);
   const rafRef = useRef<number | null>(null);
+  const lastNavHidden = useRef(false);
 
+  /* ---- viewport check ---- */
   useEffect(() => {
-    const checkViewport = () => {
+    const check = () => {
       setIsMobileOrTablet(window.innerWidth < BREAKPOINT_LG);
     };
-    checkViewport();
-    window.addEventListener("resize", checkViewport);
-    return () => window.removeEventListener("resize", checkViewport);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Smooth scroll progress calculation using requestAnimationFrame
-  const updateScrollProgress = useCallback(() => {
-    const container = containerRef.current;
-    if (!container) return;
+  /* ---- scroll handler – ZERO setState, direct DOM writes ---- */
+  const tick = useCallback(() => {
+    const el = containerRef.current;
+    if (!el) return;
 
-    const rect = container.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    
-    // Progress goes from 0 to 1 as we scroll through the container
-    const scrollableHeight = viewportHeight * 2;
+    const rect = el.getBoundingClientRect();
+    const vh = window.innerHeight;
     const scrolled = -rect.top;
-    
-    let progress = 0;
-    if (scrolled > 0) {
-      progress = Math.min(1, scrolled / scrollableHeight);
+    const progress = Math.max(0, Math.min(1, scrolled / (vh * 2)));
+
+    /* derived values */
+    const s1Opacity = 1 - remap(progress, 0.3, 0.6);
+    const s2Opacity = remap(progress, 0.3, 0.6);
+    const textY = -100 + 100 * remap(progress, 0.3, 0.6);
+    const h1Y = -progress * 100;
+    const scale = 1 + progress * 0.08;
+
+    /* Section 1 */
+    if (section1Ref.current) {
+      const s = section1Ref.current.style;
+      s.opacity = String(s1Opacity);
+      s.pointerEvents = progress > 0.5 ? "none" : "auto";
     }
-    
-    setScrollProgress(progress);
-    
-    // Update navbar visibility during middle transition
-    const isInView = rect.top < viewportHeight && rect.bottom > 0;
-    setHideNavbarSectionInView?.(isInView && progress > 0.2 && progress < 0.8);
+    /* Heading 1 translate */
+    if (heading1Ref.current) {
+      heading1Ref.current.style.transform = `translate3d(0,${h1Y}px,0)`;
+    }
+    /* Image scale */
+    if (imageWrapRef.current) {
+      imageWrapRef.current.style.transform = `scale(${scale}) translateZ(0)`;
+    }
+    /* Blur overlay (pre-blurred image revealed via opacity) */
+    if (blurOverlayRef.current) {
+      blurOverlayRef.current.style.opacity = String(remap(progress, 0.25, 0.55));
+    }
+    /* Base layer – hidden at start, revealed as section 1 fades */
+    if (baseLayerRef.current) {
+      baseLayerRef.current.style.opacity = String(remap(progress, 0.2, 0.5));
+    }
+    /* Section 2 */
+    if (section2Ref.current) {
+      const s = section2Ref.current.style;
+      s.opacity = String(s2Opacity);
+      s.pointerEvents = progress < 0.3 ? "none" : "auto";
+      s.transform = `translate3d(0,${textY}px,0)`;
+    }
+    /* Shadow glow opacity follows section 1 */
+    for (const div of shadowGlowRefs.current) {
+      if (div) div.style.opacity = String(Number(div.dataset.baseOpacity ?? 0) * s1Opacity);
+    }
+
+    /* Navbar visibility */
+    const isInView = rect.top < vh && rect.bottom > 0;
+    const shouldHide = isInView && progress > 0.2 && progress < 0.8;
+    if (shouldHide !== lastNavHidden.current) {
+      lastNavHidden.current = shouldHide;
+      setHideNavbarSectionInView?.(shouldHide);
+    }
   }, [setHideNavbarSectionInView]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-      rafRef.current = requestAnimationFrame(updateScrollProgress);
+    const onScroll = () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(tick);
     };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
+      window.removeEventListener("scroll", onScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       setHideNavbarSectionInView?.(false);
     };
-  }, [updateScrollProgress, setHideNavbarSectionInView]);
+  }, [tick, setHideNavbarSectionInView]);
 
-  // ===== APPLE-STYLE ANIMATION PHASES =====
-  // Phase 1 (0 - 0.3): Section 1 fully visible
-  // Phase 2 (0.3 - 0.6): Crossfade - Section 1 fades out, Section 2 fades in with text sliding down
-  // Phase 3 (0.6 - 1): Section 2 fully visible, then scroll continues to next section
-  
-  // Section 1 opacity: Full until 0.3, then fades to 0 by 0.6
-  const section1Opacity = scrollProgress <= 0.3 
-    ? 1 
-    : scrollProgress >= 0.6 
-      ? 0 
-      : 1 - ((scrollProgress - 0.3) / 0.3);
-  
-  // Section 2 opacity: 0 until 0.3, then fades to 1 by 0.6
-  const section2Opacity = scrollProgress <= 0.3 
-    ? 0 
-    : scrollProgress >= 0.6 
-      ? 1 
-      : (scrollProgress - 0.3) / 0.3;
-  
-  // Text slides down: starts at -100px (above), ends at 0
-  const textTranslateY = scrollProgress <= 0.3 
-    ? -100 
-    : scrollProgress >= 0.6 
-      ? 0 
-      : -100 + (100 * ((scrollProgress - 0.3) / 0.3));
-  
-  // First heading moves up as we scroll
-  const heading1TranslateY = -scrollProgress * 100;
-  
-  // Image blur increases during transition
-  const blurAmount = scrollProgress <= 0.3 
-    ? 0 
-    : scrollProgress >= 0.6 
-      ? 30 
-      : 30 * ((scrollProgress - 0.3) / 0.3);
-  
-  // Subtle scale on images
-  const imageScale = 1 + scrollProgress * 0.08;
+  const imgs = isMobileOrTablet ? IMAGES.mobile : IMAGES.desktop;
 
-  const shadowStyle = (
+  const shadowStyleStatic = (
     width: string,
     height: string,
     blur: number,
-    baseOpacity: number
+    opacity: number,
   ) => ({
     position: "absolute" as const,
     width,
     height,
     left: "50%",
     top: "50%",
-    transform: "translate(-50%, -50%)",
+    transform: "translate(-50%, -50%) translateZ(0)",
     borderRadius: "50%",
     backgroundColor: BLUE_SHADOW_COLOR,
     filter: `blur(${blur}px)`,
-    opacity: baseOpacity * section1Opacity,
+    opacity,
     zIndex: 1,
   });
 
-  const shadowStyleAlwaysVisible = (
+  const shadowStyleBase = (
     width: string,
     height: string,
     blur: number,
-    baseOpacity: number
+    opacity: number,
   ) => ({
-    position: "absolute" as const,
-    width,
-    height,
-    left: "50%",
-    top: "50%",
-    transform: "translate(-50%, -50%)",
-    borderRadius: "50%",
-    backgroundColor: BLUE_SHADOW_COLOR,
-    filter: `blur(${blur}px)`,
-    opacity: baseOpacity,
-    zIndex: 1,
+    ...shadowStyleStatic(width, height, blur, opacity * BASE_GLOW_OPACITY_MULTIPLIER),
   });
+
+  const layers = isMobileOrTablet ? SHADOW_LAYERS_MOBILE : SHADOW_LAYERS;
+  const blurPx = isMobileOrTablet ? 48 : 92;
 
   return (
-    <div 
-      ref={containerRef} 
+    <div
+      ref={containerRef}
       className="w-full relative"
-      style={{ 
-        height: "300vh",
-      }}
+      style={{ height: "300vh" }}
     >
-      {/* Sticky container that stays in view while scrolling */}
+      {/* Sticky container */}
       <div className="sticky top-0 w-full h-screen overflow-hidden bg-background">
-        
-        {/* BASE LAYER: Blurred background image (always present, revealed when section 1 fades) */}
-        <div className="absolute inset-0 z-0">
+
+        {/* BASE LAYER – blurred background (hidden at start, revealed when Section 1 fades) */}
+        <div ref={baseLayerRef} className="absolute inset-0 z-0" style={{ opacity: 0, willChange: "opacity" }}>
           <div
-            className="absolute w-full h-full"
-            style={{
-              left: "50%",
-              top: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "120%",
-              height: "120%",
-            }}
+            className="absolute"
+            style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: "120%", height: "120%" }}
           >
             {/* Shadow 1 - Top Left */}
             <div
               className="absolute z-0"
-              style={{
-                top: "-5%",
-                left: "-10%",
-                width: "50%",
-                height: "50%",
-                filter: isMobileOrTablet ? "blur(48px)" : "blur(92px)",
-              }}
+              style={{ top: "-10%", left: "-15%", width: "60%", height: "60%", filter: `blur(${Math.round(blurPx * BASE_SHADOW_BLUR_MULTIPLIER)}px)`, opacity: BASE_SHADOW_IMAGE_OPACITY, transform: "translateZ(0)" }}
             >
-              <Image
-                src={imgs.shadow1}
-                alt="shadow 1 mix"
-                fill
-                className="object-contain"
-              />
+              <Image src={imgs.shadow1} alt="" fill className="object-contain" aria-hidden />
             </div>
             {/* Shadow 2 - Bottom Right */}
             <div
               className="absolute z-0"
-              style={{
-                bottom: "-5%",
-                right: "-10%",
-                width: "50%",
-                height: "50%",
-                filter: isMobileOrTablet ? "blur(48px)" : "blur(92px)",
-              }}
+              style={{ bottom: "-10%", right: "-15%", width: "60%", height: "60%", filter: `blur(${Math.round(blurPx * BASE_SHADOW_BLUR_MULTIPLIER)}px)`, opacity: BASE_SHADOW_IMAGE_OPACITY, transform: "translateZ(0)" }}
             >
-              <Image
-                src={imgs.shadow2}
-                alt="shadow 2 orange"
-                fill
-                className="object-contain"
-              />
+              <Image src={imgs.shadow2} alt="" fill className="object-contain" aria-hidden />
             </div>
-            {/* CSS Shadow layers for center glow */}
-            {(isMobileOrTablet ? SHADOW_LAYERS_MOBILE : SHADOW_LAYERS).map(
-              (layer) => (
-                <div
-                  key={`bg-${layer.width}-${layer.height}-${layer.blur}-${layer.opacity}`}
-                  className="absolute rounded-full"
-                  style={shadowStyleAlwaysVisible(
-                    layer.width,
-                    layer.height,
-                    layer.blur,
-                    layer.opacity
-                  )}
-                />
-              )
-            )}
+            {/* CSS Shadow layers (always-visible glow) */}
+            {layers.map((layer) => (
+              <div
+                key={`bg-${layer.blur}`}
+                className="absolute rounded-full"
+                style={shadowStyleBase(layer.width, layer.height, layer.blur, layer.opacity)}
+              />
+            ))}
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="relative w-full h-full max-w-[95vw] sm:max-w-[90vw] md:max-w-[85vw] lg:max-w-[911.91px]">
                 <Image
@@ -257,98 +224,62 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                   fill
                   className="object-contain"
                   loading="eager"
-                  style={{ filter: "blur(10px)", opacity: 0.7 }}
+                  style={{ filter: "blur(10px)", opacity: 0.7, transform: "translateZ(0)" }}
                 />
               </div>
             </div>
           </div>
           {/* Dark overlay */}
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundColor: "#0b0c26",
-              opacity: 0.6,
-            }}
-          />
+          <div className="absolute inset-0" style={{ backgroundColor: "#0b0c26", opacity: BASE_DARK_OVERLAY_OPACITY }} />
         </div>
 
-        {/* SECTION 1: Clear images with heading (fades out) */}
+        {/* SECTION 1 – clear images + heading (fades out via ref) */}
         <section
+          ref={section1Ref}
           className="absolute inset-0 w-full h-full pt-16 sm:pt-20 md:pt-24 lg:pt-28 pb-4 sm:pb-5 md:pb-6 z-10"
-          style={{
-            opacity: section1Opacity,
-            pointerEvents: scrollProgress > 0.5 ? "none" : "auto",
-          }}
+          style={{ willChange: "opacity" }}
         >
           <Container className="h-full">
             <div className="flex flex-col items-center w-full h-full px-3 sm:px-4 gap-6 sm:gap-10 md:gap-12 lg:gap-16">
-              <Heading2
-                className="text-white text-center leading-[120%]! relative z-20 shrink-0 px-2 sm:px-0"
-                style={{
-                  transform: `translateY(${heading1TranslateY}px)`,
-                }}
-              >
-                Your child&apos;s life is bigger than asthma.{" "}
-                <br className="hidden sm:block" />
-                It&apos;s made of moments you never want to miss.
-              </Heading2>
-              <div 
+              <div ref={heading1Ref} style={{ willChange: "transform" }}>
+                <Heading2
+                  className="text-white text-center leading-[120%]! relative z-20 shrink-0 px-2 sm:px-0"
+                >
+                  Your child&apos;s life is bigger than asthma.{" "}
+                  <br className="hidden sm:block" />
+                  It&apos;s made of moments you never want to miss.
+                </Heading2>
+              </div>
+              <div
+                ref={imageWrapRef}
                 className="relative w-full flex-1 min-h-0 max-w-[95vw] sm:max-w-[90vw] md:max-w-[85vw] lg:max-w-[911.91px]"
-                style={{
-                  transform: `scale(${imageScale})`,
-                }}
+                style={{ willChange: "transform" }}
               >
-                {/* Shadow 1 - Top Left */}
+                {/* Shadow 1 */}
                 <div
                   className="absolute z-0"
-                  style={{
-                    top: "-10%",
-                    left: "-15%",
-                    width: "60%",
-                    height: "60%",
-                    filter: isMobileOrTablet ? "blur(48px)" : "blur(92px)",
-                  }}
+                  style={{ top: "-15%", left: "-20%", width: "70%", height: "70%", filter: `blur(${Math.round(blurPx * 0.65)}px)`, opacity: 1, transform: "translateZ(0)" }}
                 >
-                  <Image
-                    src={imgs.shadow1}
-                    alt="shadow 1 mix"
-                    fill
-                    className="object-contain"
-                  />
+                  <Image src={imgs.shadow1} alt="" fill className="object-contain" aria-hidden />
                 </div>
-                {/* Shadow 2 - Bottom Right */}
+                {/* Shadow 2 */}
                 <div
                   className="absolute z-0"
-                  style={{
-                    bottom: "-10%",
-                    right: "-10%",
-                    width: "50%",
-                    height: "50%",
-                    filter: isMobileOrTablet ? "blur(48px)" : "blur(92px)",
-                  }}
+                  style={{ bottom: "-15%", right: "-15%", width: "60%", height: "60%", filter: `blur(${Math.round(blurPx * 0.65)}px)`, opacity: 1, transform: "translateZ(0)" }}
                 >
-                  <Image
-                    src={imgs.shadow2}
-                    alt="shadow 2 orange"
-                    fill
-                    className="object-contain"
-                  />
+                  <Image src={imgs.shadow2} alt="" fill className="object-contain" aria-hidden />
                 </div>
-                {/* CSS Shadow layers for center glow */}
-                {(isMobileOrTablet ? SHADOW_LAYERS_MOBILE : SHADOW_LAYERS).map(
-                  (layer) => (
-                    <div
-                      key={`s1-${layer.width}-${layer.height}-${layer.blur}-${layer.opacity}`}
-                      className="absolute rounded-full"
-                      style={shadowStyle(
-                        layer.width,
-                        layer.height,
-                        layer.blur,
-                        layer.opacity
-                      )}
-                    />
-                  )
-                )}
+                {/* Glow layers (fade with section 1) */}
+                {layers.map((layer, i) => (
+                  <div
+                    key={`s1-${layer.blur}`}
+                    ref={(el) => { if (el) shadowGlowRefs.current[i] = el; }}
+                    data-base-opacity={layer.opacity}
+                    className="absolute rounded-full"
+                    style={shadowStyleStatic(layer.width, layer.height, layer.blur, layer.opacity)}
+                  />
+                ))}
+                {/* Clear collage image */}
                 <div className="relative z-10 w-full h-full">
                   <Image
                     src={imgs.collage}
@@ -356,9 +287,22 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                     fill
                     className="object-contain"
                     loading="eager"
-                    style={{
-                      filter: `blur(${blurAmount}px)`,
-                    }}
+                    style={{ transform: "translateZ(0)" }}
+                  />
+                </div>
+                {/* Pre-blurred overlay – crossfades in via opacity (GPU-composited) */}
+                <div
+                  ref={blurOverlayRef}
+                  className="absolute inset-0 z-20"
+                  style={{ opacity: 0, willChange: "opacity", transform: "translateZ(0)" }}
+                >
+                  <Image
+                    src={imgs.collage}
+                    alt=""
+                    fill
+                    className="object-contain"
+                    aria-hidden
+                    style={{ filter: "blur(30px)", transform: "translateZ(0)" }}
                   />
                 </div>
               </div>
@@ -366,20 +310,13 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
           </Container>
         </section>
 
-        {/* SECTION 2: Text that slides down (fades in on top of blurred background) */}
+        {/* SECTION 2 – text slides down (fades in via ref) */}
         <div
+          ref={section2Ref}
           className="absolute inset-0 z-20 flex items-center justify-center"
-          style={{
-            opacity: section2Opacity,
-            pointerEvents: scrollProgress < 0.3 ? "none" : "auto",
-          }}
+          style={{ opacity: 0, willChange: "transform, opacity" }}
         >
-          <Heading2 
-            className="text-white text-center leading-[120%]! px-4 sm:px-6 md:px-8 max-w-[1200px]"
-            style={{
-              transform: `translateY(${textTranslateY}px)`,
-            }}
-          >
+          <Heading2 className="text-white text-center leading-[120%]! px-4 sm:px-6 md:px-8 max-w-[1200px]">
             But behind your family&apos;s favorite moments,{" "}
             <br className="hidden sm:block" /> the{" "}
             <span className="text-[#5754ED]">
