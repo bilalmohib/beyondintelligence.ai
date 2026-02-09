@@ -157,17 +157,20 @@ const SignupStepHomeAndSchoolEnvironmentPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                If you have one, Satori can suggest ideal times to strengthen indoor air. If not, Satori emphasizes low-cost, high-impact alternatives like window timing, avoiding dust disturbances, and choosing the cleanest rooms for rest.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about air purifiers"
+              showClose
+            >
+              If you have one, Satori can suggest ideal times to strengthen indoor air. If not, Satori emphasizes low-cost, high-impact alternatives like window timing, avoiding dust disturbances, and choosing the cleanest rooms for rest.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -205,20 +208,21 @@ const SignupStepHomeAndSchoolEnvironmentPage = () => {
             Your child's environment changes street by street — not just city by city.
           </Paragraph>
           <Tooltip>
-            <div className="flex flex-row justify-center items-center gap-1.5">
-              <div>
-                <TooltipTrigger asChild className="cursor-pointer">
-                  <InfoIcon className="text-white!" />
-                </TooltipTrigger>
-              </div>
-              <Paragraph className="text-white! text-xs! font-semibold">
-                See why this matters?
-              </Paragraph>
-            </div>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Your address helps Satori understand proximity to major traffic sources, detect valley or basin shapes that influence airflow, and model how weather and pollution interact in your <b>neighborhood micro-environment</b>. This enables truly hyperlocal protection. Your address is used only for environmental calculations — never for marketing or sharing.
-              </p>
+            <TooltipTrigger asChild>
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about your home address"
+              showClose
+            >
+              Your address helps Satori understand proximity to major traffic sources, detect valley or basin shapes that influence airflow, and model how weather and pollution interact in your <b>neighborhood micro-environment</b>. This enables truly hyperlocal protection. Your address is used only for environmental calculations — never for marketing or sharing.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -256,20 +260,21 @@ const SignupStepHomeAndSchoolEnvironmentPage = () => {
             Your child spends much of their day breathing the air around their school.
           </Paragraph>
           <Tooltip>
-            <div className="flex flex-row justify-center items-center gap-1.5">
-              <div>
-                <TooltipTrigger asChild className="cursor-pointer">
-                  <InfoIcon className="text-white!" />
-                </TooltipTrigger>
-              </div>
-              <Paragraph className="text-white! text-xs! font-semibold">
-                See why this matters?
-              </Paragraph>
-            </div>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                School environments shape exposure during arrival, recess, dismissal, and outdoor play. Satori uses this to anticipate risks at the right times and support future safe-route features between home and school.
-              </p>
+            <TooltipTrigger asChild>
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
+                <InfoIcon className="text-white!" />
+                <Paragraph className="text-white! text-xs! font-semibold">
+                  See why this matters?
+                </Paragraph>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about your child's school address"
+              showClose
+            >
+              School environments shape exposure during arrival, recess, dismissal, and outdoor play. Satori uses this to anticipate risks at the right times and support future safe-route features between home and school.
             </TooltipContent>
           </Tooltip>
         </div>

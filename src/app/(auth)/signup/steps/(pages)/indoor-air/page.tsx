@@ -146,17 +146,20 @@ const SignupStepIndoorAirPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Pet dander can carry allergens and pollutants indoors. This helps Satori tailor strategies that reduce indoor irritation while respecting family routines and emotional bonds.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about pets"
+              showClose
+            >
+              Pet dander can carry allergens and pollutants indoors. This helps Satori tailor strategies that reduce indoor irritation while respecting family routines and emotional bonds.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -213,17 +216,20 @@ const SignupStepIndoorAirPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Moisture can encourage dust mites and mold. Satori integrates this with outdoor humidity, rainfall, and airflow patterns to detect when indoor risks may rise and suggest simple stabilizing steps.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about humidity"
+              showClose
+            >
+              Moisture can encourage dust mites and mold. Satori integrates this with outdoor humidity, rainfall, and airflow patterns to detect when indoor risks may rise and suggest simple stabilizing steps.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -280,17 +286,20 @@ const SignupStepIndoorAirPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Mold can intensify asthma and allergy symptoms, especially during sleep. Satori combines this information with <b>real-time neighborhood humidity and weather dynamics</b> to recognize when mold risk may spike and guide you toward timely, child-safe adjustments.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about water leaks and musty smells"
+              showClose
+            >
+              Mold can intensify asthma and allergy symptoms, especially during sleep. Satori combines this information with <b>real-time neighborhood humidity and weather dynamics</b> to recognize when mold risk may spike and guide you toward timely, child-safe adjustments.
             </TooltipContent>
           </Tooltip>
         </div>
@@ -347,17 +356,20 @@ const SignupStepIndoorAirPage = () => {
           </Paragraph>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex flex-row justify-center items-center gap-1.5 cursor-pointer">
+              <button type="button" className="flex flex-row justify-center items-center gap-1.5 cursor-pointer bg-transparent border-0 p-0">
                 <InfoIcon className="text-white!" />
                 <Paragraph className="text-white! text-xs! font-semibold">
                   See why this matters?
                 </Paragraph>
-              </div>
+              </button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-white! dark:text-background! text-xs!">
-                Gas stoves produce NO₂ and particulates. If Satori knows you use one, it can recommend helpful moments to ventilate or keep your child out of the kitchen during certain times — especially when indoor and outdoor conditions combine to create extra stress.
-              </p>
+            <TooltipContent
+              side="right"
+              sideOffset={12}
+              title="Why we ask about gas stoves"
+              showClose
+            >
+              Gas stoves produce NO₂ and particulates. If Satori knows you use one, it can recommend helpful moments to ventilate or keep your child out of the kitchen during certain times — especially when indoor and outdoor conditions combine to create extra stress.
             </TooltipContent>
           </Tooltip>
         </div>
