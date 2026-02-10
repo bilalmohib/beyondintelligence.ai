@@ -112,6 +112,8 @@ export const MapIcon = ({ className, width, height }: IIconProps) => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      style={{ width: width, height: height }}
     >
       <path
         fillRule="evenodd"
@@ -131,6 +133,8 @@ export const PhoneIcon = ({ className, width, height }: IIconProps) => {
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      style={{ width: width, height: height }}
     >
       <path
         fillRule="evenodd"

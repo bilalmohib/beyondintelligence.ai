@@ -9,6 +9,7 @@ export const footerColumns: IFooterSection[][] = [
         {
           title: "ATLAS — Capital Governance Layer",
           description: "(ILS / Sovereign Wealth Funds / Pensions)",
+          link: ""
         },
         {
           title: "ATLAS — Parametric Engine",
@@ -31,7 +32,7 @@ export const footerColumns: IFooterSection[][] = [
     {
       title: "Products — Individuals",
       items: [
-        { title: "Satori — For Childhood Asthma & Allergies" },
+        { title: "Satori — For Childhood Asthma & Allergies", link: "/" },
       ],
     },
   ],
@@ -54,15 +55,15 @@ export const footerColumns: IFooterSection[][] = [
     {
       title: "Thought Leadership",
       items: [
-        { title: "Insights" },
-        { title: "Press" },
-        { title: "Speaking" },
+        { title: "Insights", link: "https://www.beyondintelligence.ai/blog/", isExternal: true },
+        { title: "Press", link: "https://www.beyondintelligence.ai/press", isExternal: true },
+        { title: "Speaking", link: "https://www.beyondintelligence.ai/keynote", isExternal: true },
       ],
     },
     {
       title: "Company",
       items: [
-        { title: "About" },
+        { title: "About", link: "https://www.beyondintelligence.ai/about", isExternal: true },
         { title: "Careers" },
       ],
     },
