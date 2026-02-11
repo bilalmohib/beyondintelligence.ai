@@ -55,9 +55,9 @@ export const footerColumns: IFooterSection[][] = [
     {
       title: "Thought Leadership",
       items: [
-        { title: "Insights", link: "https://www.beyondintelligence.ai/blog/", isExternal: true },
-        { title: "Press", link: "https://www.beyondintelligence.ai/press", isExternal: true },
-        { title: "Speaking", link: "https://www.beyondintelligence.ai/keynote", isExternal: true },
+        { title: "Thought Leadership", link: "https://www.beyondintelligence.ai/blog/", isExternal: true },
+        // { title: "Press", link: "https://www.beyondintelligence.ai/press", isExternal: true },
+        { title: "Speakers", link: "https://www.beyondintelligence.ai/keynote", isExternal: true },
       ],
     },
     {

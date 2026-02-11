@@ -45,6 +45,13 @@ export const landingPageHowSatoriComparesSectionTableData: IDynamicTableData = {
         "Symptom management in an app.",
         "Real-time pediatric steps by SMS — no app, no setup, instant for every caregiver.",
       ],
+      [
+        "Intelligence Level",
+        "Generic air data",
+        "Generic weather data",
+        "Generic symptom tracking",
+        "Personalized environmental intelligence that understands your child and generates unique early alerts just for them."
+      ]
     ],
   },
   headerClassName: "px-0 sm:py-10 sm:pb-9",

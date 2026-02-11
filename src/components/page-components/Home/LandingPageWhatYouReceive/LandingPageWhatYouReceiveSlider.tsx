@@ -103,7 +103,7 @@ const LandingPageWhatYouReceiveSlider = ({
             },
             1024: {
               slidesPerView: 2,
-              spaceBetween: 24,
+              spaceBetween: 40,
             },
           }}
         >

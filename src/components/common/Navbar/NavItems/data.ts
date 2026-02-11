@@ -1,6 +1,6 @@
 export const menuItems = [
   {
-    title: "Insight",
+    title: "Thought Leadership",
     href: "https://www.beyondintelligence.ai/blog/",
     isExternal: true,
     hasDropdown: false,
@@ -10,14 +10,14 @@ export const menuItems = [
     href: "/products",
     hasDropdown: true,
   },
+  // {
+  //   title: "Press",
+  //   href: "https://www.beyondintelligence.ai/press",
+  //   isExternal: true,
+  //   hasDropdown: false,
+  // },
   {
-    title: "Press",
-    href: "https://www.beyondintelligence.ai/press",
-    isExternal: true,
-    hasDropdown: false,
-  },
-  {
-    title: "Keynote",
+    title: "Speakers",
     href: "https://www.beyondintelligence.ai/keynote",
     isExternal: true,
     hasDropdown: false,
