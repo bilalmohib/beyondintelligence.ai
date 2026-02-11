@@ -58,8 +58,11 @@ const LandingPageSatoriBlogsSlider = ({
   return (
     <div className="relative mlg:pt-5">
       <Swiper
-        slidesPerView={"auto"}
+        initialSlide={0}
+        slidesPerView={2}
         spaceBetween={40}
+        centeredSlides={false}
+        loop={false}
         navigation={{
           nextEl: ".swiper-button-next-custom",
           prevEl: ".swiper-button-prev-custom",
@@ -68,6 +71,8 @@ const LandingPageSatoriBlogsSlider = ({
         className="mlg:pb-4!"
         onSlideChange={handleSlideChange}
         onSwiper={(swiper) => {
+          // Ensure we start at slide 0
+          swiper.slideTo(0, 0);
           // Auto-play video on first slide if it has one
           setTimeout(() => handleSlideChange(swiper), 100);
         }}
@@ -82,7 +87,7 @@ const LandingPageSatoriBlogsSlider = ({
           },
           1024: {
             slidesPerView: 2,
-            spaceBetween: 24,
+            spaceBetween: 40,
           },
         }}
       >

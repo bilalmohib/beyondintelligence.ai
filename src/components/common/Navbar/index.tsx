@@ -7,6 +7,7 @@ import Logo from "@/components/common/Navbar/Logo";
 import Container from "@/components/common/Container";
 import NavItems from "@/components/common/Navbar/NavItems";
 import MobileNavItems from "@/components/common/Navbar/NavItems/MobileNavItems";
+import ComingSoonModal from "@/components/common/Navbar/ComingSoonModal";
 
 interface NavbarProps {
   className?: string;
@@ -15,6 +16,15 @@ interface NavbarProps {
 
 function Navbar({ className, isNavTransparent }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [comingSoonOpen, setComingSoonOpen] = useState(false);
+  const [comingSoonProductTitle, setComingSoonProductTitle] = useState<
+    string | undefined
+  >(undefined);
+
+  const handleComingSoonClick = (title: string) => {
+    setComingSoonProductTitle(title);
+    setComingSoonOpen(true);
+  };
 
   return (
     <>
@@ -53,6 +63,7 @@ function Navbar({ className, isNavTransparent }: NavbarProps) {
                 {isMobileMenuOpen && (
                   <Button
                     variant="outline"
+                    onClick={() => handleComingSoonClick("Help Center")}
                     className="border-white/30! text-white! bg-transparent! hover:bg-white/10! rounded-lg! px-4! py-2! gap-2! text-sm! font-medium! cursor-pointer!"
                   >
                     <Globe className="w-4 h-4" />
@@ -123,6 +134,12 @@ function Navbar({ className, isNavTransparent }: NavbarProps) {
           </div>
         </div>
       </nav>
+
+      <ComingSoonModal
+        open={comingSoonOpen}
+        onOpenChange={setComingSoonOpen}
+        productTitle={comingSoonProductTitle}
+      />
     </>
   );
 }
