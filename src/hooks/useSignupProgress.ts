@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 
 const SIGNUP_FORM_DATA_KEY = 'satori_signup_form_data';
 const SIGNUP_LAST_STEP_KEY = 'satori_signup_last_step';
+const SIGNUP_COMPLETED_STEPS_KEY = 'satori_signup_completed_steps';
 
 export const SIGNUP_PATHNAME_TO_KEY: Record<string, string> = {
   '/signup/steps/parent-information': 'parentInformation',
@@ -73,32 +74,36 @@ export const useSignupProgress = () => {
     if (typeof window === 'undefined') return;
     localStorage.removeItem(SIGNUP_FORM_DATA_KEY);
     localStorage.removeItem(SIGNUP_LAST_STEP_KEY);
+    localStorage.removeItem(SIGNUP_COMPLETED_STEPS_KEY);
     setFormData(null);
     setLastStep(null);
   }, []);
 
-  const getStepToContinue = useCallback((): string => {
-    const saved = getSavedFormData();
-    if (!saved) {
-      return SIGNUP_STEPS_ORDER[0].pathname;
+  const getSavedCompletedSteps = useCallback((): string[] => {
+    if (typeof window === 'undefined') return [];
+    try {
+      const raw = localStorage.getItem(SIGNUP_COMPLETED_STEPS_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
     }
+  }, []);
 
-    let firstIncompleteIndex = SIGNUP_STEPS_ORDER.length;
+  const getStepToContinue = useCallback((): string => {
+    const completed = getSavedCompletedSteps();
+
+    // Find the first step whose key is NOT in completedSteps
     for (let i = 0; i < SIGNUP_STEPS_ORDER.length; i++) {
-      const step = SIGNUP_STEPS_ORDER[i];
-      const stepData = saved[step.key];
-      if (!stepData || (typeof stepData === 'object' && Object.keys(stepData).length === 0)) {
-        firstIncompleteIndex = i;
-        break;
+      if (!completed.includes(SIGNUP_STEPS_ORDER[i].key)) {
+        return SIGNUP_STEPS_ORDER[i].pathname;
       }
     }
 
-    if (firstIncompleteIndex >= SIGNUP_STEPS_ORDER.length) {
-      return SIGNUP_STEPS_ORDER[SIGNUP_STEPS_ORDER.length - 1].pathname;
-    }
-
-    return SIGNUP_STEPS_ORDER[firstIncompleteIndex].pathname;
-  }, [getSavedFormData]);
+    // All steps complete — go to last step
+    return SIGNUP_STEPS_ORDER[SIGNUP_STEPS_ORDER.length - 1].pathname;
+  }, [getSavedCompletedSteps]);
 
   return {
     getSavedFormData,
