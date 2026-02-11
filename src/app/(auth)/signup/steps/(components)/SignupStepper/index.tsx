@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   Stepper,
   StepperNav,
@@ -10,9 +9,9 @@ import {
 } from "@/components/ui/stepper";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import type { RootState } from "@/redux/store";
-import { selectSignupData } from "@/redux/slices/signupSlice";
+import { selectCompletedSteps } from "@/redux/slices/signupSlice";
 import { Heading6, Paragraph } from "@/components/common/Typography";
 import { SignupStep } from "@/app/(auth)/signup/steps/(components)/SignupStepper/data";
 
@@ -32,26 +31,48 @@ interface SignupStepperProps {
 }
 
 const SignupStepper = ({ steps }: SignupStepperProps) => {
+  const router = useRouter();
   const pathname = usePathname();
-  const formData = useSelector((state: RootState) => selectSignupData(state));
+  const completedSteps = useSelector((state: RootState) =>
+    selectCompletedSteps(state)
+  );
 
   const currentStepIndex = steps.findIndex((step) => pathname === step.href);
   const safeCurrentStepIndex = currentStepIndex >= 0 ? currentStepIndex : 0;
   const currentStep = steps.find((step) => pathname === step.href)?.id ?? 1;
 
-  const stepHasSavedData = (idx: number) => {
+  /** A step is completed only when the user clicked Continue and validation passed. */
+  const isStepCompleted = (idx: number) => {
     const key = STEP_FORM_KEYS[idx];
-    const data = key ? formData[key] : null;
-    if (data == null) return false;
-    if (typeof data !== "object") return true;
-    return Object.keys(data).length > 0;
+    return key ? completedSteps.includes(key) : false;
   };
 
-  const handleStepClick = (e: React.MouseEvent, stepIndex: number) => {
-    if (stepIndex <= safeCurrentStepIndex) return;
-    if (stepHasSavedData(stepIndex)) return;
+  /**
+   * Highest step the user may visit = first step that has NOT been completed.
+   * All steps before it must be completed.
+   */
+  const getMaxAllowedStepIndex = () => {
+    for (let i = 0; i < STEP_FORM_KEYS.length; i++) {
+      if (!isStepCompleted(i)) return i;
+    }
+    return STEP_FORM_KEYS.length - 1;
+  };
 
-    e.preventDefault();
+  const handleStepClick = (stepIndex: number, href: string) => {
+    // Always allow navigating backward or to the current step
+    if (stepIndex <= safeCurrentStepIndex) {
+      router.push(href);
+      return;
+    }
+
+    // Forward navigation: ALL previous steps must be completed
+    const maxAllowed = getMaxAllowedStepIndex();
+    if (stepIndex <= maxAllowed) {
+      router.push(href);
+      return;
+    }
+
+    // Block navigation
     toast("Please complete the current step first before moving ahead.", {
       duration: 4000,
       icon: "⚠️",
@@ -72,9 +93,7 @@ const SignupStepper = ({ steps }: SignupStepperProps) => {
     <Stepper value={currentStep} orientation="horizontal" className="w-full">
       <StepperNav className="w-full flex">
         {steps.map((step, index) => {
-          const formKey = STEP_FORM_KEYS[index];
-          const hasData = formKey && formData[formKey] != null;
-          const isCompleted = hasData || index < safeCurrentStepIndex;
+          const isCompleted = isStepCompleted(index);
 
           return (
             <div key={step.id} className="flex-1 flex items-start">
@@ -85,9 +104,9 @@ const SignupStepper = ({ steps }: SignupStepperProps) => {
                   disabled={false}
                 >
                   <StepperTrigger asChild>
-                    <Link
-                      href={step.href}
-                      onClick={(e) => handleStepClick(e, index)}
+                    <button
+                      type="button"
+                      onClick={() => handleStepClick(index, step.href)}
                       aria-current={index === safeCurrentStepIndex ? "step" : undefined}
                     >
                       <StepperIndicator className={`size-[70px] rounded-full border-2 border-background bg-white text-input-text data-[state=completed]:bg-primary data-[state=completed]:text-white data-[state=completed]:border-primary data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary cursor-pointer ${index === safeCurrentStepIndex ? "ring-[0.5px] ring-white" : ""}`}>
@@ -95,18 +114,18 @@ const SignupStepper = ({ steps }: SignupStepperProps) => {
                           {step.stepValue}
                         </Heading6>
                       </StepperIndicator>
-                    </Link>
+                    </button>
                   </StepperTrigger>
                 </StepperItem>
-                <Link
-                  href={step.href}
-                  onClick={(e) => handleStepClick(e, index)}
+                <button
+                  type="button"
+                  onClick={() => handleStepClick(index, step.href)}
                   className="block"
                 >
                   <Paragraph className="text-center text-white font-semibold text-[13px]! leading-[120%] tracking-[0%] max-w-[120px] cursor-pointer hover:opacity-80 transition-opacity">
                     {step.title}
                   </Paragraph>
-                </Link>
+                </button>
               </div>
 
               {index < steps.length - 1 && (

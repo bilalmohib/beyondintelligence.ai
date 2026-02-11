@@ -50,12 +50,14 @@ interface SignupFormData {
 
 interface SignupState {
   formData: SignupFormData;
+  completedSteps: string[];
   signupResponse: SignupResponse | null;
   isSignupComplete: boolean;
 }
 
 const initialState: SignupState = {
   formData: {},
+  completedSteps: [],
   signupResponse: null,
   isSignupComplete: false,
 };
@@ -88,12 +90,21 @@ const signupSlice = createSlice({
     saveYourExperienceAsAParent: (state, action: PayloadAction<SignupFormData['yourExperienceAsAParent']>) => {
       state.formData.yourExperienceAsAParent = action.payload;
     },
+    markStepCompleted: (state, action: PayloadAction<string>) => {
+      if (!state.completedSteps.includes(action.payload)) {
+        state.completedSteps.push(action.payload);
+      }
+    },
+    setCompletedSteps: (state, action: PayloadAction<string[]>) => {
+      state.completedSteps = action.payload;
+    },
     saveSignupResponse: (state, action: PayloadAction<SignupResponse>) => {
       state.signupResponse = action.payload;
       state.isSignupComplete = true;
     },
     resetSignupData: (state) => {
       state.formData = {};
+      state.completedSteps = [];
       state.signupResponse = null;
       state.isSignupComplete = false;
     },
@@ -109,12 +120,15 @@ export const {
   saveIndoorAir,
   saveIllnessAndRecoveryTendencies,
   saveYourExperienceAsAParent,
+  markStepCompleted,
+  setCompletedSteps,
   saveSignupResponse,
   resetSignupData,
 } = signupSlice.actions;
 
 export const selectSignupData = (state: { signup: SignupState }) => state.signup.formData;
 export const selectAllSignupData = (state: { signup: SignupState }) => state.signup.formData;
+export const selectCompletedSteps = (state: { signup: SignupState }) => state.signup.completedSteps;
 export const selectSignupResponse = (state: { signup: SignupState }) => state.signup.signupResponse;
 export const selectIsSignupComplete = (state: { signup: SignupState }) => state.signup.isSignupComplete;
 

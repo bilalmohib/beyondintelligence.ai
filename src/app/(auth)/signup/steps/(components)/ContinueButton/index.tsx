@@ -12,6 +12,7 @@ import {
   saveIllnessAndRecoveryTendencies,
   saveYourExperienceAsAParent,
   saveSignupResponse,
+  markStepCompleted,
 } from "@/redux/slices/signupSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
@@ -70,7 +71,11 @@ const ContinueButton = () => {
       dispatch(saveAction(normalizedValues));
     }
 
+    // Mark this step as officially completed (validated via Continue)
     const pathKey = SIGNUP_PATHNAME_TO_KEY[pathname];
+    if (pathKey) {
+      dispatch(markStepCompleted(pathKey));
+    }
     const updatedFormData = pathKey && formValues
       ? { ...formData, [pathKey]: normalizeFormData(formValues) }
       : { ...formData };
