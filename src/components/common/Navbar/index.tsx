@@ -57,7 +57,7 @@ function Navbar({ className, isNavTransparent }: NavbarProps) {
           !isMobileMenuOpen && !isNavTransparent ? "bg-background" : ""
         } 
         ${isSignupStartOrSuccessRoute ? "py-5" : ""} 
-        ${isSignupStepsRoute ? "pt-3" : ""} 
+        ${isSignupStepsRoute ? "pt-4" : ""} 
         ${className}`}
       >
         <Container>
