@@ -54,6 +54,7 @@ const SwiperTextSliderBody = ({
 
       <div className="flex-1 min-w-0 px-2 sm:px-3 md:px-4 lg:px-6 py-12 sm:py-16 md:py-20 lg:py-0 h-auto min-h-[55vh] sm:min-h-[65vh] md:min-h-[75vh] lg:min-h-0 lg:h-screen overflow-hidden">
         <Swiper
+          initialSlide={0}
           slidesPerView={1}
           slidesPerGroup={1}
           spaceBetween={0}
@@ -65,6 +66,10 @@ const SwiperTextSliderBody = ({
           modules={[Navigation]}
           className="overflow-hidden!"
           touchEventsTarget="container"
+          onSwiper={(swiper) => {
+            // Ensure we start at slide 0
+            swiper.slideTo(0, 0);
+          }}
         >
           {slides?.map((slide, index) => (
             <SwiperSlide key={index}>

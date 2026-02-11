@@ -42,19 +42,17 @@ const SignupSuccessPage = () => {
     : null;
 
   return (
-    <div>
-      <div className="bg-image-signup-start rounded-lg md:rounded-[20px] bg-cover bg-center bg-no-repeat h-96 md:h-102.75 bg-primary">
-        <Container className="flex flex-col items-left justify-center h-full">
-          <div className="flex flex-col gap-2 md:gap-3 h-fit">
-            <div className="flex items-center gap-2 md:gap-3">
+    <div className="p-2.5">
+      <div className="bg-image-signup-start rounded-lg md:rounded-[20px] bg-cover bg-center bg-no-repeat h-96 md:h-111.5 bg-primary">
+        <Container className="flex flex-col items-left justify-end pb-23 h-full">
+          <div className="flex flex-col gap-2 md:gap-4 h-fit">
+            <div>
+              <Heading1 className="text-white">Thank you!</Heading1>
               <Heading1 className="text-white">
-                Thank you!
+                Your child's account is almost ready.
               </Heading1>
             </div>
-            <Heading1 className="text-white">
-              Your child's account is almost ready.
-            </Heading1>
-            <Paragraph className="text-white">
+            <Paragraph className="text-white leading-7!">
               Satori now has the foundation it needs to protect your child with
               hyperlocal, deeply personalized environmental intelligence.
             </Paragraph>
@@ -63,7 +61,7 @@ const SignupSuccessPage = () => {
       </div>
       <div className="py-16 md:py-24 px-8 md:px-12.5 flex flex-row justify-center items-center max-w-[900px] mx-auto">
         <div className="bg-background-secondary p-6 md:p-8 rounded-lg md:rounded-[20px] flex flex-col gap-6 md:gap-8">
-          {signupResponse && (
+          {/* {signupResponse && (
             <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
               <Paragraph className="text-white text-sm!">
                 <span className="font-semibold">Account Status:</span>{" "}
@@ -76,7 +74,7 @@ const SignupSuccessPage = () => {
                 </span>
               </Paragraph>
             </div>
-          )}
+          )} */}
 
           <Paragraph className="text-white">
             Please check your SMS for a special link — your child's

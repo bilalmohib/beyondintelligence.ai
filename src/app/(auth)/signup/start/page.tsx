@@ -54,10 +54,10 @@ const SignupStartPage = () => {
   }
 
   return (
-    <div>
+    <div className="p-2.5">
       <div className="bg-image-signup-start rounded-lg md:rounded-[20px] bg-cover bg-center bg-no-repeat h-96 md:h-102.75 bg-primary">
-        <Container className="flex flex-col items-left justify-center h-full">
-          <div className="flex flex-col gap-2 md:gap-3 h-fit">
+        <Container className="flex flex-col items-left justify-end pb-23 h-full">
+          <div className="flex flex-col gap-2 md:gap-4 h-fit">
             <Heading1 className="text-white">
               Create your child's Satori account
             </Heading1>

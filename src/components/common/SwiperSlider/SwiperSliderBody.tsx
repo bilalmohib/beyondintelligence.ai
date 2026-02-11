@@ -79,6 +79,7 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
   return (
     <Container className="md:pr-0! md:mr-0! xxlg:px-0! max-w-[1400px]! xxlg:max-w-[1350px]! xxlg:mx-auto!">
       <Swiper
+        initialSlide={0}
         slidesPerView={"auto"}
         spaceBetween={40}
         navigation={{
@@ -89,6 +90,8 @@ const SwiperSliderBody = <T extends SlideData = SlideData>({
         className="pb-4!"
         onSlideChange={handleSlideChange}
         onSwiper={(swiper) => {
+          // Ensure we start at slide 0
+          swiper.slideTo(0, 0);
           setTimeout(() => handleSlideChange(swiper), 100);
         }}
         breakpoints={

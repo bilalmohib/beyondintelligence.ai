@@ -13,7 +13,7 @@ const MainAppLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   const isHomePage = pathname === "/";
-  const navTransparentRoutes = ["/", "/signup/start"];
+  const navTransparentRoutes = ["/", "/signup/start", "/signup/success"];
   const isNavTransparent = navTransparentRoutes.includes(pathname);
 
   const noLayoutRoutes = [

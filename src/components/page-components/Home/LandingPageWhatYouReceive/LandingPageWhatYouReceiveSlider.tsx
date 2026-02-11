@@ -69,6 +69,7 @@ const LandingPageWhatYouReceiveSlider = ({
   return (
     <div className="relative pt-5">
         <Swiper
+          initialSlide={0}
           slidesPerView={"auto"}
           spaceBetween={
             isMobile
@@ -89,6 +90,8 @@ const LandingPageWhatYouReceiveSlider = ({
           className="mlg:pb-4"
           onSlideChange={handleSlideChange}
           onSwiper={(swiper) => {
+            // Ensure we start at slide 0
+            swiper.slideTo(0, 0);
             // Auto-play video on first slide if it has one
             setTimeout(() => handleSlideChange(swiper), 100);
           }}

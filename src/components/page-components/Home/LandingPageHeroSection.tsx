@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/common/Container";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { Heading1, Paragraph } from "@/components/common/Typography";
 
 const VIDEO_DESKTOP = "/assets/pages/landing/videos/HeroVideo001.mp4";
@@ -101,7 +101,8 @@ const LandingPageHeroSection = () => {
                   Before Asthma Can Hurt Them.
                 </Heading1>
                 <Paragraph className="text-white text-center md:text-left whitespace-nowrap">
-                  Satori is a text-first asthma & allergy guardian — <i>no app, no passwords, no friction.</i>
+                  Satori is a text-first asthma & allergy guardian —{" "}
+                  <i>no app, no passwords, no friction.</i>
                 </Paragraph>
               </div>
               <div className="h-full w-full flex justify-center md:justify-start mllg:justify-end items-start mllg:items-end">
@@ -112,7 +113,12 @@ const LandingPageHeroSection = () => {
                     Get immediate protection.
                   </Paragraph>
 
-                  <Button className="px-5! py-3.5!">
+                  <Button
+                    className="px-5! py-3.5!"
+                    onClick={() => {
+                      window.open("/signup/start", "_blank");
+                    }}
+                  >
                     Start Free 14-Day Trial
                   </Button>
                 </div>

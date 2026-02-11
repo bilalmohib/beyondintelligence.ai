@@ -2,6 +2,7 @@
 
 import { X, Globe } from "lucide-react";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/common/Navbar/Logo";
 import Container from "@/components/common/Container";
@@ -15,11 +16,17 @@ interface NavbarProps {
 }
 
 function Navbar({ className, isNavTransparent }: NavbarProps) {
+  const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [comingSoonOpen, setComingSoonOpen] = useState(false);
   const [comingSoonProductTitle, setComingSoonProductTitle] = useState<
     string | undefined
   >(undefined);
+
+  const isSignupStartOrSuccessRoute =
+    pathname === "/signup/start" || pathname === "/signup/success";
+
+  const isSignupStepsRoute = pathname.startsWith("/signup/steps/");
 
   const handleComingSoonClick = (title: string) => {
     setComingSoonProductTitle(title);
@@ -39,12 +46,19 @@ function Navbar({ className, isNavTransparent }: NavbarProps) {
 
       <nav
         className={`w-full transition-all duration-200 ${
-          isMobileMenuOpen ? "max-xl:fixed max-xl:top-0 max-xl:left-0 max-xl:right-0 max-xl:z-50 max-xl:bg-background" : ""
-        } ${!isNavTransparent ? "shadow-md" : ""} ${
-          isNavTransparent && !isMobileMenuOpen ? "bg-transparent" : ""
+          isMobileMenuOpen
+            ? "max-xl:fixed max-xl:top-0 max-xl:left-0 max-xl:right-0 max-xl:z-50 max-xl:bg-background"
+            : ""
         } ${
+          !isNavTransparent
+            ? `${isSignupStepsRoute ? "shadow-none" : "shadow-md"}`
+            : ""
+        } ${isNavTransparent && !isMobileMenuOpen ? "bg-transparent" : ""} ${
           !isMobileMenuOpen && !isNavTransparent ? "bg-background" : ""
-        } ${className}`}
+        } 
+        ${isSignupStartOrSuccessRoute ? "py-5" : ""} 
+        ${isSignupStepsRoute ? "pt-3" : ""} 
+        ${className}`}
       >
         <Container>
           <div className="flex justify-between items-center py-4">
