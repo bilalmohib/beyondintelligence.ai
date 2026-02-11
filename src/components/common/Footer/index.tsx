@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { Globe } from "lucide-react";
 import { BsLinkedin } from "react-icons/bs";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Container from "@/components/common/Container";
 import { Paragraph } from "@/components/common/Typography";
 import FooterItems from "@/components/common/Footer/FooterItems";
 import { bottomLinks, socialLinks } from "@/components/common/Footer/data";
+import ComingSoonModal from "@/components/common/Navbar/ComingSoonModal";
 
 interface FooterProps {
   className?: string;
@@ -30,12 +32,23 @@ const FooterLogo = () => {
 };
 
 const Footer = ({ className }: FooterProps) => {
+  const [comingSoonOpen, setComingSoonOpen] = useState(false);
+  const [comingSoonProductTitle, setComingSoonProductTitle] = useState<
+    string | undefined
+  >(undefined);
+
+  const handleComingSoonClick = (title: string) => {
+    setComingSoonProductTitle(title);
+    setComingSoonOpen(true);
+  };
+
   return (
-    <footer
-      className={`w-full bg-lightGray2 transition-all duration-200 ${
-        className || ""
-      }`}
-    >
+    <>
+      <footer
+        className={`w-full bg-lightGray2 transition-all duration-200 ${
+          className || ""
+        }`}
+      >
       <Container>
         {/* Header: Logo + Help Center */}
         <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start pt-10 md:pt-12 mlg:pt-18 lg:pt-24 xl:pt-30 pb-6 sm:pb-8 mlg:pb-12 lg:pb-15">
@@ -43,6 +56,7 @@ const Footer = ({ className }: FooterProps) => {
           {/* Help Center — desktop/tablet only */}
           <Button
             variant="outline"
+            onClick={() => handleComingSoonClick("Help Center")}
             className="hidden sm:inline-flex border-white/30! text-white! bg-transparent! hover:bg-white/10! rounded-lg! px-5! py-2.5! gap-2! text-sm! font-medium! cursor-pointer!"
           >
             <Globe className="w-4 h-4" />
@@ -59,6 +73,7 @@ const Footer = ({ className }: FooterProps) => {
         <div className="flex sm:hidden justify-center pb-8">
           <Button
             variant="outline"
+            onClick={() => handleComingSoonClick("Help Center")}
             className="border-white/30! text-white! bg-transparent! hover:bg-white/10! rounded-lg! px-8! py-4! gap-2! w-full! text-base! font-medium! cursor-pointer!"
           >
             <Globe className="w-5 h-5" />
@@ -100,6 +115,13 @@ const Footer = ({ className }: FooterProps) => {
         </div>
       </Container>
     </footer>
+
+    <ComingSoonModal
+      open={comingSoonOpen}
+      onOpenChange={setComingSoonOpen}
+      productTitle={comingSoonProductTitle}
+    />
+    </>
   );
 };
 

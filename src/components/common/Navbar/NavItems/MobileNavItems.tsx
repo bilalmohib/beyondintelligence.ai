@@ -159,6 +159,8 @@ function MobileNavItems({ onLinkClick }: MobileNavItemsProps) {
               ) : (
                 <Link
                   href={item.href}
+                  target={item.isExternal ? "_blank" : undefined}
+                  rel={item.isExternal ? "noopener noreferrer" : undefined}
                   onClick={onLinkClick}
                   aria-current={isActive(item.href) ? "page" : undefined}
                   className={cn(

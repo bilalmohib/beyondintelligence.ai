@@ -113,6 +113,8 @@ const NavItems = ({ isNavTransparent }: NavItemsProps) => {
                 >
                   <Link
                     href={item.href}
+                    target={item.isExternal ? "_blank" : undefined}
+                    rel={item.isExternal ? "noopener noreferrer" : undefined}
                     className={cn(
                       "font-inter! text-base! font-normal leading-none tracking-[0.09em] text-white! transition-colors! duration-200",
                       isNavTransparent
@@ -246,6 +248,7 @@ const NavItems = ({ isNavTransparent }: NavItemsProps) => {
               {/* Help Center Button */}
               <Button
                 variant="outline"
+                onClick={() => handleComingSoonClick("Help Center")}
                 className="border-white/30! text-white! bg-transparent! hover:bg-white/10! rounded-lg! px-4! py-2.5! gap-2! text-sm! font-medium! cursor-pointer! w-full!"
               >
                 <Globe className="w-4 h-4" />
