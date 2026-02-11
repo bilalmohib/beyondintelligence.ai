@@ -166,3 +166,26 @@ export const MailIcon = ({ className, width, height }: IIconProps) => {
     </svg>
   );
 };
+
+export const ArrowUpPolygonIcon = ({
+  className,
+  width,
+  height,
+}: IIconProps) => {
+  return (
+    <svg
+      width={26}
+      height={22}
+      viewBox="0 0 26 22"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      style={{ width: width, height: height }}
+    >
+      <path
+        d="M12.9904 0L25.9807 21.75H-2.47955e-05L12.9904 0Z"
+        fill="#6366F1"
+      />
+    </svg>
+  );
+};
