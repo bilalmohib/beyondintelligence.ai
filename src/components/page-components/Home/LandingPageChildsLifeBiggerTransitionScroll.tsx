@@ -73,6 +73,7 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
   }, []);
 
   /* ---- scroll handler – ZERO setState, direct DOM writes ---- */
+  const lastProgress = useRef<number>(-1);
   const tick = useCallback(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -81,6 +82,10 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
     const vh = window.innerHeight;
     const scrolled = -rect.top;
     const progress = Math.max(0, Math.min(1, scrolled / (vh * 2)));
+
+    // Skip redundant updates (Safari optimization)
+    if (Math.abs(progress - lastProgress.current) < 0.001) return;
+    lastProgress.current = progress;
 
     /* derived values */
     const s1Opacity = 1 - remap(progress, 0.3, 0.6);
@@ -99,9 +104,9 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
     if (heading1Ref.current) {
       heading1Ref.current.style.transform = `translate3d(0,${h1Y}px,0)`;
     }
-    /* Image scale */
+    /* Image scale - use scale3d for better Safari GPU acceleration */
     if (imageWrapRef.current) {
-      imageWrapRef.current.style.transform = `scale(${scale}) translateZ(0)`;
+      imageWrapRef.current.style.transform = `scale3d(${scale},${scale},1) translateZ(0)`;
     }
     /* Blur overlay (pre-blurred image revealed via opacity) */
     if (blurOverlayRef.current) {
@@ -159,12 +164,15 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
     height,
     left: "50%",
     top: "50%",
-    transform: "translate(-50%, -50%) translateZ(0)",
+    transform: "translate3d(-50%, -50%, 0)",
     borderRadius: "50%",
     backgroundColor: BLUE_SHADOW_COLOR,
     filter: `blur(${blur}px)`,
     opacity,
     zIndex: 1,
+    backfaceVisibility: "hidden" as const,
+    WebkitBackfaceVisibility: "hidden" as const,
+    willChange: "opacity",
   });
 
   const shadowStyleBase = (
@@ -186,10 +194,29 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
       style={{ height: "300vh" }}
     >
       {/* Sticky container */}
-      <div className="sticky top-0 w-full h-screen overflow-hidden bg-background">
+      <div 
+        className="sticky top-0 w-full h-screen overflow-hidden bg-background"
+        style={{
+          transform: "translate3d(0,0,0)",
+          backfaceVisibility: "hidden",
+          WebkitBackfaceVisibility: "hidden",
+          willChange: "transform",
+          contain: "layout style paint"
+        }}
+      >
 
         {/* BASE LAYER – blurred background (hidden at start, revealed when Section 1 fades) */}
-        <div ref={baseLayerRef} className="absolute inset-0 z-0" style={{ opacity: 0, willChange: "opacity" }}>
+        <div 
+          ref={baseLayerRef} 
+          className="absolute inset-0 z-0" 
+          style={{ 
+            opacity: 0, 
+            willChange: "opacity",
+            transform: "translate3d(0,0,0)",
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden"
+          }}
+        >
           <div
             className="absolute"
             style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: "120%", height: "120%" }}
@@ -197,14 +224,36 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
             {/* Shadow 1 - Top Left */}
             <div
               className="absolute z-0"
-              style={{ top: "-10%", left: "-15%", width: "60%", height: "60%", filter: `blur(${Math.round(blurPx * BASE_SHADOW_BLUR_MULTIPLIER)}px)`, opacity: BASE_SHADOW_IMAGE_OPACITY, transform: "translateZ(0)" }}
+              style={{ 
+                top: "-10%", 
+                left: "-15%", 
+                width: "60%", 
+                height: "60%", 
+                filter: `blur(${Math.round(blurPx * BASE_SHADOW_BLUR_MULTIPLIER)}px)`, 
+                opacity: BASE_SHADOW_IMAGE_OPACITY, 
+                transform: "translate3d(0,0,0)",
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                willChange: "opacity"
+              }}
             >
               <Image src={imgs.shadow1} alt="" fill className="object-contain" aria-hidden />
             </div>
             {/* Shadow 2 - Bottom Right */}
             <div
               className="absolute z-0"
-              style={{ bottom: "-10%", right: "-15%", width: "60%", height: "60%", filter: `blur(${Math.round(blurPx * BASE_SHADOW_BLUR_MULTIPLIER)}px)`, opacity: BASE_SHADOW_IMAGE_OPACITY, transform: "translateZ(0)" }}
+              style={{ 
+                bottom: "-10%", 
+                right: "-15%", 
+                width: "60%", 
+                height: "60%", 
+                filter: `blur(${Math.round(blurPx * BASE_SHADOW_BLUR_MULTIPLIER)}px)`, 
+                opacity: BASE_SHADOW_IMAGE_OPACITY, 
+                transform: "translate3d(0,0,0)",
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                willChange: "opacity"
+              }}
             >
               <Image src={imgs.shadow2} alt="" fill className="object-contain" aria-hidden />
             </div>
@@ -224,7 +273,13 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                   fill
                   className="object-contain"
                   loading="eager"
-                  style={{ filter: "blur(10px)", opacity: 0.7, transform: "translateZ(0)" }}
+                  style={{ 
+                    filter: "blur(10px)", 
+                    opacity: 0.7, 
+                    transform: "translate3d(0,0,0)",
+                    backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden"
+                  }}
                 />
               </div>
             </div>
@@ -237,11 +292,24 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
         <section
           ref={section1Ref}
           className="absolute inset-0 w-full h-full pt-16 sm:pt-20 md:pt-24 lg:pt-28 pb-4 sm:pb-5 md:pb-6 z-10"
-          style={{ willChange: "opacity" }}
+          style={{ 
+            willChange: "opacity",
+            transform: "translate3d(0,0,0)",
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden"
+          }}
         >
           <Container className="h-full">
             <div className="flex flex-col items-center w-full h-full px-3 sm:px-4 gap-6 sm:gap-10 md:gap-12 lg:gap-16">
-              <div ref={heading1Ref} style={{ willChange: "transform" }}>
+              <div 
+                ref={heading1Ref} 
+                style={{ 
+                  willChange: "transform",
+                  transform: "translate3d(0,0,0)",
+                  backfaceVisibility: "hidden",
+                  WebkitBackfaceVisibility: "hidden"
+                }}
+              >
                 <Heading2
                   className="text-white text-center leading-[120%]! relative z-20 shrink-0 px-2 sm:px-0"
                 >
@@ -253,19 +321,46 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
               <div
                 ref={imageWrapRef}
                 className="relative w-full flex-1 min-h-0 max-w-[95vw] sm:max-w-[90vw] md:max-w-[85vw] lg:max-w-[911.91px]"
-                style={{ willChange: "transform" }}
+                style={{ 
+                  willChange: "transform",
+                  transform: "translate3d(0,0,0)",
+                  backfaceVisibility: "hidden",
+                  WebkitBackfaceVisibility: "hidden"
+                }}
               >
                 {/* Shadow 1 */}
                 <div
                   className="absolute z-0"
-                  style={{ top: "-15%", left: "-20%", width: "70%", height: "70%", filter: `blur(${Math.round(blurPx * 0.65)}px)`, opacity: 1, transform: "translateZ(0)" }}
+                  style={{ 
+                    top: "-15%", 
+                    left: "-20%", 
+                    width: "70%", 
+                    height: "70%", 
+                    filter: `blur(${Math.round(blurPx * 0.65)}px)`, 
+                    opacity: 1, 
+                    transform: "translate3d(0,0,0)",
+                    backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden",
+                    willChange: "opacity"
+                  }}
                 >
                   <Image src={imgs.shadow1} alt="" fill className="object-contain" aria-hidden />
                 </div>
                 {/* Shadow 2 */}
                 <div
                   className="absolute z-0"
-                  style={{ bottom: "-15%", right: "-15%", width: "60%", height: "60%", filter: `blur(${Math.round(blurPx * 0.65)}px)`, opacity: 1, transform: "translateZ(0)" }}
+                  style={{ 
+                    bottom: "-15%", 
+                    right: "-15%", 
+                    width: "60%", 
+                    height: "60%", 
+                    filter: `blur(${Math.round(blurPx * 0.65)}px)`, 
+                    opacity: 1, 
+                    transform: "translate3d(0,0,0)",
+                    backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden",
+                    willChange: "opacity"
+                  }}
                 >
                   <Image src={imgs.shadow2} alt="" fill className="object-contain" aria-hidden />
                 </div>
@@ -280,21 +375,34 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                   />
                 ))}
                 {/* Clear collage image */}
-                <div className="relative z-10 w-full h-full">
+                <div 
+                  className="relative z-10 w-full h-full"
+                  style={{
+                    transform: "translate3d(0,0,0)",
+                    backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden"
+                  }}
+                >
                   <Image
                     src={imgs.collage}
                     alt="Child's Life is Bigger than Asthma"
                     fill
                     className="object-contain"
                     loading="eager"
-                    style={{ transform: "translateZ(0)" }}
+                    style={{ transform: "translate3d(0,0,0)" }}
                   />
                 </div>
                 {/* Pre-blurred overlay – crossfades in via opacity (GPU-composited) */}
                 <div
                   ref={blurOverlayRef}
                   className="absolute inset-0 z-20"
-                  style={{ opacity: 0, willChange: "opacity", transform: "translateZ(0)" }}
+                  style={{ 
+                    opacity: 0, 
+                    willChange: "opacity", 
+                    transform: "translate3d(0,0,0)",
+                    backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden"
+                  }}
                 >
                   <Image
                     src={imgs.collage}
@@ -302,7 +410,12 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
                     fill
                     className="object-contain"
                     aria-hidden
-                    style={{ filter: "blur(30px)", transform: "translateZ(0)" }}
+                    style={{ 
+                      filter: "blur(30px)", 
+                      transform: "translate3d(0,0,0)",
+                      backfaceVisibility: "hidden",
+                      WebkitBackfaceVisibility: "hidden"
+                    }}
                   />
                 </div>
               </div>
@@ -314,7 +427,13 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
         <div
           ref={section2Ref}
           className="absolute inset-0 z-20 flex items-center justify-center"
-          style={{ opacity: 0, willChange: "transform, opacity" }}
+          style={{ 
+            opacity: 0, 
+            willChange: "transform, opacity",
+            transform: "translate3d(0,0,0)",
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden"
+          }}
         >
           <Heading2 className="text-white text-center leading-[120%]! px-4 sm:px-6 md:px-8 max-w-[1200px]">
             But behind your family&apos;s favorite moments,{" "}
