@@ -298,12 +298,46 @@
 
 html {
   scroll-behavior: auto;
+  /* Safari scroll performance optimizations */
+  -webkit-overflow-scrolling: touch;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Force GPU acceleration for smooth scrolling */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
   }
+}
+
+/* Optimize body for Safari scroll performance */
+body {
+  /* Force GPU acceleration */
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* Optimize rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeSpeed;
+  /* Reduce layout thrashing */
+  overflow-x: hidden;
+}
+
+/* Optimize all sections for smooth scrolling - Safari specific */
+section {
+  /* Force GPU compositing */
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* Reduce repaints - use paint containment only for better Safari performance */
+  contain: paint;
 }
 
 ::-webkit-scrollbar {

@@ -41,7 +41,18 @@ const MainAppLayoutContent = ({ children }: { children: React.ReactNode }) => {
         <Navbar isNavTransparent={isNavTransparent} />
       </div>
 
-      <div className="relative z-10" style={{ overflowX: "clip" }}>{children}</div>
+      <div 
+        className="relative z-10" 
+        style={{ 
+          overflowX: "clip",
+          // Safari scroll performance optimization
+          transform: "translate3d(0,0,0)",
+          backfaceVisibility: "hidden",
+          WebkitBackfaceVisibility: "hidden"
+        }}
+      >
+        {children}
+      </div>
 
       <Footer />
     </div>

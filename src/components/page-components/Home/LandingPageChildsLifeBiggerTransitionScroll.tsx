@@ -138,12 +138,20 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
   }, [setHideNavbarSectionInView]);
 
   useEffect(() => {
+    let ticking = false;
     const onScroll = () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      rafRef.current = requestAnimationFrame(tick);
+      if (!ticking) {
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        rafRef.current = requestAnimationFrame(() => {
+          tick();
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+    // Initial call
+    requestAnimationFrame(tick);
     return () => {
       window.removeEventListener("scroll", onScroll);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -191,7 +199,14 @@ const LandingPageChildsLifeBiggerTransitionScroll = () => {
     <div
       ref={containerRef}
       className="w-full relative"
-      style={{ height: "300vh" }}
+      style={{ 
+        height: "300vh",
+        // Safari scroll performance optimization
+        transform: "translate3d(0,0,0)",
+        backfaceVisibility: "hidden",
+        WebkitBackfaceVisibility: "hidden",
+        willChange: "transform"
+      }}
     >
       {/* Sticky container */}
       <div 
