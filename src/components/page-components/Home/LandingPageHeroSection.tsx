@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/common/Container";
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useLayoutEffect, useState, useCallback } from "react";
 import { Heading1, Paragraph } from "@/components/common/Typography";
 
 const VIDEO_DESKTOP = "/assets/pages/landing/videos/HeroVideo001.mp4";
@@ -13,78 +13,224 @@ const MOBILE_BREAKPOINT = 768;
 
 const LandingPageHeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoSrc, setVideoSrc] = useState<string>("");
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const isPlayingRef = useRef(false);
+  const playLock = useRef(false);
 
-  // Pick the right video source based on screen width (runs once on mount)
+  // Always render desktop video on server to avoid hydration mismatch.
+  // After hydration, we check actual viewport and swap source if needed.
+  const [videoSrc, setVideoSrc] = useState(VIDEO_DESKTOP);
+
+  // Check viewport and update source after mount (client-side only)
   useEffect(() => {
     const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
-    setVideoSrc(isMobile ? VIDEO_MOBILE : VIDEO_DESKTOP);
+    const correctSrc = isMobile ? VIDEO_MOBILE : VIDEO_DESKTOP;
+    if (videoSrc !== correctSrc) {
+      setVideoSrc(correctSrc);
+    }
+  }, [videoSrc]);
+
+  const markPlaying = useCallback(() => {
+    if (!isPlayingRef.current) {
+      isPlayingRef.current = true;
+      setIsPlaying(true);
+    }
   }, []);
 
-  // Autoplay logic — Apple-style: simple, minimal, reliable
-  const ensurePlayback = useCallback(() => {
+  // Safe play with locking to prevent concurrent calls
+  const safePlay = useCallback(() => {
     const video = videoRef.current;
-    if (!video || !video.paused) return;
-    video.play().catch(() => {});
+    if (!video || isPlayingRef.current || playLock.current) return;
+
+    if (!video.paused && video.currentTime > 0) {
+      markPlaying();
+      return;
+    }
+
+    video.muted = true;
+    video.volume = 0;
+    playLock.current = true;
+
+    const playPromise = video.play();
+    if (playPromise) {
+      playPromise
+        .then(() => {
+          playLock.current = false;
+          markPlaying();
+          console.log("[Video] Autoplay succeeded");
+        })
+        .catch((err) => {
+          playLock.current = false;
+          console.log("[Video] Autoplay blocked:", err.name, err.message);
+        });
+    } else {
+      playLock.current = false;
+    }
+  }, [markPlaying]);
+
+  // Click handler for manual play
+  const handlePlay = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    
+    video.muted = true;
+    video.volume = 0;
+    
+    const p = video.play();
+    if (p) {
+      p.then(() => {
+        markPlaying();
+      }).catch((e) => {
+        console.error("[Video] Manual play failed:", e);
+      });
+    }
+  }, [markPlaying]);
+
+  // Ref callback - runs synchronously when video element mounts
+  const videoRefCallback = useCallback((video: HTMLVideoElement | null) => {
+    if (!video) return;
+    videoRef.current = video;
+
+    // Set muted IMMEDIATELY in the ref callback (synchronous, before React commits)
+    video.muted = true;
+    video.defaultMuted = true;
+    video.volume = 0;
+
+    // For Safari: also set as attributes
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
   }, []);
 
+  // Use layoutEffect for synchronous initialization before paint
+  useLayoutEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Ensure muted is set before first paint
+    video.muted = true;
+    video.defaultMuted = true;
+    video.volume = 0;
+
+    // Try to play immediately (some browsers allow this)
+    safePlay();
+  }, [safePlay]);
+
+  // Main effect for event listeners and retries
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || !videoSrc) return;
+    if (!video) return;
 
-    // Ensure muted (required for autoplay on every browser)
-    video.muted = true;
+    let cancelled = false;
 
-    // Try play when video has enough data
-    const onCanPlay = () => ensurePlayback();
-    video.addEventListener("canplay", onCanPlay);
-    video.addEventListener("loadeddata", onCanPlay);
+    // ---- Play state listener (single consolidated handler) ----
+    const onPlayEvent = () => markPlaying();
+    video.addEventListener("playing", onPlayEvent);
 
-    // Try immediately if already ready
-    if (video.readyState >= 2) ensurePlayback();
-
-    // Fallback: first user interaction (covers older Android Chrome)
-    const onTouch = () => {
-      ensurePlayback();
-      document.removeEventListener("touchstart", onTouch);
+    // ---- Keep muted ----
+    const ensureMuted = () => {
+      video.muted = true;
+      video.volume = 0;
     };
-    document.addEventListener("touchstart", onTouch, { passive: true });
+    video.addEventListener("volumechange", ensureMuted);
 
-    // Resume after tab switch
-    const onVisibility = () => {
-      if (!document.hidden) ensurePlayback();
+    // ---- Try play when ready ----
+    const onReady = () => {
+      if (!cancelled) safePlay();
     };
-    document.addEventListener("visibilitychange", onVisibility);
+    video.addEventListener("canplay", onReady);
+
+    // If already ready
+    if (video.readyState >= 3) {
+      safePlay();
+    }
+
+    // ---- Single retry with delay ----
+    const retryTimer = setTimeout(() => {
+      if (!cancelled) safePlay();
+    }, 500);
+
+    // ---- IntersectionObserver (single threshold) ----
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && !cancelled) safePlay();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    observer.observe(video);
+
+    // ---- User interaction unlock for Safari ----
+    const onFirstInteraction = () => {
+      if (!cancelled) {
+        safePlay();
+        document.removeEventListener("click", onFirstInteraction);
+        document.removeEventListener("touchstart", onFirstInteraction);
+      }
+    };
+    document.addEventListener("click", onFirstInteraction, { passive: true, once: true });
+    document.addEventListener("touchstart", onFirstInteraction, { passive: true, once: true });
+
+    // ---- Resize (debounced) ----
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    const onResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (cancelled) return;
+        const mobile = window.innerWidth < MOBILE_BREAKPOINT;
+        const newSrc = mobile ? VIDEO_MOBILE : VIDEO_DESKTOP;
+        if (video.src && !video.src.endsWith(newSrc)) {
+          video.muted = true;
+          video.volume = 0;
+          video.src = newSrc;
+          setTimeout(safePlay, 200);
+        }
+      }, 250);
+    };
+    window.addEventListener("resize", onResize, { passive: true });
 
     return () => {
-      video.removeEventListener("canplay", onCanPlay);
-      video.removeEventListener("loadeddata", onCanPlay);
-      document.removeEventListener("touchstart", onTouch);
-      document.removeEventListener("visibilitychange", onVisibility);
+      cancelled = true;
+      clearTimeout(retryTimer);
+      clearTimeout(resizeTimer);
+      observer.disconnect();
+      video.removeEventListener("playing", onPlayEvent);
+      video.removeEventListener("volumechange", ensureMuted);
+      video.removeEventListener("canplay", onReady);
+      document.removeEventListener("click", onFirstInteraction);
+      document.removeEventListener("touchstart", onFirstInteraction);
+      window.removeEventListener("resize", onResize);
     };
-  }, [videoSrc, ensurePlayback]);
+  }, [safePlay, markPlaying]);
 
   return (
     <div>
       <div className="p-2.5">
-        <div className="w-full h-screen rounded-[20px] relative overflow-hidden bg-black">
-          {videoSrc && (
-            <video
-              ref={videoRef}
-              key={videoSrc}
-              src={videoSrc}
-              autoPlay
-              loop
-              muted
-              playsInline
-              poster={VIDEO_POSTER}
-              preload="auto"
-              className="absolute inset-0 w-full h-full object-cover rounded-[20px] z-0 block"
-              style={{ pointerEvents: "none" }}
-            />
-          )}
+        <div
+          ref={containerRef}
+          className="w-full h-screen rounded-[20px] relative overflow-hidden bg-black"
+          onClick={handlePlay}
+          style={{ cursor: isPlaying ? "default" : "pointer" }}
+        >
+          {/* Video element with all Safari-required attributes inline */}
+          <video
+            ref={videoRefCallback}
+            src={videoSrc}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            poster={VIDEO_POSTER}
+            className="absolute inset-0 w-full h-full object-cover rounded-[20px] z-0"
+            style={{ display: "block" }}
+            // Force these as attributes for Safari
+            {...({ "webkit-playsinline": "" } as React.VideoHTMLAttributes<HTMLVideoElement>)}
+          />
 
-          <Container className="absolute bottom-0 left-0 right-0 pb-24 md:pb-12.5 flex justify-end items-end h-full pt-30 md:pt-0 md:h-fit">
+          <Container className="absolute bottom-0 left-0 right-0 pb-24 md:pb-12.5 flex justify-end items-end h-full pt-30 md:pt-0 md:h-fit z-2">
             <div className="grid grid-cols-1 mllg:grid-cols-2 gap-10 mllg:gap-0 w-full justify-between">
               <div className="flex flex-col gap-4">
                 <div className="flex justify-center md:justify-start">
