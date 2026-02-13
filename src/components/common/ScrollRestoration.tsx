@@ -23,9 +23,17 @@ export default function ScrollRestoration() {
       sessionStorage.setItem(SCROLL_POSITION_KEY, JSON.stringify(scrollData));
     };
 
+    // Throttle scroll handler for Safari performance
+    let ticking = false;
     const handleScroll = () => {
-      clearTimeout(saveTimeout);
-      saveTimeout = setTimeout(saveScrollPosition, 100);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          clearTimeout(saveTimeout);
+          saveTimeout = setTimeout(saveScrollPosition, 200); // Increased debounce for Safari
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     const handleBeforeUnload = () => {
