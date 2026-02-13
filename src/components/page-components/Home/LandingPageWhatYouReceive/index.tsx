@@ -43,7 +43,12 @@ const LandingPageWhatYouReceive = () => {
             <Paragraph className="text-center! leading-5! text-xs! text-white!">
               No credit card required. <br /> Get immediate protection.
             </Paragraph>
-            <Button className="px-5! py-3.5! bg-white! text-primary!">
+            <Button
+              className="px-5! py-3.5! bg-white! text-primary!"
+              onClick={() => {
+                window.open("/signup/start", "_blank");
+              }}
+            >
               Start Free 14-Day Trial
             </Button>
           </div>

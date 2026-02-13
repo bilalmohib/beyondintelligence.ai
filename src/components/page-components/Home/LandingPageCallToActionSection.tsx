@@ -1,6 +1,8 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
 import Container from "@/components/common/Container";
 import { Heading2, Heading5, Paragraph } from "@/components/common/Typography";
-import { Button } from "@/components/ui/button";
 
 const LandingPageCallToActionSection = () => {
   return (
@@ -22,7 +24,12 @@ const LandingPageCallToActionSection = () => {
               <br />
               Get immediate protection.
             </Paragraph>
-            <Button className="px-5! py-3.5! bg-white! text-primary!">
+            <Button
+              className="px-5! py-3.5! bg-white! text-primary!"
+              onClick={() => {
+                window.open("/signup/start", "_blank");
+              }}
+            >
               Start Free 14-Day Trial
             </Button>
           </div>

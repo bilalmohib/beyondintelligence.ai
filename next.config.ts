@@ -27,6 +27,20 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '30mb',
     },
   },
+  async headers() {
+    return [
+      {
+        // Apply to all routes
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Permissions-Policy',
+            value: 'autoplay=*, fullscreen=*',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
