@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { ArrowUpPolygonIcon } from "@/components/icons";
 import { Heading3, Paragraph } from "@/components/common/Typography";
@@ -22,7 +24,12 @@ const SubscriptionOfferBannerForSignup = () => {
             No credit card required.
             <br /> Get immediate protection.
           </Paragraph>
-          <Button className="px-5! py-3.5! bg-white! text-primary! whitespace-nowrap">
+          <Button
+            className="px-5! py-3.5! bg-white! text-primary! whitespace-nowrap"
+            onClick={() => {
+              window.open("/signup/start", "_blank");
+            }}
+          >
             Start Free 14-Day Trial
           </Button>
         </div>

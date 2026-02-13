@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Container from "@/components/common/Container";
 import { Heading2, Paragraph } from "@/components/common/Typography";
@@ -23,7 +25,14 @@ const LandingPageHowItWorksSection = () => {
           <br />
           Get immediate protection.
         </Paragraph>
-        <Button className="px-5! py-3.5! w-full! ssmd:w-fit!">Start Free 14-Day Trial</Button>
+        <Button
+          className="px-5! py-3.5! w-full! ssmd:w-fit!"
+          onClick={() => {
+            window.open("/signup/start", "_blank");
+          }}
+        >
+          Start Free 14-Day Trial
+        </Button>
       </div>
     </Container>
   );
