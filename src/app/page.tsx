@@ -21,7 +21,6 @@ function Home() {
     <div 
       className="block"
       style={{
-        // Safari scroll performance optimizations
         transform: "translate3d(0,0,0)",
         backfaceVisibility: "hidden",
         WebkitBackfaceVisibility: "hidden"

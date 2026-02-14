@@ -13,7 +13,7 @@ const LandingPageSatoriBlogsSection = () => {
             Inside
           </Heading5>
           <Image
-            src="/assets/pages/landing/images/LandingPageSatoriBlogsSection/beyondIntelligence.svg"
+            src="/assets/pages/landing/images/LandingPageSatoriBlogsSection/beyondIntelligence.webp"
             alt="Inside"
             width={841}
             height={100.05}
