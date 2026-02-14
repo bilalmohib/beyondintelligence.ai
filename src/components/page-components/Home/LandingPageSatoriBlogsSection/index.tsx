@@ -17,7 +17,7 @@ const LandingPageSatoriBlogsSection = () => {
             alt="Inside"
             width={841}
             height={100.05}
-            className="select-none w-full md:w-[841px] h-auto md:h-[100.05px]"
+            className="select-none w-full md:w-[841px] h-auto md:h-[100.05px] backdrop-blur"
           />
         </div>
         <div>
