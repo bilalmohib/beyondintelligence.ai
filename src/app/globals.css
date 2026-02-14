@@ -105,9 +105,9 @@
       #22c55e 25deg,
       #f59e0b 55deg,
       #59393C 80deg,
-      #473C75 120deg,
-      #473C75 180deg,
-      #473C75 240deg,
+      #2d2b52 120deg,
+      #2d2b52 180deg,
+      #2d2b52 240deg,
       #59393C 280deg,
       #6366f1 305deg,
       #8b5cf6 330deg,
@@ -408,24 +408,24 @@ section {
     padding: 1px;
     background: var(--gradient-cta-section-border);
   }
-  /* Thin gradient glow tightly hugging the box — minimal spread, per Figma */
+  /* Full-perimeter glow: orange/red (top-left, left) → green/yellow (bottom) → blue/teal → violet/purple (right, top-right) */
   .cta-section-gradient-border-wrapper::before {
     content: '';
     position: absolute;
-    top: -8px;
-    left: -8px;
-    right: -8px;
-    bottom: -8px;
-    border-radius: 28px;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 30px;
     background: conic-gradient(
       from 180deg at 50% 50%,
       #14b8a6 0deg,
       #22c55e 25deg,
       #f59e0b 55deg,
       #59393C 80deg,
-      #473C75 120deg,
-      #473C75 180deg,
-      #473C75 235deg,
+      #111230 120deg,
+      #111230 180deg,
+      #111230 235deg,
       #59393C 270deg,
       #6366f1 295deg,
       #7c3aed 315deg,
@@ -433,7 +433,7 @@ section {
       #8b5cf6 350deg,
       #14b8a6 360deg
     );
-    filter: blur(12px);
+    filter: blur(14px);
     opacity: 0.9;
     z-index: 0;
   }
